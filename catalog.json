@@ -11,12 +11,13 @@
       "icon": "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png"
     },
     {
-      "id": "padcraft",
-      "name": "Padcraft",
-      "description": "Word processor for writing and formatting documents. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "id": "draftly",
+      "name": "Draftly",
+      "description": "Modern word processor for writing and formatting documents: rich text, pictures, tables and Light or Dark mode. Opens RTF, TXT and Word files.",
+      "repo": "adamglassner/draftly",
+      "assetPattern": "Draftly-*-win-x64.zip;Draftly-*-Setup.exe",
+      "exe": "Draftly.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/draftly/main/assets/draftly-256.png"
     },
     {
       "id": "shoredrop",

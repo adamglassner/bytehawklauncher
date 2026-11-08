@@ -125,6 +125,9 @@ public partial class MainWindow : Window
             var d = defaults.FirstOrDefault(x => !x.ComingSoon && x.Key.Equals(a.Key, StringComparison.OrdinalIgnoreCase));
             if (d != null) { _localCatalog.Apps[i] = d; changed = true; }
         }
+        // 1.1.1: the "Padcraft (coming soon)" placeholder became Draftly (a different id), so drop it.
+        changed |= _localCatalog.Apps.RemoveAll(a => a.ComingSoon && a.Key.Equals("padcraft", StringComparison.OrdinalIgnoreCase)) > 0;
+        if (_localCatalog.RemovedDefaults.RemoveAll(k => k.Equals("padcraft", StringComparison.OrdinalIgnoreCase)) > 0) changed = true;
         for (int i = 0; i < defaults.Count; i++)
         {
             var d = defaults[i];
@@ -142,7 +145,7 @@ public partial class MainWindow : Window
         Apps =
         {
             GuardrailEhs(),
-            ComingSoon("padcraft", "Padcraft", "Word processor for writing and formatting documents. Coming soon."),
+            Draftly(),
             ShoreDrop(),
             ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
@@ -176,6 +179,18 @@ public partial class MainWindow : Window
         AssetPattern = "ShoreDrop-*-win-x64.zip",
         Exe = "ShoreDrop.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/shoredrop-256.png",
+    };
+
+    /// <summary>Draftly — the Bytehawk Studio word processor (was listed as "Padcraft, coming soon" before 1.1.1).</summary>
+    private static CatalogEntry Draftly() => new()
+    {
+        Id = "draftly",
+        Name = "Draftly",
+        Description = "Modern word processor for writing and formatting documents: rich text, pictures, tables and Light or Dark mode. Opens RTF, TXT and Word files.",
+        Repo = "adamglassner/draftly",
+        AssetPattern = "Draftly-*-win-x64.zip;Draftly-*-Setup.exe",
+        Exe = "Draftly.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/draftly/main/assets/draftly-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
