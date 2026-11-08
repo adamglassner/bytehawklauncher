@@ -83,7 +83,7 @@ public static class WebIconService
                 if (frame == null) continue;
                 Directory.CreateDirectory(Path.GetDirectoryName(pngPath)!);
                 var enc = new PngBitmapEncoder();
-                enc.Frames.Add(frame);
+                enc.Frames.Add(BitmapFrame.Create(frame));
                 using (var fs = File.Create(pngPath)) enc.Save(fs);
                 Log.Info($"Icon for {pageUrl} from {url} ({frame.PixelWidth}px)");
                 return true;

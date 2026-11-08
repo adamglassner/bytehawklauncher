@@ -143,3 +143,33 @@ jobs:
           files: |
             dist/BytehawkStudioLauncher-*-Setup.exe
             dist/BytehawkStudioLauncher.exe
+
+      # Keep the latest run's logs on the ci-logs branch so they can be read with plain git
+      # (Actions logs need a signed-in browser). Force-pushed, so only the latest run is kept.
+      - name: Save logs to ci-logs branch
+        if: always() && github.event_name == 'push'
+        shell: pwsh
+        run: |
+          $d = Join-Path $env:RUNNER_TEMP 'ci-logs'
+          New-Item -ItemType Directory -Force $d | Out-Null
+          foreach ($f in 'build.log', 'selftest.txt') {
+            $p = Join-Path $env:RUNNER_TEMP $f
+            if (Test-Path $p) { Copy-Item $p $d }
+          }
+          $appLog = Join-Path $env:APPDATA 'BytehawkStudio\Launcher\launcher.log'
+          if (Test-Path $appLog) { Copy-Item $appLog $d }
+          @(
+            "commit=${{ github.sha }}"
+            "status=${{ job.status }}"
+            "version=${{ steps.ver.outputs.version }}"
+            "release=${{ steps.ver.outputs.release }}"
+            "run=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            "time=$(Get-Date -Format o)"
+          ) | Set-Content (Join-Path $d 'status.txt')
+          Set-Location $d
+          git init -q -b ci-logs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -q -m "CI logs for ${{ github.sha }} (${{ job.status }})"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-logs

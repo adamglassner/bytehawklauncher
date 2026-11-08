@@ -25,6 +25,8 @@ public static class SelfTest
             if (!ok) failed++;
             sb.AppendLine($"{(ok ? "PASS" : "FAIL")}  {name}{(detail.Length > 0 ? "  — " + detail : "")}");
         }
+        void Warn(string name, bool ok, string detail = "") =>
+            sb.AppendLine($"{(ok ? "PASS" : "WARN")}  {name}{(detail.Length > 0 ? "  — " + detail : "")}");
         // Reported but never fails the run (e.g. GitHub's raw-file CDN can lag a few minutes behind a push).
         void Info(string name, bool ok, string detail = "") =>
             sb.AppendLine($"{(ok ? "PASS" : "INFO")}  {name}{(detail.Length > 0 ? "  — " + detail : "")}");
@@ -160,8 +162,9 @@ public static class SelfTest
             {
                 var iconPath = Path.Combine(temp, "icon-" + new Uri(site).Host + ".png");
                 var got = await WebIconService.FetchAsync(site, iconPath);
-                Check($"Web app icon from {site}", got && File.Exists(iconPath) && new FileInfo(iconPath).Length > 0,
-                      got ? $"{new FileInfo(iconPath).Length} bytes" : "no icon");
+                // Depends on third-party sites, so it's a warning, not a failure.
+                Warn($"Web app icon from {site}", got && File.Exists(iconPath) && new FileInfo(iconPath).Length > 0,
+                     got ? $"{new FileInfo(iconPath).Length} bytes" : "no icon");
             }
             Check("No icon for unreachable site", !await WebIconService.FetchAsync("https://bytehawk-launcher-test.invalid", Path.Combine(temp, "none.png")));
 
