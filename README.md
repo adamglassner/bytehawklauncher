@@ -79,10 +79,11 @@ If GitHub can't be reached, the page shows *"Couldn't reach GitHub — showing l
 | `assetPattern` | no (default `*.exe`) | Which release file to download. Wildcards `*` and `?`, case-insensitive. Separate several patterns with `;`, and prefix with `!` to exclude. |
 | `id` | no | Stable key for install state. Defaults to the lowercase `repo`. Set it if you list the same repo twice (for example an installer and a portable zip). |
 | `sample` | no | `true` shows the yellow *Sample — replace me* badge. |
+| `comingSoon` | no | `true` shows the card with a *Coming soon* badge and no Download button. `repo` can be empty, but give it an `id`. When the app is released, click **Edit** on the card and paste the repo; the card becomes a normal app. |
 
 Comments (`//`) and trailing commas are allowed. After editing, go to **Settings → Reload catalog** (or restart the launcher). **Settings → Open catalog.json** opens the file in Notepad. If the file can't be parsed, the launcher keeps a copy as `catalog.json.bad` and tells you.
 
-The catalog ships with **two sample entries** labeled *"Sample — replace me"*. They point at a public open-source repo (Notepad++, not a Bytehawk Studio product) only so you can try the download flows: one uses the installer `.exe` and one uses the portable `.zip`. Delete them or replace their `repo` with a real Bytehawk Studio repo.
+The catalog ships with nine **Coming soon** entries: Padcraft (word processor), ShoreDrop (FTP client), Sparecopy (backup), Fleetwatch (PC management), Shutterbox (photo management), Discshelf (music player), CoinPilot (budgeting), Sumthing (calculator) and Castaway (media player, which needs a Castaway server to host the media). It also ships with **two sample entries** labeled *"Sample — replace me"*. They point at a public open-source repo (Notepad++, not a Bytehawk Studio product) only so you can try the download flows: one uses the installer `.exe` and one uses the portable `.zip`. Delete them or replace their `repo` with a real Bytehawk Studio repo.
 
 ### Remote catalog URL (optional)
 

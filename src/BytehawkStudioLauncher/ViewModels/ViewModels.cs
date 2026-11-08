@@ -81,7 +81,9 @@ public sealed class BytehawkAppVM : ObservableObject
     public string Name => Entry.Name;
     public string Description => string.IsNullOrWhiteSpace(Entry.Description) ? "No description." : Entry.Description;
     public bool IsSample => Entry.Sample;
-    public string RepoText => Entry.Repo;
+    public bool IsComingSoon => Entry.ComingSoon;
+    public bool HasRepo => Entry.HasRepo;
+    public string RepoText => Entry.HasRepo ? Entry.Repo : "Bytehawk Studio";
     public string ReleasePageUrl => Release?.HtmlUrl ?? $"https://github.com/{Entry.Repo}/releases";
 
     public string LatestVersion => Release == null || Release.NoRelease ? "" : GitHubService.DisplayVersion(Release.Tag);
@@ -92,6 +94,7 @@ public sealed class BytehawkAppVM : ObservableObject
     {
         get
         {
+            if (IsComingSoon) return "Coming soon · not released yet";
             var latest = Release == null ? "unknown" : Release.NoRelease ? "no release yet" : LatestVersion;
             return IsInstalled ? $"Installed {InstalledVersion} · Latest {latest}" : $"Not installed · Latest {latest}";
         }
@@ -124,7 +127,7 @@ public sealed class BytehawkAppVM : ObservableObject
         HasUpdate ? "Update" :
         NeedsLaunchChoice ? "Choose launch file" : "Launch";
 
-    public bool ShowPrimary => !IsDownloading && !Busy;
+    public bool ShowPrimary => !IsComingSoon && !IsDownloading && !Busy;
 
     /// <summary>When an update is available we still offer Launch next to Update.</summary>
     public bool ShowSecondaryLaunch => ShowPrimary && HasUpdate && !IsMissing && !NeedsLaunchChoice;

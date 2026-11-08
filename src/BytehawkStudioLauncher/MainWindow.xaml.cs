@@ -110,6 +110,15 @@ public partial class MainWindow : Window
         Version = 1,
         Apps =
         {
+            ComingSoon("padcraft", "Padcraft", "Word processor for writing and formatting documents. Coming soon."),
+            ComingSoon("shoredrop", "ShoreDrop", "FTP, FTPS and SFTP client for moving files to and from your servers. Coming soon."),
+            ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
+            ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
+            ComingSoon("shutterbox", "Shutterbox", "Photo management for organizing, browsing and finding your pictures. Coming soon."),
+            ComingSoon("discshelf", "Discshelf", "Music player for your own music library. Coming soon."),
+            ComingSoon("coinpilot", "CoinPilot", "Budgeting app for tracking spending and planning where your money goes. Coming soon."),
+            ComingSoon("sumthing", "Sumthing", "Calculator. Coming soon."),
+            ComingSoon("castaway", "Castaway", "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon."),
             new CatalogEntry
             {
                 Id = "sample-installer-exe",
@@ -129,6 +138,16 @@ public partial class MainWindow : Window
                 Sample = true,
             },
         },
+    };
+
+    private static CatalogEntry ComingSoon(string id, string name, string description) => new()
+    {
+        Id = id,
+        Name = name,
+        Description = description,
+        Repo = "",
+        AssetPattern = "*.exe",
+        ComingSoon = true,
     };
 
     private async Task StartupAsync()
@@ -259,7 +278,7 @@ public partial class MainWindow : Window
     {
         var remoteKeys = new HashSet<string>(_remoteEntries.Select(e => e.Key), StringComparer.OrdinalIgnoreCase);
         return _remoteEntries.Concat(_localCatalog.Apps.Where(e => !remoteKeys.Contains(e.Key)))
-                             .Where(e => !string.IsNullOrWhiteSpace(e.Repo));
+                             .Where(e => e.HasRepo || e.ComingSoon);
     }
 
     private static List<CatalogEntry>? ParseRemoteCatalog(string json)
@@ -269,7 +288,7 @@ public partial class MainWindow : Window
             var cat = System.Text.Json.JsonSerializer.Deserialize<CatalogFile>(json, JsonStore.Options);
             if (cat?.Apps == null) return null;
             foreach (var e in cat.Apps) e.FromRemote = true;
-            return cat.Apps.Where(e => !string.IsNullOrWhiteSpace(e.Repo)).ToList();
+            return cat.Apps.Where(e => e.HasRepo || e.ComingSoon).ToList();
         }
         catch (Exception ex)
         {
@@ -356,7 +375,7 @@ public partial class MainWindow : Window
         var rateLimited = false;
         try
         {
-            var repos = AllEntries().Select(e => e.Repo.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            var repos = AllEntries().Where(e => e.HasRepo && !e.ComingSoon).Select(e => e.Repo.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
             var maxAge = manual ? ManualRefreshAge : AutoRefreshAge;
             foreach (var repo in repos)
             {
@@ -546,7 +565,7 @@ public partial class MainWindow : Window
     /// <summary>Download → (run installer | extract zip) → record installed version.</summary>
     private async Task InstallAsync(BytehawkAppVM vm)
     {
-        if (vm.IsDownloading || vm.Busy) return;
+        if (vm.IsDownloading || vm.Busy || vm.IsComingSoon || !vm.HasRepo) return;
         vm.Note = null;
         vm.Busy = true;
         DownloadItemVM? item = null;

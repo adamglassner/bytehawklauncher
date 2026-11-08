@@ -36,9 +36,14 @@ public sealed class CatalogEntry
     public string AssetPattern { get; set; } = "*.exe";
     /// <summary>True for the shipped placeholder entries.</summary>
     public bool Sample { get; set; }
+    /// <summary>Announced product with no release yet: shown with a "Coming soon" badge and no download. Needs an id; repo can be empty.</summary>
+    public bool ComingSoon { get; set; }
 
     [JsonIgnore]
-    public string Key => string.IsNullOrWhiteSpace(Id) ? Repo.Trim().ToLowerInvariant() : Id!.Trim().ToLowerInvariant();
+    public string Key => (!string.IsNullOrWhiteSpace(Id) ? Id! : !string.IsNullOrWhiteSpace(Repo) ? Repo : Name).Trim().ToLowerInvariant();
+
+    [JsonIgnore]
+    public bool HasRepo => !string.IsNullOrWhiteSpace(Repo);
 
     /// <summary>Set at runtime for entries that came from the remote catalog URL.</summary>
     [JsonIgnore]
