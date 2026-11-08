@@ -114,6 +114,10 @@ public sealed class LibraryEntry
     public string Path { get; set; } = "";
     public string Arguments { get; set; } = "";
     public bool RunAsAdmin { get; set; }
+    /// <summary>Optional note shown on the card.</summary>
+    public string Description { get; set; } = "";
+    /// <summary>Optional version (auto-filled from the .exe's file version, editable).</summary>
+    public string Version { get; set; } = "";
     public DateTime AddedAt { get; set; } = DateTime.Now;
 }
 
@@ -123,5 +127,7 @@ public sealed class WebAppEntry
     public string Id { get; set; } = Guid.NewGuid().ToString("N");
     public string Name { get; set; } = "";
     public string Url { get; set; } = "";
+    /// <summary>Optional note shown on the card.</summary>
+    public string Description { get; set; } = "";
     public DateTime AddedAt { get; set; } = DateTime.Now;
 }

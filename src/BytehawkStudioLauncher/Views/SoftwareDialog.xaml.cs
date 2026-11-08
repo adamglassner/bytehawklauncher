@@ -12,6 +12,7 @@ public partial class SoftwareDialog : Window
     public LibraryEntry Result { get; private set; } = new();
     private readonly LibraryEntry? _editing;
     private string _autoName = "";
+    private string _autoVersion = "";
 
     public SoftwareDialog(LibraryEntry? editing = null, string? initialPath = null)
     {
@@ -25,6 +26,8 @@ public partial class SoftwareDialog : Window
             PathBox.Text = editing.Path;
             NameBox.Text = editing.Name;
             ArgsBox.Text = editing.Arguments;
+            DescriptionBox.Text = editing.Description;
+            VersionBox.Text = editing.Version;
             AdminBox.IsChecked = editing.RunAsAdmin;
             _autoName = "";
         }
@@ -61,7 +64,8 @@ public partial class SoftwareDialog : Window
     {
         var p = PathBox.Text.Trim().Trim('"');
         if (p != PathBox.Text) PathBox.Text = p;
-        if (File.Exists(p) && (string.IsNullOrWhiteSpace(NameBox.Text) || NameBox.Text == _autoName)) SetPath(p);
+        if (File.Exists(p) && (string.IsNullOrWhiteSpace(NameBox.Text) || NameBox.Text == _autoName ||
+                               string.IsNullOrWhiteSpace(VersionBox.Text) || VersionBox.Text == _autoVersion)) SetPath(p);
         UpdateIcon();
     }
 
@@ -74,7 +78,50 @@ public partial class SoftwareDialog : Window
             _autoName = Path.GetFileNameWithoutExtension(path);
             NameBox.Text = _autoName;
         }
+        // Same for the version: fill it from the file's version info.
+        if (string.IsNullOrWhiteSpace(VersionBox.Text) || VersionBox.Text == _autoVersion)
+        {
+            _autoVersion = ReadFileVersion(path);
+            VersionBox.Text = _autoVersion;
+        }
         UpdateIcon();
+    }
+
+    /// <summary>Product/file version of an .exe (or of a shortcut's target). Empty if unknown.</summary>
+    public static string ReadFileVersion(string path)
+    {
+        try
+        {
+            var target = path;
+            if (Path.GetExtension(path).Equals(".lnk", StringComparison.OrdinalIgnoreCase))
+                target = ResolveShortcut(path) ?? path;
+            if (!File.Exists(target) || !Path.GetExtension(target).Equals(".exe", StringComparison.OrdinalIgnoreCase)) return "";
+            var info = System.Diagnostics.FileVersionInfo.GetVersionInfo(target);
+            var v = (string.IsNullOrWhiteSpace(info.ProductVersion) ? info.FileVersion : info.ProductVersion)?.Trim() ?? "";
+            v = v.Split('+', ' ')[0].Replace(',', '.');
+            // "1.2.0.0" -> "1.2.0"
+            while (v.EndsWith(".0") && v.Count(c => c == '.') > 2) v = v[..^2];
+            return v is "0.0.0" or "0.0" or "0" ? "" : v;
+        }
+        catch { return ""; }
+    }
+
+    private static string? ResolveShortcut(string lnk)
+    {
+        try
+        {
+            var type = Type.GetTypeFromProgID("WScript.Shell");
+            if (type == null) return null;
+            dynamic shell = Activator.CreateInstance(type)!;
+            try
+            {
+                dynamic shortcut = shell.CreateShortcut(lnk);
+                string target = shortcut.TargetPath;
+                return string.IsNullOrWhiteSpace(target) ? null : target;
+            }
+            finally { System.Runtime.InteropServices.Marshal.FinalReleaseComObject(shell); }
+        }
+        catch { return null; }
     }
 
     private void UpdateIcon()
@@ -104,6 +151,8 @@ public partial class SoftwareDialog : Window
             Path = path,
             Name = NameBox.Text.Trim(),
             Arguments = ArgsBox.Text.Trim(),
+            Description = DescriptionBox.Text.Trim(),
+            Version = VersionBox.Text.Trim(),
             RunAsAdmin = AdminBox.IsChecked == true,
         };
         DialogResult = true;

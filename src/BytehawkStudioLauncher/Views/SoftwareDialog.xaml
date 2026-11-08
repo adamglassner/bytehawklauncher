@@ -30,8 +30,24 @@
     <TextBlock Text="Display name" Style="{StaticResource FieldLabel}" />
     <TextBox x:Name="NameBox" />
 
-    <TextBlock Text="Launch arguments (optional)" Style="{StaticResource FieldLabel}" />
-    <TextBox x:Name="ArgsBox" />
+    <TextBlock Text="Description (optional)" Style="{StaticResource FieldLabel}" />
+    <TextBox x:Name="DescriptionBox" TextWrapping="Wrap" Height="56" VerticalContentAlignment="Top" MaxLength="300" />
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="160" />
+        <ColumnDefinition Width="12" />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <StackPanel>
+        <TextBlock Text="Version (optional)" Style="{StaticResource FieldLabel}" />
+        <TextBox x:Name="VersionBox" MaxLength="40" ToolTip="Filled in from the program's file version when available. You can change it." />
+      </StackPanel>
+      <StackPanel Grid.Column="2">
+        <TextBlock Text="Launch arguments (optional)" Style="{StaticResource FieldLabel}" />
+        <TextBox x:Name="ArgsBox" />
+      </StackPanel>
+    </Grid>
 
     <CheckBox x:Name="AdminBox" Content="Run as administrator" Margin="0,16,0,0" />
 

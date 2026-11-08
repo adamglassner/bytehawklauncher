@@ -101,6 +101,8 @@
               <TextBlock Text="{Binding DetailLine}" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
             </StackPanel>
           </DockPanel>
+          <TextBlock Text="{Binding Description}" Style="{StaticResource Subtle}" Margin="0,12,0,0" MaxHeight="54" TextTrimming="CharacterEllipsis"
+                     Visibility="{Binding HasDescription, Converter={StaticResource BoolToVis}}" />
           <TextBlock Text="{Binding Path}" ToolTip="{Binding Path}" Style="{StaticResource Subtle}" FontSize="12" Margin="0,12,0,0"
                      TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
           <TextBlock Text="File not found — it may have been moved or uninstalled. Use Edit to point to it again."
@@ -123,18 +125,25 @@
       <Border Style="{StaticResource Card}" Width="330" Cursor="Hand" MouseLeftButtonUp="WebCard_MouseUp" ToolTip="{Binding Url}">
         <StackPanel>
           <DockPanel>
-            <Border DockPanel.Dock="Left" Width="44" Height="44" CornerRadius="22" Background="{DynamicResource AccentSoft}" VerticalAlignment="Top">
-              <TextBlock Text="&#xE774;" FontFamily="{StaticResource IconFont}" FontSize="20" Foreground="{DynamicResource Accent}"
-                         HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <Border DockPanel.Dock="Left" Width="44" Height="44" CornerRadius="10" Background="{DynamicResource AccentSoft}" VerticalAlignment="Top">
+              <Grid>
+                <Image Source="{Binding Icon}" Width="32" Height="32" RenderOptions.BitmapScalingMode="HighQuality"
+                       Visibility="{Binding HasIcon, Converter={StaticResource BoolToVis}}" />
+                <TextBlock Text="&#xE774;" FontFamily="{StaticResource IconFont}" FontSize="20" Foreground="{DynamicResource Accent}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding NoIcon, Converter={StaticResource BoolToVis}}" />
+              </Grid>
             </Border>
             <StackPanel Margin="12,0,0,0">
               <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
               <TextBlock Text="{Binding Host}" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,3,0,0" TextTrimming="CharacterEllipsis" />
             </StackPanel>
           </DockPanel>
+          <TextBlock Text="{Binding Description}" Style="{StaticResource Subtle}" Margin="0,12,0,0" MaxHeight="54" TextTrimming="CharacterEllipsis"
+                     Visibility="{Binding HasDescription, Converter={StaticResource BoolToVis}}" />
           <TextBlock Text="{Binding Url}" Style="{StaticResource Subtle}" FontSize="12" Margin="0,12,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
           <DockPanel Margin="0,14,0,0">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+              <Button Style="{StaticResource IconButton}" Content="&#xE72C;" ToolTip="Refresh icon from the website" Click="WebRefreshIcon_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE70F;" ToolTip="Edit" Click="WebEdit_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Remove" Click="WebRemove_Click" />
             </StackPanel>
@@ -276,7 +285,6 @@
             <TextBlock Text="Bytehawk Apps" Style="{StaticResource PageTitle}" />
             <TextBlock Style="{StaticResource Subtle}" Margin="0,4,0,0">
               <Run Text="Software released by Bytehawk Studio, downloaded from GitHub Releases." />
-              <Run Text="Linux and macOS versions coming soon." Foreground="{DynamicResource Accent}" />
             </TextBlock>
           </StackPanel>
         </DockPanel>

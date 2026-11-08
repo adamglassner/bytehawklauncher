@@ -965,6 +965,51 @@ public partial class MainWindow : Window
         foreach (var e in _webApps.OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase))
             _web.Add(new WebAppVM(e));
         UpdateEmptyStates();
+        _ = FetchMissingWebIconsAsync();
+    }
+
+    /// <summary>Web app ids we've already tried to fetch an icon for in this session (avoids retrying broken sites).</summary>
+    private readonly HashSet<string> _iconAttempted = new();
+
+    private async Task FetchMissingWebIconsAsync()
+    {
+        foreach (var vm in _web.Where(v => v.NoIcon).ToList())
+        {
+            if (!_iconAttempted.Add(vm.Entry.Id)) continue;
+            await FetchWebIconAsync(vm.Entry, force: false);
+        }
+    }
+
+    /// <summary>Downloads the site's icon into the cache and shows it on the card. Returns true on success.</summary>
+    private async Task<bool> FetchWebIconAsync(WebAppEntry entry, bool force)
+    {
+        if (force) WebIconService.DeleteCached(entry.Id);
+        bool ok;
+        try { ok = await WebIconService.FetchAsync(entry.Url, WebIconService.CachePath(entry.Id)); }
+        catch (Exception ex) { Log.Error($"Icon fetch {entry.Url}", ex); ok = false; }
+        if (ok)
+        {
+            var icon = WebIconService.LoadCached(entry.Id);
+            // the card may have been rebuilt while we were downloading
+            foreach (var vm in _web.Where(v => v.Entry.Id == entry.Id)) vm.Icon = icon;
+        }
+        return ok;
+    }
+
+    private async void WebRefreshIcon_Click(object sender, RoutedEventArgs e)
+    {
+        var vm = Ctx<WebAppVM>(sender);
+        if (vm == null) return;
+        if (sender is Button b) b.IsEnabled = false;
+        try
+        {
+            if (!await FetchWebIconAsync(vm.Entry, force: true))
+            {
+                vm.Icon = null;
+                ReportError($"Couldn't get an icon from {vm.Host}. The site may be offline, block downloads, or only offer an SVG icon. The globe icon is used instead.");
+            }
+        }
+        finally { if (sender is Button b2) b2.IsEnabled = true; }
     }
 
     private void AddWebApp_Click(object sender, RoutedEventArgs e)
@@ -1000,6 +1045,12 @@ public partial class MainWindow : Window
         var idx = _webApps.FindIndex(x => x.Id == vm.Entry.Id);
         if (idx >= 0) _webApps[idx] = dlg.Result; else _webApps.Add(dlg.Result);
         TrySave(AppPaths.WebApps, _webApps);
+        if (!string.Equals(vm.Entry.Url, dlg.Result.Url, StringComparison.OrdinalIgnoreCase))
+        {
+            // new address: fetch that site's icon
+            WebIconService.DeleteCached(dlg.Result.Id);
+            _iconAttempted.Remove(dlg.Result.Id);
+        }
         RebuildWebCards();
     }
 
@@ -1011,6 +1062,7 @@ public partial class MainWindow : Window
                 MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
         _webApps.RemoveAll(x => x.Id == vm.Entry.Id);
         TrySave(AppPaths.WebApps, _webApps);
+        WebIconService.DeleteCached(vm.Entry.Id);
         RebuildWebCards();
     }
 

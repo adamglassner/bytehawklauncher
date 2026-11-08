@@ -5,8 +5,8 @@ A Windows 10/11 launcher and downloader for Bytehawk Studio software, with room 
 | Section | What it does |
 |---|---|
 | **Bytehawk Apps** | Software released by Bytehawk Studio. Downloads the latest release from GitHub Releases, installs it silently, keeps it up to date automatically, launches and uninstalls it. The first app is **Guardrail EHS** ([adamglassner/guardrailehs](https://github.com/adamglassner/guardrailehs)). |
-| **My Software** | Any program on your PC (.exe, .msi or .lnk shortcut), even if it has nothing to do with Bytehawk Studio. Works fully offline. |
-| **Web Apps** | Bookmarks that open in your default browser. Nothing is downloaded or installed. |
+| **My Software** | Any program on your PC (.exe, .msi or .lnk shortcut), even if it has nothing to do with Bytehawk Studio, with an optional description and version (filled in from the program's file version, editable). Works fully offline. |
+| **Web Apps** | Bookmarks that open in your default browser, with an optional description. Each card shows the site's own icon (downloaded once and cached in `cache\icons\`; use the refresh button on the card to fetch it again). Nothing is downloaded or installed. |
 | **Downloads** | Progress, speed, cancel and "show in folder" for this session's downloads. |
 | **Settings** | Theme (Dark / Light / Follow System), download folder, update checks, automatic app updates, remote catalog URL, About. |
 

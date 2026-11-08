@@ -149,6 +149,28 @@ public static class SelfTest
                 }
             }
 
+            // ---- web app icons ----
+            var links = WebIconService.ParseLinkIcons(
+                "<link rel=\"icon\" href=\"/a.svg\" type=\"image/svg+xml\"><link rel='icon' sizes='32x32' href='/f32.png'>" +
+                "<link rel=\"apple-touch-icon\" href=\"/touch.png\">", new Uri("https://example.com/app/")).ToList();
+            Check("Icon links parsed (SVG skipped, touch icon preferred)",
+                  links.Count == 2 && links.OrderByDescending(l => l.Item2).First().Item1.AbsoluteUri == "https://example.com/touch.png",
+                  string.Join(", ", links.Select(l => $"{l.Item1.AbsolutePath}={l.Item2}")));
+            foreach (var site in new[] { "https://github.com", "https://www.wikipedia.org" })
+            {
+                var iconPath = Path.Combine(temp, "icon-" + new Uri(site).Host + ".png");
+                var got = await WebIconService.FetchAsync(site, iconPath);
+                Check($"Web app icon from {site}", got && File.Exists(iconPath) && new FileInfo(iconPath).Length > 0,
+                      got ? $"{new FileInfo(iconPath).Length} bytes" : "no icon");
+            }
+            Check("No icon for unreachable site", !await WebIconService.FetchAsync("https://bytehawk-launcher-test.invalid", Path.Combine(temp, "none.png")));
+
+            // ---- My Software version auto-fill ----
+            var sysExe = Path.Combine(Environment.SystemDirectory, "notepad.exe");
+            if (!File.Exists(sysExe)) sysExe = Path.Combine(Environment.SystemDirectory, "cmd.exe");
+            var ver = SoftwareDialog.ReadFileVersion(sysExe);
+            Check("Version read from an .exe", ver.Length > 0 && char.IsDigit(ver[0]), $"{Path.GetFileName(sysExe)} = {ver}");
+
             // ---- online catalog in the launcher repo ----
             try
             {

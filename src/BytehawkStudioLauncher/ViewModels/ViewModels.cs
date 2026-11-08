@@ -201,11 +201,15 @@ public sealed class SoftwareVM : ObservableObject
 
     public string Name => Entry.Name;
     public string Path => Entry.Path;
+    public string Description => Entry.Description ?? "";
+    public bool HasDescription => !string.IsNullOrWhiteSpace(Entry.Description);
     public string DetailLine
     {
         get
         {
-            var parts = new List<string> { System.IO.Path.GetExtension(Entry.Path).TrimStart('.').ToUpperInvariant() };
+            var parts = new List<string>();
+            if (!string.IsNullOrWhiteSpace(Entry.Version)) parts.Add($"Version {Entry.Version}");
+            parts.Add(System.IO.Path.GetExtension(Entry.Path).TrimStart('.').ToUpperInvariant());
             if (!string.IsNullOrWhiteSpace(Entry.Arguments)) parts.Add($"Args: {Entry.Arguments}");
             if (Entry.RunAsAdmin) parts.Add("Runs as administrator");
             return string.Join(" · ", parts.Where(p => p.Length > 0));
@@ -229,10 +233,20 @@ public sealed class SoftwareVM : ObservableObject
 /// <summary>Card for a Web App bookmark.</summary>
 public sealed class WebAppVM : ObservableObject
 {
-    public WebAppVM(WebAppEntry entry) { Entry = entry; }
+    public WebAppVM(WebAppEntry entry) { Entry = entry; _icon = WebIconService.LoadCached(entry.Id); }
     public WebAppEntry Entry { get; private set; }
+    private ImageSource? _icon;
+
     public string Name => Entry.Name;
     public string Url => Entry.Url;
     public string Host => Uri.TryCreate(Entry.Url, UriKind.Absolute, out var u) ? u.Host : Entry.Url;
+    public string Description => Entry.Description ?? "";
+    public bool HasDescription => !string.IsNullOrWhiteSpace(Entry.Description);
+
+    /// <summary>The site's own icon (cached PNG); the card shows a globe until it's available.</summary>
+    public ImageSource? Icon { get => _icon; set { Set(ref _icon, value); OnPropertyChanged(nameof(HasIcon)); OnPropertyChanged(nameof(NoIcon)); } }
+    public bool HasIcon => Icon != null;
+    public bool NoIcon => Icon == null;
+
     public void Update(WebAppEntry entry) { Entry = entry; RefreshAll(); }
 }

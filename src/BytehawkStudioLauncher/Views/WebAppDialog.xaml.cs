@@ -21,6 +21,7 @@ public partial class WebAppDialog : Window
             OkButton.Content = "Save";
             UrlBox.Text = editing.Url;
             NameBox.Text = editing.Name;
+            DescriptionBox.Text = editing.Description;
         }
         Loaded += (_, _) => UrlBox.Focus();
     }
@@ -81,6 +82,7 @@ public partial class WebAppDialog : Window
             AddedAt = _editing?.AddedAt ?? DateTime.Now,
             Name = name,
             Url = url,
+            Description = DescriptionBox.Text.Trim(),
         };
         DialogResult = true;
     }
