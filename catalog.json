@@ -29,6 +29,15 @@
       "icon": "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/shoredrop-256.png"
     },
     {
+      "id": "discshelf",
+      "name": "Discshelf",
+      "description": "Music player for the music on your computer: Genre, Artist and Album browsing, album art, and Light, Dark or Classic (Songbird) themes. Plays MP3, AAC, FLAC, Ogg, Opus and WAV.",
+      "repo": "adamglassner/discshelf",
+      "assetPattern": "Discshelf-*-win-x64.zip;Discshelf-*-Setup.exe",
+      "exe": "Discshelf.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/discshelf/main/assets/discshelf-256.png"
+    },
+    {
       "id": "sparecopy",
       "name": "Sparecopy",
       "description": "Backup for your PCs to a NAS, server or USB drive. Coming soon.",
@@ -48,14 +57,6 @@
       "id": "shutterbox",
       "name": "Shutterbox",
       "description": "Photo management for organizing, browsing and finding your pictures. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
-    },
-    {
-      "id": "discshelf",
-      "name": "Discshelf",
-      "description": "Music player for your own music library. Coming soon.",
       "repo": "",
       "assetPattern": "*.exe",
       "comingSoon": true

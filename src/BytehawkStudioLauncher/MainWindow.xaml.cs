@@ -156,10 +156,10 @@ public partial class MainWindow : Window
             GuardrailEhs(),
             Draftly(),
             ShoreDrop(),
+            Discshelf(),
             ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
             ComingSoon("shutterbox", "Shutterbox", "Photo management for organizing, browsing and finding your pictures. Coming soon."),
-            ComingSoon("discshelf", "Discshelf", "Music player for your own music library. Coming soon."),
             ComingSoon("coinpilot", "CoinPilot", "Budgeting app for tracking spending and planning where your money goes. Coming soon."),
             ComingSoon("sumthing", "Sumthing", "Calculator. Coming soon."),
             ComingSoon("castaway", "Castaway", "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon."),
@@ -200,6 +200,18 @@ public partial class MainWindow : Window
         AssetPattern = "Draftly-*-win-x64.zip;Draftly-*-Setup.exe",
         Exe = "Draftly.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/draftly/main/assets/draftly-256.png",
+    };
+
+    /// <summary>Discshelf — music player (portable zip from its GitHub releases; was "Coming soon" before).</summary>
+    private static CatalogEntry Discshelf() => new()
+    {
+        Id = "discshelf",
+        Name = "Discshelf",
+        Description = "Music player for the music on your computer: Genre, Artist and Album browsing, album art, and Light, Dark or Classic (Songbird) themes. Plays MP3, AAC, FLAC, Ogg, Opus and WAV.",
+        Repo = "adamglassner/discshelf",
+        AssetPattern = "Discshelf-*-win-x64.zip;Discshelf-*-Setup.exe",
+        Exe = "Discshelf.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/discshelf/main/assets/discshelf-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
