@@ -10,9 +10,13 @@ public partial class WebAppDialog : Window
     public WebAppEntry Result { get; private set; } = new();
     private readonly WebAppEntry? _editing;
 
-    public WebAppDialog(WebAppEntry? editing = null)
+    private readonly IEnumerable<string>? _categories;
+
+    public WebAppDialog(WebAppEntry? editing = null, IEnumerable<string>? categories = null)
     {
         InitializeComponent();
+        _categories = categories;
+        CategoryPicker.Fill(CategoryChips, CategoryBox, categories);
         SourceInitialized += (_, _) => ThemeService.ApplyTitleBar(this);
         _editing = editing;
         if (editing != null)
@@ -22,6 +26,7 @@ public partial class WebAppDialog : Window
             UrlBox.Text = editing.Url;
             NameBox.Text = editing.Name;
             DescriptionBox.Text = editing.Description;
+            CategoryBox.Text = editing.Category;
         }
         Loaded += (_, _) => UrlBox.Focus();
     }
@@ -83,6 +88,7 @@ public partial class WebAppDialog : Window
             Name = name,
             Url = url,
             Description = DescriptionBox.Text.Trim(),
+            Category = CategoryPicker.Normalize(CategoryBox.Text, _categories),
         };
         DialogResult = true;
     }

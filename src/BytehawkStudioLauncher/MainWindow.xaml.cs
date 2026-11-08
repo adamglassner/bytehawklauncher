@@ -60,8 +60,17 @@ public partial class MainWindow : Window
             DownloadsEmpty.Visibility = _downloads.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
         CollectionViewSource.GetDefaultView(_apps).Filter = o => MatchesSearch(((BytehawkAppVM)o).Name);
-        CollectionViewSource.GetDefaultView(_software).Filter = o => MatchesSearch(((SoftwareVM)o).Name);
-        CollectionViewSource.GetDefaultView(_web).Filter = o => MatchesSearch(((WebAppVM)o).Name);
+        CollectionViewSource.GetDefaultView(_software).Filter = o => o is SoftwareVM v &&
+            MatchesCategory(_softwareCategory, v.CategoryDisplay) && (MatchesSearch(v.Name) || MatchesSearch(v.Category));
+        CollectionViewSource.GetDefaultView(_web).Filter = o => o is WebAppVM v &&
+            MatchesCategory(_webCategory, v.CategoryDisplay) && (MatchesSearch(v.Name) || MatchesSearch(v.Category));
+        // Group My Software and Web Apps cards by category (Uncategorized last), A–Z inside each group.
+        foreach (var view in new[] { CollectionViewSource.GetDefaultView(_software), CollectionViewSource.GetDefaultView(_web) })
+        {
+            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(SoftwareVM.CategoryDisplay)));
+            view.SortDescriptions.Add(new SortDescription(nameof(SoftwareVM.CategorySortKey), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(SoftwareVM.Name), ListSortDirection.Ascending));
+        }
 
         LoadSettingsIntoUi();
         LoadLocalData();
@@ -903,14 +912,84 @@ public partial class MainWindow : Window
         _software.Clear();
         foreach (var e in _library.OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase))
             _software.Add(new SoftwareVM(e));
+        SoftwareList.Tag = _library.Any(x => !string.IsNullOrWhiteSpace(x.Category));
+        BuildCategoryBar(SoftwareCategoryBar, _library.Select(x => x.Category), _softwareCategory, c =>
+        {
+            _softwareCategory = c;
+            CollectionViewSource.GetDefaultView(_software).Refresh();
+            UpdateEmptyStates();
+        });
         UpdateEmptyStates();
+    }
+
+    // ---------- categories (My Software + Web Apps) ----------
+
+    private string? _softwareCategory; // null = All
+    private string? _webCategory;
+
+    private static bool MatchesCategory(string? selected, string category) =>
+        selected == null || string.Equals(selected, category, StringComparison.CurrentCultureIgnoreCase);
+
+    /// <summary>Every category used in My Software or Web Apps (offered as suggestions in both dialogs).</summary>
+    private IEnumerable<string> AllCategories() =>
+        _library.Select(x => x.Category).Concat(_webApps.Select(x => x.Category))
+                .Where(c => !string.IsNullOrWhiteSpace(c)).Select(c => c.Trim())
+                .Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
+
+    /// <summary>Filter chips: All, each category, and Uncategorized. Hidden while nothing is categorized.</summary>
+    private void BuildCategoryBar(WrapPanel bar, IEnumerable<string?> entryCategories, string? selected, Action<string?> onSelect)
+    {
+        var all = entryCategories.Select(c => (c ?? "").Trim()).ToList();
+        var names = all.Where(c => c.Length > 0).Distinct(StringComparer.CurrentCultureIgnoreCase)
+                       .OrderBy(c => c, StringComparer.CurrentCultureIgnoreCase).ToList();
+        bar.Children.Clear();
+        if (names.Count == 0)
+        {
+            bar.Visibility = Visibility.Collapsed;
+            if (selected != null) onSelect(null);
+            return;
+        }
+        if (all.Any(c => c.Length == 0)) names.Add("Uncategorized");
+        if (selected != null && !names.Contains(selected, StringComparer.CurrentCultureIgnoreCase))
+        {
+            selected = null;
+            onSelect(null);
+        }
+        var style = (Style)FindResource("SegmentItem");
+        void Add(string label, string? value, string glyph)
+        {
+            var rb = new RadioButton
+            {
+                Content = label, Tag = glyph, GroupName = bar.Name, Style = style, Margin = new Thickness(0, 0, 4, 4),
+                IsChecked = string.Equals(value, selected, StringComparison.CurrentCultureIgnoreCase),
+            };
+            rb.Checked += (_, _) => onSelect(value);
+            bar.Children.Add(rb);
+        }
+        Add("All", null, "\uE71D");
+        foreach (var n in names) Add(n, n, n == "Uncategorized" ? "\uE8B7" : "\uE8EC");
+        bar.Visibility = Visibility.Visible;
     }
 
     private void AddSoftware_Click(object sender, RoutedEventArgs e)
     {
         var file = SoftwareDialog.PickProgram(this);
         if (file == null) return;
-        var dlg = new SoftwareDialog(null, file) { Owner = this };
+        var dlg = new SoftwareDialog(null, file, AllCategories()) { Owner = this };
+        if (dlg.ShowDialog() != true) return;
+        _library.Add(dlg.Result);
+        TrySave(AppPaths.Library, _library);
+        RebuildSoftwareCards();
+    }
+
+    private void AddStoreApp_Click(object sender, RoutedEventArgs e)
+    {
+        var picker = new StoreAppPickerDialog { Owner = this };
+        if (picker.ShowDialog() != true || picker.Result == null) return;
+        if (_library.Any(x => string.Equals(x.AppId, picker.Result.AppId, StringComparison.OrdinalIgnoreCase)) &&
+            MessageBox.Show(this, $"{picker.Result.Name} is already in My Software. Add it again?", AppTitle,
+                MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+        var dlg = new SoftwareDialog(null, null, AllCategories(), picker.Result) { Owner = this };
         if (dlg.ShowDialog() != true) return;
         _library.Add(dlg.Result);
         TrySave(AppPaths.Library, _library);
@@ -921,7 +1000,9 @@ public partial class MainWindow : Window
     {
         var vm = Ctx<SoftwareVM>(sender);
         if (vm == null) return;
-        ReportError(ShellHelper.Launch(vm.Entry.Path, vm.Entry.Arguments, vm.Entry.RunAsAdmin));
+        ReportError(vm.IsStoreApp
+            ? (StoreApps.Exists(vm.Entry.AppId) ? StoreApps.Launch(vm.Entry.AppId) : $"{vm.Name} isn't installed anymore. Reinstall it from the Microsoft Store.")
+            : ShellHelper.Launch(vm.Entry.Path, vm.Entry.Arguments, vm.Entry.RunAsAdmin));
         vm.Reload();
     }
 
@@ -935,7 +1016,7 @@ public partial class MainWindow : Window
     {
         var vm = Ctx<SoftwareVM>(sender);
         if (vm == null) return;
-        var dlg = new SoftwareDialog(vm.Entry) { Owner = this };
+        var dlg = new SoftwareDialog(vm.Entry, null, AllCategories()) { Owner = this };
         if (dlg.ShowDialog() != true) return;
         var idx = _library.FindIndex(x => x.Id == vm.Entry.Id);
         if (idx >= 0) _library[idx] = dlg.Result; else _library.Add(dlg.Result);
@@ -964,6 +1045,13 @@ public partial class MainWindow : Window
         _web.Clear();
         foreach (var e in _webApps.OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase))
             _web.Add(new WebAppVM(e));
+        WebList.Tag = _webApps.Any(x => !string.IsNullOrWhiteSpace(x.Category));
+        BuildCategoryBar(WebCategoryBar, _webApps.Select(x => x.Category), _webCategory, c =>
+        {
+            _webCategory = c;
+            CollectionViewSource.GetDefaultView(_web).Refresh();
+            UpdateEmptyStates();
+        });
         UpdateEmptyStates();
         _ = FetchMissingWebIconsAsync();
     }
@@ -1014,7 +1102,7 @@ public partial class MainWindow : Window
 
     private void AddWebApp_Click(object sender, RoutedEventArgs e)
     {
-        var dlg = new WebAppDialog { Owner = this };
+        var dlg = new WebAppDialog(null, AllCategories()) { Owner = this };
         if (dlg.ShowDialog() != true) return;
         _webApps.Add(dlg.Result);
         TrySave(AppPaths.WebApps, _webApps);
@@ -1040,7 +1128,7 @@ public partial class MainWindow : Window
     {
         var vm = Ctx<WebAppVM>(sender);
         if (vm == null) return;
-        var dlg = new WebAppDialog(vm.Entry) { Owner = this };
+        var dlg = new WebAppDialog(vm.Entry, AllCategories()) { Owner = this };
         if (dlg.ShowDialog() != true) return;
         var idx = _webApps.FindIndex(x => x.Id == vm.Entry.Id);
         if (idx >= 0) _webApps[idx] = dlg.Result; else _webApps.Add(dlg.Result);

@@ -11,6 +11,15 @@
         UseLayoutRounding="True" TextOptions.TextFormattingMode="Display">
 
   <Window.Resources>
+    <!-- Category heading above each group of cards (hidden while nothing is categorized) -->
+    <DataTemplate x:Key="CategoryHeader">
+      <TextBlock FontSize="15" FontWeight="SemiBold" Margin="0,6,0,10"
+                 Visibility="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource BoolToVis}}">
+        <Run Text="{Binding Name, Mode=OneWay}" />
+        <Run Text="{Binding ItemCount, Mode=OneWay, StringFormat='  {0}'}" Foreground="{DynamicResource TextSecondary}" FontWeight="Normal" FontSize="13" />
+      </TextBlock>
+    </DataTemplate>
+
     <ItemsPanelTemplate x:Key="CardPanel">
       <WrapPanel Orientation="Horizontal" />
     </ItemsPanelTemplate>
@@ -103,14 +112,15 @@
           </DockPanel>
           <TextBlock Text="{Binding Description}" Style="{StaticResource Subtle}" Margin="0,12,0,0" MaxHeight="54" TextTrimming="CharacterEllipsis"
                      Visibility="{Binding HasDescription, Converter={StaticResource BoolToVis}}" />
-          <TextBlock Text="{Binding Path}" ToolTip="{Binding Path}" Style="{StaticResource Subtle}" FontSize="12" Margin="0,12,0,0"
+          <TextBlock Text="{Binding Location}" ToolTip="{Binding Location}" Style="{StaticResource Subtle}" FontSize="12" Margin="0,12,0,0"
                      TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
-          <TextBlock Text="File not found — it may have been moved or uninstalled. Use Edit to point to it again."
+          <TextBlock Text="{Binding MissingText}"
                      Foreground="{DynamicResource WarningText}" FontSize="12" TextWrapping="Wrap" Margin="0,6,0,0"
                      Visibility="{Binding IsMissing, Converter={StaticResource BoolToVis}}" />
           <DockPanel Margin="0,14,0,0">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-              <Button Style="{StaticResource IconButton}" Content="&#xE838;" ToolTip="Open file location" Click="SwOpenLocation_Click" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE838;" ToolTip="Open file location" Click="SwOpenLocation_Click"
+                      Visibility="{Binding CanOpenLocation, Converter={StaticResource BoolToVis}}" />
               <Button Style="{StaticResource IconButton}" Content="&#xE70F;" ToolTip="Edit" Click="SwEdit_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Remove from launcher (the file is not deleted)" Click="SwRemove_Click" />
             </StackPanel>
@@ -311,6 +321,13 @@
           <RowDefinition />
         </Grid.RowDefinitions>
         <DockPanel Margin="28,24,28,16">
+          <Button DockPanel.Dock="Right" VerticalAlignment="Top" Margin="8,0,0,0" Click="AddStoreApp_Click"
+                  ToolTip="Add an app installed from the Microsoft Store">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xE719;" FontFamily="{StaticResource IconFont}" Margin="0,1,8,0" VerticalAlignment="Center" />
+              <TextBlock Text="Add Store app" />
+            </StackPanel>
+          </Button>
           <Button DockPanel.Dock="Right" Style="{StaticResource AccentButton}" VerticalAlignment="Top" Click="AddSoftware_Click">
             <StackPanel Orientation="Horizontal">
               <TextBlock Text="&#xE710;" FontFamily="{StaticResource IconFont}" Margin="0,1,8,0" VerticalAlignment="Center" />
@@ -321,11 +338,16 @@
             <TextBlock Text="My Software" Style="{StaticResource PageTitle}" />
             <TextBlock Style="{StaticResource Subtle}" Margin="0,4,0,0"
                        Text="Any program on this PC — .exe, .msi or shortcut. Works fully offline. Removing an entry never deletes the file." />
+            <WrapPanel x:Name="SoftwareCategoryBar" Margin="0,12,0,0" Visibility="Collapsed" />
           </StackPanel>
         </DockPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="28,4,12,12">
           <StackPanel>
-            <ItemsControl x:Name="SoftwareList" ItemTemplate="{StaticResource SoftwareCard}" ItemsPanel="{StaticResource CardPanel}" />
+            <ItemsControl x:Name="SoftwareList" ItemTemplate="{StaticResource SoftwareCard}" ItemsPanel="{StaticResource CardPanel}" Tag="False">
+              <ItemsControl.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource CategoryHeader}" />
+              </ItemsControl.GroupStyle>
+            </ItemsControl>
             <TextBlock x:Name="SoftwareEmpty" Style="{StaticResource Subtle}" Margin="0,8,0,0" Visibility="Collapsed"
                        Text="Nothing here yet. Use “Add software” to add any program from your PC." />
           </StackPanel>
@@ -348,11 +370,16 @@
           <StackPanel>
             <TextBlock Text="Web Apps" Style="{StaticResource PageTitle}" />
             <TextBlock Style="{StaticResource Subtle}" Margin="0,4,0,0" Text="Bookmarks that open in your default browser." />
+            <WrapPanel x:Name="WebCategoryBar" Margin="0,12,0,0" Visibility="Collapsed" />
           </StackPanel>
         </DockPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="28,4,12,12">
           <StackPanel>
-            <ItemsControl x:Name="WebList" ItemTemplate="{StaticResource WebAppCard}" ItemsPanel="{StaticResource CardPanel}" />
+            <ItemsControl x:Name="WebList" ItemTemplate="{StaticResource WebAppCard}" ItemsPanel="{StaticResource CardPanel}" Tag="False">
+              <ItemsControl.GroupStyle>
+                <GroupStyle HeaderTemplate="{StaticResource CategoryHeader}" />
+              </ItemsControl.GroupStyle>
+            </ItemsControl>
             <TextBlock x:Name="WebEmpty" Style="{StaticResource Subtle}" Margin="0,8,0,0" Visibility="Collapsed"
                        Text="No web apps yet. Use “Add web app” to bookmark a site." />
           </StackPanel>

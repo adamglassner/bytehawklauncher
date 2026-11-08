@@ -14,9 +14,18 @@ public partial class SoftwareDialog : Window
     private string _autoName = "";
     private string _autoVersion = "";
 
-    public SoftwareDialog(LibraryEntry? editing = null, string? initialPath = null)
+    private readonly IEnumerable<string>? _categories;
+
+    /// <summary>Set when the entry is a Microsoft Store / packaged app (no file path).</summary>
+    private readonly string _appId = "";
+
+    public SoftwareDialog(LibraryEntry? editing = null, string? initialPath = null, IEnumerable<string>? categories = null,
+                          StoreAppInfo? storeApp = null)
     {
         InitializeComponent();
+        _appId = storeApp?.AppId ?? editing?.AppId ?? "";
+        _categories = categories;
+        CategoryPicker.Fill(CategoryChips, CategoryBox, categories);
         SourceInitialized += (_, _) => ThemeService.ApplyTitleBar(this);
         _editing = editing;
         if (editing != null)
@@ -28,14 +37,35 @@ public partial class SoftwareDialog : Window
             ArgsBox.Text = editing.Arguments;
             DescriptionBox.Text = editing.Description;
             VersionBox.Text = editing.Version;
+            CategoryBox.Text = editing.Category;
             AdminBox.IsChecked = editing.RunAsAdmin;
             _autoName = "";
+        }
+        else if (storeApp != null)
+        {
+            Title = Heading.Text = "Add Store app";
+            NameBox.Text = storeApp.Name;
+            VersionBox.Text = storeApp.Version;
         }
         else if (!string.IsNullOrEmpty(initialPath))
         {
             SetPath(initialPath);
         }
-        UpdateIcon();
+        if (_appId.Length > 0)
+        {
+            // Store apps are started by their app id: no file, arguments or "run as administrator".
+            ProgramLabel.Text = "Microsoft Store app";
+            PathBox.Text = _appId;
+            PathBox.IsReadOnly = true;
+            BrowseButton.Visibility = Visibility.Collapsed;
+            ArgsBox.IsEnabled = false;
+            ArgsNote.Visibility = Visibility.Visible;
+            AdminBox.Visibility = Visibility.Collapsed;
+            var icon = storeApp?.Icon ?? StoreApps.GetIcon(_appId);
+            IconImage.Source = icon;
+            IconFallback.Visibility = icon == null ? Visibility.Visible : Visibility.Collapsed;
+        }
+        else UpdateIcon();
         Loaded += (_, _) => NameBox.Focus();
     }
 
@@ -62,6 +92,7 @@ public partial class SoftwareDialog : Window
 
     private void PathBox_LostFocus(object sender, RoutedEventArgs e)
     {
+        if (_appId.Length > 0) return; // Store app: nothing to resolve
         var p = PathBox.Text.Trim().Trim('"');
         if (p != PathBox.Text) PathBox.Text = p;
         if (File.Exists(p) && (string.IsNullOrWhiteSpace(NameBox.Text) || NameBox.Text == _autoName ||
@@ -133,6 +164,23 @@ public partial class SoftwareDialog : Window
 
     private void Ok_Click(object sender, RoutedEventArgs e)
     {
+        if (_appId.Length > 0)
+        {
+            if (string.IsNullOrWhiteSpace(NameBox.Text)) { ShowError("Enter a display name."); return; }
+            Result = new LibraryEntry
+            {
+                Id = _editing?.Id ?? Guid.NewGuid().ToString("N"),
+                AddedAt = _editing?.AddedAt ?? DateTime.Now,
+                AppId = _appId,
+                Path = "",
+                Name = NameBox.Text.Trim(),
+                Description = DescriptionBox.Text.Trim(),
+                Version = VersionBox.Text.Trim(),
+                Category = CategoryPicker.Normalize(CategoryBox.Text, _categories),
+            };
+            DialogResult = true;
+            return;
+        }
         var path = PathBox.Text.Trim().Trim('"');
         var ext = Path.GetExtension(path).ToLowerInvariant();
         if (string.IsNullOrWhiteSpace(path)) { ShowError("Choose a program first."); return; }
@@ -153,6 +201,7 @@ public partial class SoftwareDialog : Window
             Arguments = ArgsBox.Text.Trim(),
             Description = DescriptionBox.Text.Trim(),
             Version = VersionBox.Text.Trim(),
+            Category = CategoryPicker.Normalize(CategoryBox.Text, _categories),
             RunAsAdmin = AdminBox.IsChecked == true,
         };
         DialogResult = true;

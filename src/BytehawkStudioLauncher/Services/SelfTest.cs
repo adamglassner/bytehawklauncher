@@ -168,6 +168,22 @@ public static class SelfTest
             }
             Check("No icon for unreachable site", !await WebIconService.FetchAsync("https://bytehawk-launcher-test.invalid", Path.Combine(temp, "none.png")));
 
+            // ---- Microsoft Store apps ----
+            Check("Store app version from package name",
+                  StoreApps.VersionFromPackageFullName("Microsoft.WindowsCalculator_11.2405.2.0_x64__8wekyb3d8bbwe") == "11.2405.2.0");
+            Check("Store app id detection", StoreApps.IsPackagedAppId("Microsoft.WindowsCalculator_8wekyb3d8bbwe!App")
+                  && !StoreApps.IsPackagedAppId(@"C:\Windows\notepad.exe"));
+            try
+            {
+                var storeApps = await StoreApps.ListInstalledAsync();
+                Warn("List installed Store apps", storeApps.Count > 0,
+                     $"{storeApps.Count} found, {storeApps.Count(a => a.Icon != null)} with icons; e.g. {string.Join(", ", storeApps.Take(3).Select(a => a.Name))}");
+                if (storeApps.FirstOrDefault() is { } first)
+                    Warn("Installed Store app is detected", StoreApps.Exists(first.AppId), first.AppId);
+            }
+            catch (Exception ex) { Warn("List installed Store apps", false, ex.Message); }
+            Check("Missing Store app is detected as missing", !StoreApps.Exists("Bytehawk.NotInstalled_0000000000000!App"));
+
             // ---- My Software version auto-fill ----
             var sysExe = Path.Combine(Environment.SystemDirectory, "notepad.exe");
             if (!File.Exists(sysExe)) sysExe = Path.Combine(Environment.SystemDirectory, "cmd.exe");

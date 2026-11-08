@@ -5,12 +5,16 @@ A Windows 10/11 launcher and downloader for Bytehawk Studio software, with room 
 | Section | What it does |
 |---|---|
 | **Bytehawk Apps** | Software released by Bytehawk Studio. Downloads the latest release from GitHub Releases, installs it silently, keeps it up to date automatically, launches and uninstalls it. The first app is **Guardrail EHS** ([adamglassner/guardrailehs](https://github.com/adamglassner/guardrailehs)). |
-| **My Software** | Any program on your PC (.exe, .msi or .lnk shortcut), even if it has nothing to do with Bytehawk Studio, with an optional description and version (filled in from the program's file version, editable). Works fully offline. |
-| **Web Apps** | Bookmarks that open in your default browser, with an optional description. Each card shows the site's own icon (downloaded once and cached in `cache\icons\`; use the refresh button on the card to fetch it again). Nothing is downloaded or installed. |
+| **My Software** | Any program on your PC (.exe, .msi or .lnk shortcut) or any **Microsoft Store app** (**Add Store app** lists what's installed), even if it has nothing to do with Bytehawk Studio. Each entry has an optional description, version (filled in automatically, editable) and category. Works fully offline. |
+| **Web Apps** | Bookmarks that open in your default browser, with an optional description and category. Each card shows the site's own icon (downloaded once and cached in `cache\icons\`; use the refresh button on the card to fetch it again). Nothing is downloaded or installed. |
 | **Downloads** | Progress, speed, cancel and "show in folder" for this session's downloads. |
 | **Settings** | Theme (Dark / Light / Follow System), download folder, update checks, automatic app updates, remote catalog URL, About. |
 
 Built with C# / WPF on .NET 8 and published as a self-contained single-file `.exe`, so the PC doesn't need .NET installed. Linux and macOS versions are coming soon (v1.0.0 is Windows only).
+
+**Categories:** give My Software and Web Apps entries a category (Productivity, Education, Games and so on, or type your own). Cards are grouped under category headings, and filter chips at the top of each page show one category at a time. Search matches categories too.
+
+**Microsoft Store apps** have no .exe to point at, so the launcher stores their app ID (for example `Microsoft.WindowsCalculator_8wekyb3d8bbwe!App`) and starts them through `shell:AppsFolder`. Launch arguments and "Run as administrator" aren't available for them. If a Store app is uninstalled, its card says so.
 
 ---
 

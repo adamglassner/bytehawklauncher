@@ -118,6 +118,10 @@ public sealed class LibraryEntry
     public string Description { get; set; } = "";
     /// <summary>Optional version (auto-filled from the .exe's file version, editable).</summary>
     public string Version { get; set; } = "";
+    /// <summary>Optional category, e.g. "Productivity" or "Games". Empty = Uncategorized.</summary>
+    public string Category { get; set; } = "";
+    /// <summary>For Microsoft Store / packaged apps: the AppUserModelID (Path is empty). Started via shell:AppsFolder.</summary>
+    public string AppId { get; set; } = "";
     public DateTime AddedAt { get; set; } = DateTime.Now;
 }
 
@@ -129,5 +133,7 @@ public sealed class WebAppEntry
     public string Url { get; set; } = "";
     /// <summary>Optional note shown on the card.</summary>
     public string Description { get; set; } = "";
+    /// <summary>Optional category, e.g. "Productivity" or "Education". Empty = Uncategorized.</summary>
+    public string Category { get; set; } = "";
     public DateTime AddedAt { get; set; } = DateTime.Now;
 }

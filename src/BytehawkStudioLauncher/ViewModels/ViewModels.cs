@@ -201,6 +201,11 @@ public sealed class SoftwareVM : ObservableObject
 
     public string Name => Entry.Name;
     public string Path => Entry.Path;
+    public string Category => (Entry.Category ?? "").Trim();
+    /// <summary>Group name on the page ("Uncategorized" when empty).</summary>
+    public string CategoryDisplay => Category.Length == 0 ? "Uncategorized" : Category;
+    /// <summary>Sorts groups by name with Uncategorized last.</summary>
+    public string CategorySortKey => Category.Length == 0 ? "\uffff" : Category.ToLowerInvariant();
     public string Description => Entry.Description ?? "";
     public bool HasDescription => !string.IsNullOrWhiteSpace(Entry.Description);
     public string DetailLine
@@ -209,14 +214,22 @@ public sealed class SoftwareVM : ObservableObject
         {
             var parts = new List<string>();
             if (!string.IsNullOrWhiteSpace(Entry.Version)) parts.Add($"Version {Entry.Version}");
-            parts.Add(System.IO.Path.GetExtension(Entry.Path).TrimStart('.').ToUpperInvariant());
+            parts.Add(IsStoreApp ? "Microsoft Store app" : System.IO.Path.GetExtension(Entry.Path).TrimStart('.').ToUpperInvariant());
             if (!string.IsNullOrWhiteSpace(Entry.Arguments)) parts.Add($"Args: {Entry.Arguments}");
             if (Entry.RunAsAdmin) parts.Add("Runs as administrator");
             return string.Join(" · ", parts.Where(p => p.Length > 0));
         }
     }
-    public bool Exists => File.Exists(Entry.Path);
+    public bool IsStoreApp => !string.IsNullOrWhiteSpace(Entry.AppId);
+    /// <summary>What the card shows under the description: the file path, or the Store app id.</summary>
+    public string Location => IsStoreApp ? Entry.AppId : Entry.Path;
+    public bool CanOpenLocation => !IsStoreApp;
+    private bool _exists;
+    public bool Exists => _exists;
     public bool IsMissing => !Exists;
+    public string MissingText => IsStoreApp
+        ? "This app isn't installed anymore. Reinstall it from the Microsoft Store, or remove it here."
+        : "File not found — it may have been moved or uninstalled. Use Edit to point to it again.";
     public ImageSource? Icon { get => _icon; private set { Set(ref _icon, value); OnPropertyChanged(nameof(HasIcon)); OnPropertyChanged(nameof(NoIcon)); } }
     public bool HasIcon => Icon != null;
     public bool NoIcon => Icon == null;
@@ -225,7 +238,8 @@ public sealed class SoftwareVM : ObservableObject
 
     public void Reload()
     {
-        Icon = ShellHelper.GetFileIcon(Entry.Path);
+        _exists = IsStoreApp ? StoreApps.Exists(Entry.AppId) : File.Exists(Entry.Path);
+        Icon = IsStoreApp ? StoreApps.GetIcon(Entry.AppId) : ShellHelper.GetFileIcon(Entry.Path);
         RefreshAll();
     }
 }
@@ -240,6 +254,11 @@ public sealed class WebAppVM : ObservableObject
     public string Name => Entry.Name;
     public string Url => Entry.Url;
     public string Host => Uri.TryCreate(Entry.Url, UriKind.Absolute, out var u) ? u.Host : Entry.Url;
+    public string Category => (Entry.Category ?? "").Trim();
+    /// <summary>Group name on the page ("Uncategorized" when empty).</summary>
+    public string CategoryDisplay => Category.Length == 0 ? "Uncategorized" : Category;
+    /// <summary>Sorts groups by name with Uncategorized last.</summary>
+    public string CategorySortKey => Category.Length == 0 ? "\uffff" : Category.ToLowerInvariant();
     public string Description => Entry.Description ?? "";
     public bool HasDescription => !string.IsNullOrWhiteSpace(Entry.Description);
 

@@ -15,6 +15,10 @@
     <TextBlock Text="Display name" Style="{StaticResource FieldLabel}" />
     <TextBox x:Name="NameBox" />
 
+    <TextBlock Text="Category (optional)" Style="{StaticResource FieldLabel}" />
+    <TextBox x:Name="CategoryBox" MaxLength="40" ToolTip="Type your own or pick one below" />
+    <WrapPanel x:Name="CategoryChips" Margin="0,6,0,0" />
+
     <TextBlock Text="Description (optional)" Style="{StaticResource FieldLabel}" />
     <TextBox x:Name="DescriptionBox" TextWrapping="Wrap" Height="56" VerticalContentAlignment="Top" MaxLength="300" />
 
