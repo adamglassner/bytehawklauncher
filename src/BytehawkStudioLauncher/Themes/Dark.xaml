@@ -1,0 +1,22 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Dark theme. Accent and layout are shared; only surfaces and text change. -->
+  <SolidColorBrush x:Key="WindowBg" Color="#0F1420" />
+  <SolidColorBrush x:Key="SidebarBg" Color="#0B0F19" />
+  <SolidColorBrush x:Key="CardBg" Color="#1A2233" />
+  <SolidColorBrush x:Key="HoverBg" Color="#243049" />
+  <SolidColorBrush x:Key="InputBg" Color="#121A28" />
+  <SolidColorBrush x:Key="Stroke" Color="#2A3550" />
+  <SolidColorBrush x:Key="TextPrimary" Color="#E6EDF7" />
+  <SolidColorBrush x:Key="TextSecondary" Color="#93A1B8" />
+  <SolidColorBrush x:Key="Accent" Color="#22D3EE" />
+  <SolidColorBrush x:Key="AccentHover" Color="#67E8F9" />
+  <SolidColorBrush x:Key="OnAccent" Color="#06232C" />
+  <SolidColorBrush x:Key="AccentSoft" Color="#2622D3EE" />
+  <SolidColorBrush x:Key="WarningText" Color="#FBBF24" />
+  <SolidColorBrush x:Key="WarningSoft" Color="#26FBBF24" />
+  <SolidColorBrush x:Key="DangerText" Color="#F87171" />
+  <SolidColorBrush x:Key="SuccessText" Color="#34D399" />
+  <SolidColorBrush x:Key="TrackBg" Color="#243049" />
+  <BitmapImage x:Key="LogoMark" UriSource="pack://application:,,,/Assets/logo-mark-ondark.png" />
+</ResourceDictionary>

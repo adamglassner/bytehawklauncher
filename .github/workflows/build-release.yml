@@ -1,0 +1,121 @@
+name: Build, test and release
+
+# - Every push / pull request: build the exe + installer on Windows and run the tests.
+# - Pushing a tag like v1.0.1: the same, then publish a GitHub Release with the exe and Setup .exe.
+#   Installed launchers check this repo's latest release and offer the update.
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Work out version
+        id: ver
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF -like 'refs/tags/v*') {
+            $v = $env:GITHUB_REF_NAME.Substring(1)
+          } else {
+            $v = ([xml](Get-Content src/BytehawkStudioLauncher/BytehawkStudioLauncher.csproj)).Project.PropertyGroup.Version | Where-Object { $_ } | Select-Object -First 1
+          }
+          "version=$v" >> $env:GITHUB_OUTPUT
+          Write-Host "Version $v"
+
+      - name: Install Inno Setup if needed
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
+
+      - name: Build exe + installer
+        shell: pwsh
+        run: ./build.ps1 -Version ${{ steps.ver.outputs.version }}
+
+      - name: Self-test (GitHub API, real download, zip extract, URL validation, storage)
+        shell: pwsh
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP 'selftest.txt'
+          $p = Start-Process dist/BytehawkStudioLauncher.exe -ArgumentList '--self-test', "`"$out`"" -Wait -PassThru
+          Get-Content $out | Tee-Object -Variable lines | Write-Host
+          "## Self-test`n``````n$($lines -join "`n")`n``````" >> $env:GITHUB_STEP_SUMMARY
+          if ($p.ExitCode -ne 0) { throw "Self-test failed ($($p.ExitCode) failures)" }
+
+      - name: UI smoke test (starts, all themes load, no crash)
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+          $data = Join-Path $env:APPDATA 'BytehawkStudio\Launcher'
+          New-Item -ItemType Directory -Force $data | Out-Null
+          New-Item -ItemType Directory -Force screenshots | Out-Null
+          $summary = "## UI smoke test`n"
+          foreach ($theme in 'Dark', 'Light', 'System') {
+            @{ theme = $theme; checkUpdatesOnStartup = $true; remoteCatalogUrl = '' } | ConvertTo-Json | Set-Content (Join-Path $data 'settings.json')
+            $p = Start-Process dist/BytehawkStudioLauncher.exe -PassThru
+            Start-Sleep -Seconds 15
+            if ($p.HasExited) { throw "Launcher exited during startup with theme $theme (exit $($p.ExitCode))" }
+            try {
+              $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+              $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+              [System.Drawing.Graphics]::FromImage($bmp).CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
+              $bmp.Save("screenshots/theme-$theme.png")
+            } catch { Write-Host "Screenshot not available: $_" }
+            Stop-Process -Id $p.Id -Force
+            Start-Sleep -Seconds 2
+            $saved = Get-Content (Join-Path $data 'settings.json') -Raw | ConvertFrom-Json
+            if ($saved.theme -ne $theme) { throw "Theme $theme was not persisted (found $($saved.theme))" }
+            $summary += "- Theme **$theme**: started, ran 15 s, setting persisted`n"
+          }
+          $log = Get-Content (Join-Path $data 'launcher.log') -Raw
+          Write-Host $log
+          if ($log -match 'Unhandled') { throw 'Unhandled exception logged during UI smoke test' }
+          foreach ($f in 'catalog.json', 'installed.json', 'cache\releases.json') {
+            $exists = Test-Path (Join-Path $data $f)
+            $summary += "- $f created: $exists`n"
+          }
+          if (-not (Test-Path (Join-Path $data 'catalog.json'))) { throw 'catalog.json was not created' }
+          $summary >> $env:GITHUB_STEP_SUMMARY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BytehawkStudioLauncher-${{ steps.ver.outputs.version }}
+          path: |
+            dist/BytehawkStudioLauncher.exe
+            dist/BytehawkStudioLauncher-*-Setup.exe
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: screenshots/
+          if-no-files-found: ignore
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Bytehawk Studio Launcher ${{ steps.ver.outputs.version }}
+          body: |
+            Bytehawk Studio Launcher ${{ steps.ver.outputs.version }} for Windows 10/11 (x64).
+
+            - **BytehawkStudioLauncher-${{ steps.ver.outputs.version }}-Setup.exe**: installer (Start Menu + desktop shortcuts, uninstaller). Installed launchers update themselves from this file.
+            - **BytehawkStudioLauncher.exe**: portable single-file app. No install or .NET needed.
+
+            Linux and macOS versions coming soon.
+
+            © Bytehawk Studio
+          files: |
+            dist/BytehawkStudioLauncher-*-Setup.exe
+            dist/BytehawkStudioLauncher.exe

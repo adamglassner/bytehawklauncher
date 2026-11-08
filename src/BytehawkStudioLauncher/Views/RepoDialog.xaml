@@ -1,0 +1,55 @@
+<Window x:Class="Bytehawk.Launcher.Views.RepoDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Bytehawk app" Width="560" SizeToContent="Height" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Background="{DynamicResource WindowBg}" Foreground="{DynamicResource TextPrimary}"
+        FontFamily="{StaticResource UiFont}" FontSize="13">
+  <StackPanel Margin="24,20,24,22">
+    <TextBlock x:Name="Heading" Text="Add Bytehawk app" Style="{StaticResource SectionTitle}" FontSize="18" />
+    <TextBlock Style="{StaticResource Subtle}" Text="Paste a GitHub repo URL or owner/repo. The launcher reads the name and description from GitHub and downloads the latest release asset that matches the pattern." />
+
+    <TextBlock Text="GitHub repo" Style="{StaticResource FieldLabel}" />
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox x:Name="RepoBox" TextChanged="Repo_Changed" ToolTip="e.g. https://github.com/owner/repo or owner/repo" />
+      <Button x:Name="LookupButton" Grid.Column="1" Content="Look up" Margin="8,0,0,0" Click="Lookup_Click" />
+    </Grid>
+
+    <TextBlock Text="Display name" Style="{StaticResource FieldLabel}" />
+    <TextBox x:Name="NameBox" />
+
+    <TextBlock Text="Description" Style="{StaticResource FieldLabel}" />
+    <TextBox x:Name="DescriptionBox" TextWrapping="Wrap" AcceptsReturn="False" Height="56" VerticalContentAlignment="Top" />
+
+    <TextBlock Text="Release asset to download" Style="{StaticResource FieldLabel}" />
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <TextBox x:Name="PatternBox" Text="*.exe" TextChanged="Pattern_Changed"
+               ToolTip="Wildcards: *.exe, *.msi, *.zip, *-win-x64.zip. Separate with ';'. Prefix with '!' to exclude, e.g. *.exe;!*arm64*" />
+      <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="8,0,0,0">
+        <Button Content="*.exe" Padding="10,6" Margin="0,0,4,0" Click="Chip_Click" />
+        <Button Content="*.msi" Padding="10,6" Margin="0,0,4,0" Click="Chip_Click" />
+        <Button Content="*.zip" Padding="10,6" Click="Chip_Click" />
+      </StackPanel>
+    </Grid>
+
+    <Border Margin="0,14,0,0" Padding="12,10" CornerRadius="8" Background="{DynamicResource CardBg}"
+            BorderBrush="{DynamicResource Stroke}" BorderThickness="1">
+      <TextBlock x:Name="PreviewText" Style="{StaticResource Subtle}" Text="Look up the repo to preview its latest release." />
+    </Border>
+
+    <TextBlock x:Name="ErrorText" Foreground="{DynamicResource DangerText}" TextWrapping="Wrap" Margin="0,10,0,0" Visibility="Collapsed" />
+
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+      <Button Content="Cancel" IsCancel="True" Margin="0,0,8,0" MinWidth="90" />
+      <Button x:Name="OkButton" Content="Add app" Style="{StaticResource AccentButton}" IsDefault="True" MinWidth="110" Click="Ok_Click" />
+    </StackPanel>
+  </StackPanel>
+</Window>

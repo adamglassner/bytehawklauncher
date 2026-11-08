@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="g" x1="0.15" y1="0.1" x2="0.85" y2="0.95">
+      <stop offset="0" stop-color="#22D3EE"/><stop offset="0.55" stop-color="#0891B2"/><stop offset="1" stop-color="#155E75"/>
+    </linearGradient>
+    <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <rect width="512" height="512" fill="white"/>
+      <path d="M290 186 C318 160 360 156 398 172 C372 176 348 186 330 202 Z" fill="black"/>
+      <circle cx="352" cy="206" r="21" fill="black"/>
+      <path d="M406 140 C424 176 430 220 418 262" stroke="black" stroke-width="9" fill="none" stroke-linecap="round"/>
+      <path d="M190 300 L250 300 L272 278" stroke="black" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M182 346 L262 346 L286 322" stroke="black" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M186 392 L274 392" stroke="black" stroke-width="11" fill="none" stroke-linecap="round"/>
+    
+    </mask>
+  </defs>
+  
+  <g transform="translate(0 0) scale(1.0)">
+    <path d="M170 446 L150 420 C142 360 148 306 170 252 C196 182 246 132 318 116 C362 106 400 116 428 138 C460 162 482 198 486 238 C489 268 482 296 466 316 C462 296 450 282 434 276 C418 270 402 270 390 274 C368 282 354 296 346 314 C336 354 326 400 320 446 Z" fill="url(#g)" mask="url(#m)"/>
+    <circle cx="352" cy="206" r="9" fill="#0891B2"/>
+    
+      <g stroke="#0891B2" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M150 300 L104 300 L80 276"/>
+        <path d="M142 346 L74 346"/>
+        <path d="M150 392 L112 392 L88 416"/>
+      </g>
+      <g fill="#F5F7FA" stroke="#0891B2" stroke-width="9">
+        <circle cx="72" cy="268" r="13"/>
+        <circle cx="60" cy="346" r="13"/>
+        <circle cx="80" cy="424" r="13"/>
+      </g>
+      <g fill="#0891B2">
+        <rect x="258" y="292" width="0" height="0"/>
+      </g>
+  </g>
+</svg>
