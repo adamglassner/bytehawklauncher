@@ -42,7 +42,17 @@ jobs:
 
       - name: Build exe + installer
         shell: pwsh
-        run: ./build.ps1 -Version ${{ steps.ver.outputs.version }}
+        run: |
+          $log = Join-Path $env:RUNNER_TEMP 'build.log'
+          $ok = $true
+          try { ./build.ps1 -Version ${{ steps.ver.outputs.version }} *>&1 | Tee-Object -FilePath $log } catch { $ok = $false; "$_" | Add-Content $log }
+          if (-not $ok -or $LASTEXITCODE -ne 0) {
+            # Surface errors as annotations (visible on the run page without signing in)
+            $errs = Select-String -Path $log -Pattern 'error|failed|exception' | Select-Object -First 40
+            if (-not $errs) { $errs = Get-Content $log -Tail 30 }
+            foreach ($e in $errs) { Write-Host "::error::$(($e -replace '%','%25') -replace '\r?\n',' ')" }
+            exit 1
+          }
 
       - name: Self-test (GitHub API, real download, zip extract, URL validation, storage)
         shell: pwsh
