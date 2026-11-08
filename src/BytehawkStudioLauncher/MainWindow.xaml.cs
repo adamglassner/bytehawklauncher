@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Bytehawk.Launcher.Models;
 using Bytehawk.Launcher.Services;
 using Bytehawk.Launcher.ViewModels;
@@ -114,7 +115,8 @@ public partial class MainWindow : Window
     {
         _localCatalog.RemovedDefaults ??= new();
         var defaults = SampleCatalog().Apps;
-        var changed = false;
+        // 1.1.0: the Notepad++ sample entries are gone for good.
+        var changed = _localCatalog.Apps.RemoveAll(IsOldSample) > 0;
         for (int i = 0; i < defaults.Count; i++)
         {
             var d = defaults[i];
@@ -131,6 +133,7 @@ public partial class MainWindow : Window
         Version = 1,
         Apps =
         {
+            GuardrailEhs(),
             ComingSoon("padcraft", "Padcraft", "Word processor for writing and formatting documents. Coming soon."),
             ComingSoon("shoredrop", "ShoreDrop", "FTP, FTPS and SFTP client for moving files to and from your servers. Coming soon."),
             ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
@@ -140,26 +143,24 @@ public partial class MainWindow : Window
             ComingSoon("coinpilot", "CoinPilot", "Budgeting app for tracking spending and planning where your money goes. Coming soon."),
             ComingSoon("sumthing", "Sumthing", "Calculator. Coming soon."),
             ComingSoon("castaway", "Castaway", "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon."),
-            new CatalogEntry
-            {
-                Id = "sample-installer-exe",
-                Name = "Sample — replace me (installer .exe)",
-                Description = "Sample — replace me. Placeholder that points at a public open-source repo (Notepad++, not a Bytehawk Studio product) only to demonstrate the download → run installer flow.",
-                Repo = "notepad-plus-plus/notepad-plus-plus",
-                AssetPattern = "*.Installer.x64.exe",
-                Sample = true,
-            },
-            new CatalogEntry
-            {
-                Id = "sample-portable-zip",
-                Name = "Sample — replace me (portable .zip)",
-                Description = "Sample — replace me. Placeholder that points at the same public repo (Notepad++, not a Bytehawk Studio product) only to demonstrate the download → extract .zip → launch flow.",
-                Repo = "notepad-plus-plus/notepad-plus-plus",
-                AssetPattern = "*.portable.x64.zip",
-                Sample = true,
-            },
         },
     };
+
+    /// <summary>Guardrail EHS — the first released Bytehawk Studio app.</summary>
+    private static CatalogEntry GuardrailEhs() => new()
+    {
+        Id = "guardrail-ehs",
+        Name = "Guardrail EHS",
+        Description = "Free, open-source environmental, health & safety software: actions, observations, safety training and more, with your records kept on your own PC.",
+        Repo = "adamglassner/guardrailehs",
+        AssetPattern = "GuardrailEHS-*-Setup.exe;*-win-x64.zip",
+        Exe = "Guardrail.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png",
+    };
+
+    /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
+    private static bool IsOldSample(CatalogEntry e) =>
+        e.Sample || e.Key is "sample-installer-exe" or "sample-portable-zip";
 
     private static CatalogEntry ComingSoon(string id, string name, string description) => new()
     {
@@ -171,8 +172,19 @@ public partial class MainWindow : Window
         ComingSoon = true,
     };
 
+    /// <summary>Like the Ironite Launcher: look for new releases every 30 minutes while the launcher is open.</summary>
+    private readonly DispatcherTimer _updateTimer = new() { Interval = TimeSpan.FromMinutes(30) };
+
     private async Task StartupAsync()
     {
+        _updateTimer.Tick += async (_, _) =>
+        {
+            if (!App.Settings.CheckUpdatesOnStartup) return;
+            await RefreshReleasesAsync(manual: false);
+            await CheckLauncherUpdateAsync(manual: false);
+        };
+        _updateTimer.Start();
+
         if (!string.IsNullOrWhiteSpace(App.Settings.RemoteCatalogUrl))
             await LoadRemoteCatalogAsync(showResult: false);
 
@@ -309,7 +321,7 @@ public partial class MainWindow : Window
             var cat = System.Text.Json.JsonSerializer.Deserialize<CatalogFile>(json, JsonStore.Options);
             if (cat?.Apps == null) return null;
             foreach (var e in cat.Apps) e.FromRemote = true;
-            return cat.Apps.Where(e => e.HasRepo || e.ComingSoon).ToList();
+            return cat.Apps.Where(e => (e.HasRepo || e.ComingSoon) && !IsOldSample(e)).ToList();
         }
         catch (Exception ex)
         {
@@ -403,6 +415,19 @@ public partial class MainWindow : Window
                 _releases.TryGetValue(repo, out var cached);
                 if (cached != null && DateTime.UtcNow - cached.FetchedAt < maxAge) continue;
 
+                // Like the Ironite Launcher: github.com says which tag is latest without using the API allowance.
+                var (tag, answered) = await GitHubService.GetLatestTagAsync(repo);
+                if (answered && tag == "")
+                {
+                    _releases[repo] = new CachedRelease { Repo = repo, NoRelease = true, FetchedAt = DateTime.UtcNow };
+                    continue;
+                }
+                if (answered && cached is { NoRelease: false } && cached.Tag == tag && cached.Assets.Count > 0)
+                {
+                    cached.FetchedAt = DateTime.UtcNow; // nothing new
+                    continue;
+                }
+
                 var result = await GitHubService.GetLatestReleaseAsync(repo, cached);
                 if (result.Status is GitHubStatus.Ok or GitHubStatus.NotModified or GitHubStatus.NoRelease && result.Value != null)
                 {
@@ -427,6 +452,8 @@ public partial class MainWindow : Window
             CheckUpdatesButton.IsEnabled = true;
             CheckUpdatesText.Text = "Check for updates";
         }
+
+        if (!offline) await AutoInstallUpdatesAsync();
 
         if (rateLimited) ShowBanner(GitHubService.RateLimitMessage);
         else if (offline) ShowBanner("Couldn't reach GitHub — showing last known versions.");
@@ -585,15 +612,27 @@ public partial class MainWindow : Window
     private string DownloadFolder =>
         string.IsNullOrWhiteSpace(App.Settings.DownloadFolder) ? AppPaths.DefaultDownloads : App.Settings.DownloadFolder!;
 
-    /// <summary>Download → (run installer | extract zip) → record installed version.</summary>
-    private async Task InstallAsync(BytehawkAppVM vm)
+    /// <summary>
+    /// Download → check → install → record, the same way the Ironite Launcher does it:
+    /// a .zip is unpacked into apps\&lt;app&gt;\&lt;version&gt;, an Inno Setup / NSIS setup program is run silently into
+    /// apps\&lt;app&gt;\app, and the program to launch is found automatically. Updating is installing the newer release.
+    /// </summary>
+    /// <param name="automatic">True for background auto-updates: never shows a dialog.</param>
+    private async Task<bool> InstallAsync(BytehawkAppVM vm, bool automatic = false)
     {
-        if (vm.IsDownloading || vm.Busy || vm.IsComingSoon || !vm.HasRepo) return;
+        if (vm.IsDownloading || vm.Busy || vm.IsComingSoon || !vm.HasRepo) return false;
         vm.Note = null;
         vm.Busy = true;
         DownloadItemVM? item = null;
         try
         {
+            var previous = Installed(vm.Entry);
+            if (previous != null && AppInstaller.IsManagedKind(previous.Kind) && AppInstaller.IsRunning(previous))
+            {
+                vm.Note = $"Close {vm.Name} to update it.";
+                return false;
+            }
+
             // 1) make sure we know the latest release (refresh if older than 10 minutes)
             var repo = vm.Entry.Repo.Trim();
             _releases.TryGetValue(repo, out var release);
@@ -616,26 +655,27 @@ public partial class MainWindow : Window
                     };
                     if (r.Status == GitHubStatus.NetworkError) ShowBanner("Couldn't reach GitHub — showing last known versions.");
                     if (r.Status == GitHubStatus.RateLimited) ShowBanner(GitHubService.RateLimitMessage);
-                    return;
+                    return false;
                 }
             }
             if (release == null || release.NoRelease)
             {
                 vm.Note = "No published release on GitHub yet.";
-                return;
+                return false;
             }
 
             // 2) pick the asset
             var asset = GitHubService.MatchAsset(release.Assets, vm.Entry.AssetPattern);
             if (asset == null || string.IsNullOrEmpty(asset.DownloadUrl))
             {
-                vm.Note = $"No file in release {GitHubService.DisplayVersion(release.Tag)} matches \"{vm.Entry.AssetPattern}\". Edit the app to change the pattern.";
-                return;
+                vm.Note = $"No file in release {GitHubService.DisplayVersion(release.Tag)} matches \"{vm.Entry.AssetPattern}\".";
+                return false;
             }
 
-            // 3) download with progress
+            // 3) download with progress, then check size and SHA-256
             Directory.CreateDirectory(DownloadFolder);
             var dest = Path.Combine(DownloadFolder, SafeFileName(asset.Name));
+            var verb = previous == null ? "Installing" : "Updating";
             item = new DownloadItemVM { AppName = vm.Name, FileName = asset.Name, Destination = dest };
             _downloads.Insert(0, item);
             vm.Busy = false;
@@ -645,133 +685,169 @@ public partial class MainWindow : Window
             try
             {
                 await Downloader.DownloadAsync(asset.DownloadUrl, dest, new Progress<DownloadProgress>(item.Report), item.Cts.Token);
+                item.Detail = "Checking the download…";
+                var problem = await AppInstaller.VerifyDownloadAsync(dest, asset, item.Cts.Token);
+                if (problem != null)
+                {
+                    try { File.Delete(dest); } catch { /* ignore */ }
+                    throw new InvalidDataException(problem);
+                }
             }
             catch (OperationCanceledException)
             {
+                try { if (File.Exists(dest) && previous?.DownloadedFile != dest) File.Delete(dest); } catch { /* ignore */ }
                 item.Status = "Cancelled";
                 item.Detail = "Download cancelled. Nothing was installed.";
                 item.IsActive = false;
                 vm.Download = null;
-                return;
+                return false;
             }
             catch (Exception ex)
             {
                 Log.Error("Download failed", ex);
                 item.Status = "Failed";
-                item.Detail = ex is IOException ? $"Couldn't save the file: {ex.Message}" : $"Download failed: {ex.Message}";
+                item.Detail = ex is InvalidDataException ? $"Download failed: {ex.Message}. Please try again."
+                            : ex is IOException ? $"Couldn't save the file: {ex.Message}" : $"Download failed: {ex.Message}";
                 item.IsActive = false;
                 vm.Download = null;
                 vm.Note = "Download failed. See the Downloads page for details.";
-                return;
+                return false;
             }
 
             item.Percent = 100;
             item.IsIndeterminate = false;
-            item.Status = "Completed";
-            item.Detail = $"Saved to {dest}";
-            item.IsActive = false;
+            item.Status = verb;
+            item.Detail = $"{verb} {vm.Name} {GitHubService.DisplayVersion(release.Tag)}…";
             Log.Info($"Downloaded {dest} ({new FileInfo(dest).Length} bytes)");
-
-            // 4) install
-            var previous = Installed(vm.Entry);
-            var record = new InstalledApp
-            {
-                Version = release.Tag,
-                InstalledAt = DateTime.Now,
-                AssetName = asset.Name,
-                DownloadedFile = dest,
-            };
-            var ext = Path.GetExtension(dest).ToLowerInvariant();
             vm.Download = null;
             vm.Busy = true;
 
-            if (ext == ".zip")
-            {
-                record.Kind = "zip";
-                var folder = Path.Combine(AppPaths.Apps, SafeFileName(vm.Name));
-                // remember the previously chosen exe (relative to the app folder) across updates
-                string? previousRelative = null;
-                if (previous?.LaunchPath is { } lp && previous.InstallFolder is { } pf && lp.StartsWith(pf, StringComparison.OrdinalIgnoreCase))
-                    previousRelative = Path.GetRelativePath(pf, lp);
+            // 4) install
+            var ext = Path.GetExtension(dest).ToLowerInvariant();
+            var setupKind = ext == ".exe" ? AppInstaller.DetectSetupKind(dest) : null;
+            var baseFolder = AppInstaller.AppFolder(vm.Entry.Key);
+            InstalledApp record;
 
-                item.Detail = $"Extracting to {folder}…";
+            if (ext == ".zip" || setupKind != null)
+            {
+                // Managed install: silent, into the launcher's own apps folder.
                 try
                 {
-                    await Task.Run(() =>
-                    {
-                        if (Directory.Exists(folder)) Directory.Delete(folder, recursive: true);
-                        Directory.CreateDirectory(folder);
-                        ZipFile.ExtractToDirectory(dest, folder, overwriteFiles: true);
-                    });
+                    record = ext == ".zip"
+                        ? await Task.Run(() => AppInstaller.InstallZip(dest, baseFolder, release.Tag, vm.Entry.Exe))
+                        : await AppInstaller.InstallSetupAsync(dest, setupKind!, baseFolder, release.Tag, vm.Entry.Exe);
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Extract failed", ex);
+                    Log.Error("Install failed", ex);
                     item.Status = "Failed";
-                    item.Detail = $"Couldn't extract the .zip: {ex.Message} (Is the app still running? Close it and try again.)";
-                    vm.Note = "Extracting failed. Close the app if it's running, then try again.";
-                    return;
+                    item.Detail = $"Couldn't install {vm.Name}: {ex.Message}";
+                    vm.Note = ex is IOException
+                        ? $"Couldn't install. Close {vm.Name} if it's running, then try again."
+                        : "Install failed. See the Downloads page for details.";
+                    return false;
                 }
-                record.InstallFolder = folder;
-                item.Detail = $"Extracted to {folder}";
-                ShellHelper.OpenFolder(folder);
+                record.AssetName = asset.Name;
+                record.DownloadedFile = dest;
+                if (record.LaunchPath == null && !automatic)
+                    record.LaunchPath = PickExe($"Choose the main program for {vm.Name}", record.InstallFolder);
+                item.Status = "Installed";
+                item.Detail = $"{vm.Name} {GitHubService.DisplayVersion(release.Tag)} is installed in {record.InstallFolder}";
 
-                if (previousRelative != null && File.Exists(Path.Combine(folder, previousRelative)))
-                    record.LaunchPath = Path.Combine(folder, previousRelative);
-                else
-                {
-                    var exes = Directory.GetFiles(folder, "*.exe", SearchOption.AllDirectories);
-                    record.LaunchPath = exes.Length == 1
-                        ? exes[0]
-                        : PickExe($"Choose the main program for {vm.Name}", folder);
-                }
+                // The setup file for the previous version isn't needed any more.
+                if (previous?.DownloadedFile is { } old && !old.Equals(dest, StringComparison.OrdinalIgnoreCase))
+                    try { if (File.Exists(old)) File.Delete(old); } catch { /* ignore */ }
             }
-            else if (ext is ".exe" or ".msi")
+            else
             {
-                record.Kind = ext.TrimStart('.');
+                // Not something the launcher can install by itself (an .msi or an unknown .exe): hand it to the user, as 1.0 did.
+                if (automatic) { item.Status = "Downloaded"; item.Detail = $"Saved to {dest}. Run it to finish updating."; return false; }
+                record = new InstalledApp
+                {
+                    Version = release.Tag,
+                    InstalledAt = DateTime.Now,
+                    AssetName = asset.Name,
+                    DownloadedFile = dest,
+                    Kind = ext.TrimStart('.'),
+                };
                 var err = ShellHelper.Launch(dest);
                 if (err != null)
                 {
                     item.Detail = err;
                     vm.Note = "The installer didn't start. You can run it from the Downloads page.";
                 }
-                // Keep a previously chosen program (e.g. installed under Program Files) across updates.
+                else item.Detail = $"Started {asset.Name}";
+                item.Status = "Completed";
                 if (previous?.LaunchPath is { } keep && File.Exists(keep) &&
                     !string.Equals(keep, previous.DownloadedFile, StringComparison.OrdinalIgnoreCase))
-                {
                     record.LaunchPath = keep;
-                }
-                else if (ext == ".msi")
-                {
-                    record.LaunchPath = null; // card shows "Choose launch file" once setup finishes
-                }
                 else
-                {
-                    var answer = MessageBox.Show(this,
-                        $"{asset.Name} has been started.\n\n" +
-                        "Is it an installer that puts the app somewhere else (like Program Files)?\n\n" +
-                        "Yes — it's an installer. When setup finishes, use “Choose launch file” on the card.\n" +
-                        "No — it's the app itself. Launch will run this downloaded file.",
-                        AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    record.LaunchPath = answer == MessageBoxResult.Yes ? null : dest;
-                }
-            }
-            else
-            {
-                record.Kind = ext.TrimStart('.');
-                record.LaunchPath = dest;
-                ShellHelper.ShowInExplorer(dest);
+                    record.LaunchPath = null; // card shows "Choose launch file" once setup finishes
             }
 
             _installed[vm.Entry.Key] = record;
             TrySave(AppPaths.Installed, _installed);
             Log.Info($"Recorded {vm.Entry.Key} {record.Version} kind={record.Kind} launch={record.LaunchPath}");
+            return true;
         }
         finally
         {
             if (item != null && item.IsActive) item.IsActive = false;
             vm.Busy = false;
             if (vm.Download != null && !vm.Download.IsActive) vm.Download = null;
+            RefreshCard(vm);
+        }
+    }
+
+    /// <summary>Installs available updates for apps the launcher manages, unless they're open (Settings → Install updates automatically).</summary>
+    private async Task AutoInstallUpdatesAsync()
+    {
+        if (!App.Settings.AutoUpdateApps) return;
+        foreach (var vm in _apps.ToList())
+        {
+            if (!vm.HasUpdate || vm.IsDownloading || vm.Busy || vm.Installed is not { } inst) continue;
+            if (!AppInstaller.IsManagedKind(inst.Kind) || AppInstaller.IsRunning(inst)) continue;
+            Log.Info($"Updating {vm.Key} automatically to {vm.LatestVersion}");
+            if (await InstallAsync(vm, automatic: true))
+                Log.Info($"{vm.Key} updated automatically to {vm.LatestVersion}");
+        }
+    }
+
+    private async void BhUninstall_Click(object sender, RoutedEventArgs e)
+    {
+        var vm = Ctx<BytehawkAppVM>(sender);
+        if (vm?.Installed is not { } inst || vm.IsDownloading || vm.Busy) return;
+        if (!AppInstaller.IsManagedKind(inst.Kind))
+        {
+            MessageBox.Show(this, $"{vm.Name} was installed by its own setup program. Uninstall it from Windows Settings → Apps.", AppTitle,
+                MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+        if (AppInstaller.IsRunning(inst))
+        {
+            MessageBox.Show(this, $"Close {vm.Name} first, then uninstall it.", AppTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+        }
+        if (MessageBox.Show(this, $"Uninstall {vm.Name}?\n\nThe program is removed. Your own files and settings for {vm.Name} are kept.",
+                AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+
+        vm.Busy = true;
+        try
+        {
+            await AppInstaller.UninstallAsync(inst, AppInstaller.AppFolder(vm.Key));
+            if (inst.DownloadedFile is { } f) try { if (File.Exists(f)) File.Delete(f); } catch { /* ignore */ }
+            _installed.Remove(vm.Key);
+            TrySave(AppPaths.Installed, _installed);
+            Log.Info($"Uninstalled {vm.Key}");
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Uninstall {vm.Key}", ex);
+            vm.Note = $"Couldn't remove every file ({ex.Message}). Close {vm.Name} and try again.";
+        }
+        finally
+        {
+            vm.Busy = false;
             RefreshCard(vm);
         }
     }
@@ -1000,6 +1076,7 @@ public partial class MainWindow : Window
         SyncThemeRadios();
         DownloadFolderBox.Text = DownloadFolder;
         CheckOnStartupBox.IsChecked = App.Settings.CheckUpdatesOnStartup;
+        AutoUpdateBox.IsChecked = App.Settings.AutoUpdateApps;
         RemoteCatalogBox.Text = App.Settings.RemoteCatalogUrl ?? "";
         DataFolderText.Text = $"Your data is stored in {AppPaths.Root}";
         _loadingSettings = false;
@@ -1019,6 +1096,14 @@ public partial class MainWindow : Window
         App.Settings.DownloadFolder = null;
         TrySave(AppPaths.Settings, App.Settings);
         DownloadFolderBox.Text = DownloadFolder;
+    }
+
+    private void AutoUpdate_Changed(object sender, RoutedEventArgs e)
+    {
+        if (_loadingSettings) return;
+        App.Settings.AutoUpdateApps = AutoUpdateBox.IsChecked == true;
+        TrySave(AppPaths.Settings, App.Settings);
+        if (App.Settings.AutoUpdateApps) _ = AutoInstallUpdatesAsync();
     }
 
     private void CheckOnStartup_Changed(object sender, RoutedEventArgs e)

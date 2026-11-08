@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Bytehawk.Launcher.Models;
 using Bytehawk.Launcher.Services;
 
@@ -133,6 +134,53 @@ public sealed class BytehawkAppVM : ObservableObject
     public bool ShowSecondaryLaunch => ShowPrimary && HasUpdate && !IsMissing && !NeedsLaunchChoice;
 
     public bool CanChangeLaunchFile => IsInstalled && !IsDownloading;
+
+    /// <summary>Apps the launcher installed itself can be uninstalled from the card.</summary>
+    public bool CanUninstall => IsInstalled && AppInstaller.IsManagedKind(Installed!.Kind) && !IsDownloading && !Busy;
+
+    // ---- card icon: the installed program's icon, else the catalog's icon URL, else the Bytehawk mark ----
+    private string? _iconSource;
+    private ImageSource? _icon;
+
+    public ImageSource? AppIcon
+    {
+        get
+        {
+            var source = Installed?.LaunchPath is { } lp && File.Exists(lp) ? lp
+                       : Uri.TryCreate(Entry.Icon, UriKind.Absolute, out var u) && u.Scheme == Uri.UriSchemeHttps ? u.AbsoluteUri
+                       : null;
+            if (source == _iconSource) return _icon;
+            _iconSource = source;
+            _icon = null;
+            try
+            {
+                if (source == null) { }
+                else if (source.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                {
+                    var bmp = new BitmapImage();
+                    bmp.BeginInit();
+                    bmp.UriSource = new Uri(source);
+                    bmp.DecodePixelWidth = 68;
+                    bmp.CacheOption = BitmapCacheOption.OnLoad;
+                    // Offline: fall back to the Bytehawk mark instead of an empty square.
+                    bmp.DownloadFailed += (_, _) =>
+                    {
+                        _icon = null;
+                        OnPropertyChanged(nameof(AppIcon));
+                        OnPropertyChanged(nameof(HasAppIcon));
+                        OnPropertyChanged(nameof(NoAppIcon));
+                    };
+                    bmp.EndInit();
+                    _icon = bmp;
+                }
+                else _icon = ShellHelper.GetFileIcon(source);
+            }
+            catch { _icon = null; }
+            return _icon;
+        }
+    }
+    public bool HasAppIcon => AppIcon != null;
+    public bool NoAppIcon => !HasAppIcon;
 
     public void Update(CatalogEntry entry, InstalledApp? installed, CachedRelease? release)
     {

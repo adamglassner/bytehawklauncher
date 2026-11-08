@@ -22,16 +22,18 @@
           <!-- header -->
           <DockPanel DockPanel.Dock="Top">
             <Border DockPanel.Dock="Left" Width="44" Height="44" CornerRadius="10" Background="{DynamicResource AccentSoft}" VerticalAlignment="Top">
-              <Image Source="{DynamicResource LogoMark}" Width="34" Height="34" RenderOptions.BitmapScalingMode="HighQuality" />
+              <Grid>
+                <Image Source="{DynamicResource LogoMark}" Width="34" Height="34" RenderOptions.BitmapScalingMode="HighQuality"
+                       Visibility="{Binding NoAppIcon, Converter={StaticResource BoolToVis}}" />
+                <Image Source="{Binding AppIcon}" Width="34" Height="34" RenderOptions.BitmapScalingMode="HighQuality"
+                       Visibility="{Binding HasAppIcon, Converter={StaticResource BoolToVis}}" />
+              </Grid>
             </Border>
             <StackPanel Margin="12,0,0,0">
               <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" />
               <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
                 <Border Style="{StaticResource Badge}" Visibility="{Binding IsComingSoon, Converter={StaticResource BoolToVis}}">
                   <TextBlock Text="Coming soon" FontSize="11" Foreground="{DynamicResource Accent}" FontWeight="SemiBold" />
-                </Border>
-                <Border Style="{StaticResource Badge}" Background="{DynamicResource WarningSoft}" Visibility="{Binding IsSample, Converter={StaticResource BoolToVis}}">
-                  <TextBlock Text="Sample — replace me" FontSize="11" Foreground="{DynamicResource WarningText}" FontWeight="SemiBold" />
                 </Border>
                 <TextBlock Text="{Binding RepoText}" FontSize="11" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
               </StackPanel>
@@ -58,8 +60,10 @@
                       Visibility="{Binding HasRepo, Converter={StaticResource BoolToVis}}" Click="BhReleasePage_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE8E5;" ToolTip="Choose launch file"
                       Visibility="{Binding CanChangeLaunchFile, Converter={StaticResource BoolToVis}}" Click="BhChooseLaunch_Click" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Uninstall"
+                      Visibility="{Binding CanUninstall, Converter={StaticResource BoolToVis}}" Click="BhUninstall_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE70F;" ToolTip="Edit (add the GitHub repo here when it's released)" Click="BhEdit_Click" />
-              <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Remove from launcher" Click="BhRemove_Click" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE711;" ToolTip="Remove from launcher" Click="BhRemove_Click" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
               <Button Style="{StaticResource AccentButton}" Content="{Binding PrimaryText}" MinWidth="96"
@@ -413,7 +417,10 @@
           <Border Style="{StaticResource Card}" Margin="0,0,0,16">
             <StackPanel>
               <TextBlock Text="Updates &amp; catalog" Style="{StaticResource SectionTitle}" />
-              <CheckBox x:Name="CheckOnStartupBox" Content="Check for updates on startup" Checked="CheckOnStartup_Changed" Unchecked="CheckOnStartup_Changed" />
+              <CheckBox x:Name="CheckOnStartupBox" Content="Check for updates on startup and every 30 minutes" Checked="CheckOnStartup_Changed" Unchecked="CheckOnStartup_Changed" />
+              <CheckBox x:Name="AutoUpdateBox" Content="Install app updates automatically" Margin="0,8,0,0"
+                        ToolTip="When a newer release is on GitHub, the launcher downloads and installs it in the background. Apps that are open are updated after you close them."
+                        Checked="AutoUpdate_Changed" Unchecked="AutoUpdate_Changed" />
               <TextBlock Text="Remote catalog URL (optional)" Style="{StaticResource FieldLabel}" Margin="0,16,0,5" />
               <Grid>
                 <Grid.ColumnDefinitions>

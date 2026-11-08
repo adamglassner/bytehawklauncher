@@ -138,6 +138,7 @@ public static class GitHubService
                         Name = Str(a, "name") ?? "",
                         DownloadUrl = Str(a, "browser_download_url") ?? "",
                         Size = a.TryGetProperty("size", out var sz) && sz.TryGetInt64(out var n) ? n : 0,
+                        Digest = Str(a, "digest"),
                     });
                 }
             }
@@ -154,6 +155,58 @@ public static class GitHubService
             Log.Error($"GetLatestRelease {ownerRepo}", ex);
             return new(GitHubStatus.Error, null, ex.Message);
         }
+    }
+
+    private static readonly HttpClient Web = CreateWebClient();
+
+    private static HttpClient CreateWebClient()
+    {
+        // Redirects are read, not followed: /releases/latest answers with a redirect to /releases/tag/<tag>.
+        var c = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false, ConnectTimeout = TimeSpan.FromSeconds(15) })
+        { Timeout = TimeSpan.FromSeconds(20) };
+        c.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
+        return c;
+    }
+
+    /// <summary>
+    /// Asks github.com (not the API, so it doesn't use up the 60-an-hour allowance) which tag a repo's latest
+    /// release has: github.com/&lt;repo&gt;/releases/latest redirects to /releases/tag/&lt;tag&gt;.
+    /// Returns ("", true) when the repo has no published release, and (null, false) when github.com couldn't say.
+    /// </summary>
+    public static async Task<(string? Tag, bool Answered)> GetLatestTagAsync(string ownerRepo, CancellationToken ct = default)
+    {
+        var url = $"https://github.com/{ownerRepo}/releases/latest";
+        try
+        {
+            for (int hop = 0; hop < 3; hop++)
+            {
+                using var req = new HttpRequestMessage(HttpMethod.Head, url);
+                using var resp = await Web.SendAsync(req, ct);
+                var location = resp.Headers.Location?.ToString() ?? "";
+                if ((int)resp.StatusCode is >= 300 and < 400 && location.Length > 0)
+                {
+                    var i = location.IndexOf("/releases/tag/", StringComparison.Ordinal);
+                    if (i >= 0)
+                    {
+                        var tag = location[(i + "/releases/tag/".Length)..];
+                        var cut = tag.IndexOfAny(['?', '#']);
+                        if (cut >= 0) tag = tag[..cut];
+                        return (Uri.UnescapeDataString(tag), true);
+                    }
+                    if (location.EndsWith("/releases/latest", StringComparison.Ordinal)) // repo was renamed
+                    {
+                        url = location.StartsWith('/') ? "https://github.com" + location : location;
+                        continue;
+                    }
+                    return ("", true); // redirected to the empty releases page: no release yet
+                }
+                if (resp.StatusCode == HttpStatusCode.NotFound) return ("", true);
+                return (null, false);
+            }
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested) { throw; }
+        catch (Exception ex) { Log.Error($"GetLatestTag {ownerRepo}", ex); }
+        return (null, false);
     }
 
     /// <summary>Fetch a remote catalog JSON (same format as catalog.json).</summary>

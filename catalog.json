@@ -2,6 +2,15 @@
   "version": 1,
   "apps": [
     {
+      "id": "guardrail-ehs",
+      "name": "Guardrail EHS",
+      "description": "Free, open-source environmental, health & safety software: actions, observations, safety training and more, with your records kept on your own PC.",
+      "repo": "adamglassner/guardrailehs",
+      "assetPattern": "GuardrailEHS-*-Setup.exe;*-win-x64.zip",
+      "exe": "Guardrail.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png"
+    },
+    {
       "id": "padcraft",
       "name": "Padcraft",
       "description": "Word processor for writing and formatting documents. Coming soon.",
@@ -72,22 +81,6 @@
       "repo": "",
       "assetPattern": "*.exe",
       "comingSoon": true
-    },
-    {
-      "id": "sample-installer-exe",
-      "name": "Sample — replace me (installer .exe)",
-      "description": "Sample — replace me. Placeholder that points at a public open-source repo (Notepad++, not a Bytehawk Studio product) only to demonstrate the download → run installer flow.",
-      "repo": "notepad-plus-plus/notepad-plus-plus",
-      "assetPattern": "*.Installer.x64.exe",
-      "sample": true
-    },
-    {
-      "id": "sample-portable-zip",
-      "name": "Sample — replace me (portable .zip)",
-      "description": "Sample — replace me. Placeholder that points at the same public repo (Notepad++, not a Bytehawk Studio product) only to demonstrate the download → extract .zip → launch flow.",
-      "repo": "notepad-plus-plus/notepad-plus-plus",
-      "assetPattern": "*.portable.x64.zip",
-      "sample": true
     }
   ]
 }

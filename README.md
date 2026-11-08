@@ -4,11 +4,11 @@ A Windows 10/11 launcher and downloader for Bytehawk Studio software, with room 
 
 | Section | What it does |
 |---|---|
-| **Bytehawk Apps** | Software released by Bytehawk Studio. Downloads the latest release from GitHub Releases, checks for updates, installs and launches it. |
+| **Bytehawk Apps** | Software released by Bytehawk Studio. Downloads the latest release from GitHub Releases, installs it silently, keeps it up to date automatically, launches and uninstalls it. The first app is **Guardrail EHS** ([adamglassner/guardrailehs](https://github.com/adamglassner/guardrailehs)). |
 | **My Software** | Any program on your PC (.exe, .msi or .lnk shortcut), even if it has nothing to do with Bytehawk Studio. Works fully offline. |
 | **Web Apps** | Bookmarks that open in your default browser. Nothing is downloaded or installed. |
 | **Downloads** | Progress, speed, cancel and "show in folder" for this session's downloads. |
-| **Settings** | Theme (Dark / Light / Follow System), download folder, check for updates on startup, remote catalog URL, About. |
+| **Settings** | Theme (Dark / Light / Follow System), download folder, update checks, automatic app updates, remote catalog URL, About. |
 
 Built with C# / WPF on .NET 8 and published as a self-contained single-file `.exe`, so the PC doesn't need .NET installed. Linux and macOS versions are coming soon (v1.0.0 is Windows only).
 
@@ -31,17 +31,30 @@ The repo must be **public** and have at least one published (non-draft, non-prer
 
 ### What happens on Download / Update
 
-* The card shows *Installed x · Latest y* (or *Not installed*). When the latest tag is newer than the installed one, you get an **Update available** badge and an **Update** button.
-* The download shows bytes downloaded, speed and %, and you can cancel it. Files go to the download folder (set it in Settings).
-* **.exe**: runs it. The launcher then asks whether it was an installer. If it was, click **Choose launch file** on the card once setup finishes and pick the installed program. If not, Launch runs the downloaded exe.
-* **.msi**: runs it. When setup finishes, click **Choose launch file** and pick the installed program.
-* **.zip**: extracts it to `%APPDATA%\BytehawkStudio\Launcher\apps\<AppName>\`, opens that folder, and asks which `.exe` is the main program (if there's only one, it's picked automatically). Your choice is remembered across updates.
-* The installed version (release tag) and install date are recorded in `installed.json`.
-* If the launch file is later deleted or moved, the card shows **Not found — reinstall** instead of crashing.
+The launcher installs and updates apps the same way for every app, with no questions asked:
+
+1. **Download** the release file that matches the app's `assetPattern` from the latest GitHub release, with progress, speed and Cancel.
+2. **Check** it: the size must match GitHub's, and when the release publishes a SHA-256 digest (all recent releases do) the file's hash must match too. A damaged download is deleted and nothing is installed.
+3. **Install** it into `%APPDATA%\BytehawkStudio\Launcher\apps\<app id>\`:
+   * an **Inno Setup** or **NSIS** setup program (like `GuardrailEHS-x.y.z-Setup.exe`) is run **silently** into `apps\<app id>\app`, with no wizard, no admin prompt for per-user installers and no extra shortcuts;
+   * a **.zip** is unpacked into `apps\<app id>\<version>` (a single top-level folder in the zip is skipped) and older version folders are removed.
+4. **Find the program** to launch: the catalog's `exe` (for Guardrail EHS, `Guardrail.exe`), otherwise the only `.exe` in the install.
+5. **Record** the installed version in `installed.json`. The setup file of the previous version is deleted.
+
+**Updating** is installing the newer release over the old one, so settings and data that the app keeps in your profile are untouched. If the app is open, the launcher waits: the card says *Close <app> to update it*.
+
+**Automatic updates** (Settings → *Install app updates automatically*, on by default): the launcher looks for new releases when it starts and **every 30 minutes** while it's open, and installs updates for apps it installed, as soon as they aren't running.
+
+**Uninstall** (trash icon on the card) runs the app's own uninstaller and removes its folder. App data in your profile, such as Guardrail's records, is kept.
+
+A release file the launcher can't install by itself (an `.msi`, or an `.exe` that isn't an Inno Setup / NSIS setup program) is started for you instead; when setup finishes, use **Choose launch file** on the card. Those apps are updated and uninstalled by their own setup program.
+
+If the launch file is later deleted or moved, the card shows **Not found — reinstall** instead of crashing.
 
 ### GitHub rate limits and offline use
 
 Anonymous GitHub API calls are limited to 60 per hour. To stay under that, the launcher:
+* first asks **github.com** (not the API) which tag is the latest release (`/releases/latest` redirects to `/releases/tag/<tag>`). If it's the tag it already knows, no API call is made at all,
 * makes one request per **repo**, not per card,
 * caches release info in `cache\releases.json`, reuses it for 30 minutes on startup and for 60 seconds on a manual **Check for updates**,
 * sends the cached `ETag`, so releases that haven't changed come back as `304 Not Modified`, which GitHub doesn't count against the limit,
@@ -60,12 +73,13 @@ If GitHub can't be reached, the page shows *"Couldn't reach GitHub — showing l
   "version": 1,
   "apps": [
     {
-      "id": "my-cool-app",
-      "name": "My Cool App",
+      "id": "guardrail-ehs",
+      "name": "Guardrail EHS",
       "description": "What the app does, shown on the card.",
-      "repo": "BytehawkStudio/my-cool-app",
-      "assetPattern": "*.exe",
-      "sample": false
+      "repo": "adamglassner/guardrailehs",
+      "assetPattern": "GuardrailEHS-*-Setup.exe;*-win-x64.zip",
+      "exe": "Guardrail.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png"
     }
   ]
 }
@@ -78,12 +92,17 @@ If GitHub can't be reached, the page shows *"Couldn't reach GitHub — showing l
 | `description` | no | Shown under the name. |
 | `assetPattern` | no (default `*.exe`) | Which release file to download. Wildcards `*` and `?`, case-insensitive. Separate several patterns with `;`, and prefix with `!` to exclude. |
 | `id` | no | Stable key for install state. Defaults to the lowercase `repo`. Set it if you list the same repo twice (for example an installer and a portable zip). |
-| `sample` | no | `true` shows the yellow *Sample — replace me* badge. |
+| `exe` | no | The program to launch after installing, e.g. `Guardrail.exe`. Found automatically when there's only one. |
+| `icon` | no | `https://` URL of a square PNG shown on the card until the app is installed (then the program's own icon is used). |
 | `comingSoon` | no | `true` shows the card with a *Coming soon* badge and no Download button. `repo` can be empty, but give it an `id`. When the app is released, click **Edit** on the card and paste the repo; the card becomes a normal app. |
 
 Comments (`//`) and trailing commas are allowed. After editing, go to **Settings → Reload catalog** (or restart the launcher). **Settings → Open catalog.json** opens the file in Notepad. If the file can't be parsed, the launcher keeps a copy as `catalog.json.bad` and tells you.
 
-The catalog ships with nine **Coming soon** entries: Padcraft (word processor), ShoreDrop (FTP client), Sparecopy (backup), Fleetwatch (PC management), Shutterbox (photo management), Discshelf (music player), CoinPilot (budgeting), Sumthing (calculator) and Castaway (media player, which needs a Castaway server to host the media). It also ships with **two sample entries** labeled *"Sample — replace me"*. They point at a public open-source repo (Notepad++, not a Bytehawk Studio product) only so you can try the download flows: one uses the installer `.exe` and one uses the portable `.zip`. Delete them or replace their `repo` with a real Bytehawk Studio repo.
+The catalog ships with **Guardrail EHS** (free, open-source EHS / safety software, the first released Bytehawk Studio app) followed by nine **Coming soon** entries: Padcraft (word processor), ShoreDrop (FTP client), Sparecopy (backup), Fleetwatch (PC management), Shutterbox (photo management), Discshelf (music player), CoinPilot (budgeting), Sumthing (calculator) and Castaway (media player, which needs a Castaway server to host the media). The Notepad++ sample entries from 1.0.x are removed automatically when you update to 1.1.0.
+
+#### Releasing an app so the launcher can install it
+
+Publish a GitHub Release (not a draft or pre-release) whose assets include an **Inno Setup or NSIS setup program** or a **Windows .zip**. The setup program must support a silent per-user install: for Inno Setup, `PrivilegesRequired=lowest` and no reboot. Guardrail EHS's [workflow](https://github.com/adamglassner/guardrailehs/blob/main/.github/workflows/build-release.yml) is a working example: every release is built, installed silently the same way the launcher does it, launched and uninstalled before it's published.
 
 ### The online catalog (managed in this GitHub repo)
 

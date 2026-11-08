@@ -13,6 +13,9 @@ public sealed class AppSettings
 
     public bool CheckUpdatesOnStartup { get; set; } = true;
 
+    /// <summary>Install app updates automatically when they're found (apps the launcher installed itself).</summary>
+    public bool AutoUpdateApps { get; set; } = true;
+
     /// <summary>Optional URL of a catalog JSON file (same format as catalog.json). Defaults to the catalog in the launcher's GitHub repo.</summary>
     public string RemoteCatalogUrl { get; set; } = "";
 
@@ -42,7 +45,11 @@ public sealed class CatalogEntry
     public string Repo { get; set; } = "";
     /// <summary>Which release asset to download, e.g. "*.exe", "*.msi", "*-win-x64.zip". Separate several with ';'. Prefix with '!' to exclude.</summary>
     public string AssetPattern { get; set; } = "*.exe";
-    /// <summary>True for the shipped placeholder entries.</summary>
+    /// <summary>Optional: the program to launch after installing (e.g. "Guardrail.exe"). Found automatically when omitted.</summary>
+    public string? Exe { get; set; }
+    /// <summary>Optional: URL of a square PNG icon shown on the card until the app is installed.</summary>
+    public string? Icon { get; set; }
+    /// <summary>True for the old placeholder entries (removed in 1.1.0; kept so older catalog files still load).</summary>
     public bool Sample { get; set; }
     /// <summary>Announced product with no release yet: shown with a "Coming soon" badge and no download. Needs an id; repo can be empty.</summary>
     public bool ComingSoon { get; set; }
@@ -64,7 +71,8 @@ public sealed class InstalledApp
     public string Version { get; set; } = "";
     public DateTime InstalledAt { get; set; }
     public string AssetName { get; set; } = "";
-    /// <summary>"exe", "msi" or "zip".</summary>
+    /// <summary>"inno" or "nsis" (setup run silently by the launcher), "zip" (unpacked by the launcher),
+    /// or "exe"/"msi" (setup the user ran themselves; the launcher can't update or uninstall those).</summary>
     public string Kind { get; set; } = "";
     /// <summary>The downloaded file.</summary>
     public string? DownloadedFile { get; set; }
@@ -94,6 +102,8 @@ public sealed class ReleaseAsset
     public string Name { get; set; } = "";
     public string DownloadUrl { get; set; } = "";
     public long Size { get; set; }
+    /// <summary>"sha256:&lt;hex&gt;" when GitHub provides it (recent releases).</summary>
+    public string? Digest { get; set; }
 }
 
 /// <summary>library.json — "My Software" entries.</summary>
