@@ -117,6 +117,14 @@ public partial class MainWindow : Window
         var defaults = SampleCatalog().Apps;
         // 1.1.0: the Notepad++ sample entries are gone for good.
         var changed = _localCatalog.Apps.RemoveAll(IsOldSample) > 0;
+        // Released apps replace their old "Coming soon" placeholders.
+        for (int i = 0; i < _localCatalog.Apps.Count; i++)
+        {
+            var a = _localCatalog.Apps[i];
+            if (!a.ComingSoon || a.HasRepo) continue;
+            var d = defaults.FirstOrDefault(x => !x.ComingSoon && x.Key.Equals(a.Key, StringComparison.OrdinalIgnoreCase));
+            if (d != null) { _localCatalog.Apps[i] = d; changed = true; }
+        }
         for (int i = 0; i < defaults.Count; i++)
         {
             var d = defaults[i];
@@ -135,7 +143,7 @@ public partial class MainWindow : Window
         {
             GuardrailEhs(),
             ComingSoon("padcraft", "Padcraft", "Word processor for writing and formatting documents. Coming soon."),
-            ComingSoon("shoredrop", "ShoreDrop", "FTP, FTPS and SFTP client for moving files to and from your servers. Coming soon."),
+            ShoreDrop(),
             ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
             ComingSoon("shutterbox", "Shutterbox", "Photo management for organizing, browsing and finding your pictures. Coming soon."),
@@ -156,6 +164,18 @@ public partial class MainWindow : Window
         AssetPattern = "GuardrailEHS-*-Setup.exe;*-win-x64.zip",
         Exe = "Guardrail.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png",
+    };
+
+    /// <summary>ShoreDrop — FTP, FTPS and SFTP client (portable zip from its GitHub releases).</summary>
+    private static CatalogEntry ShoreDrop() => new()
+    {
+        Id = "shoredrop",
+        Name = "ShoreDrop",
+        Description = "FTP, FTPS and SFTP client for moving files to and from your servers, with a dual-pane browser, transfer queue, site manager and light and dark themes.",
+        Repo = "adamglassner/shoredrop",
+        AssetPattern = "ShoreDrop-*-win-x64.zip",
+        Exe = "ShoreDrop.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/shoredrop-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>

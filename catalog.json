@@ -21,10 +21,11 @@
     {
       "id": "shoredrop",
       "name": "ShoreDrop",
-      "description": "FTP, FTPS and SFTP client for moving files to and from your servers. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "FTP, FTPS and SFTP client for moving files to and from your servers, with a dual-pane browser, transfer queue, site manager and light and dark themes.",
+      "repo": "adamglassner/shoredrop",
+      "assetPattern": "ShoreDrop-*-win-x64.zip",
+      "exe": "ShoreDrop.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/shoredrop-256.png"
     },
     {
       "id": "sparecopy",

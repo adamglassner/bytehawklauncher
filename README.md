@@ -98,7 +98,7 @@ If GitHub can't be reached, the page shows *"Couldn't reach GitHub — showing l
 
 Comments (`//`) and trailing commas are allowed. After editing, go to **Settings → Reload catalog** (or restart the launcher). **Settings → Open catalog.json** opens the file in Notepad. If the file can't be parsed, the launcher keeps a copy as `catalog.json.bad` and tells you.
 
-The catalog ships with **Guardrail EHS** (free, open-source EHS / safety software, the first released Bytehawk Studio app) followed by nine **Coming soon** entries: Padcraft (word processor), ShoreDrop (FTP client), Sparecopy (backup), Fleetwatch (PC management), Shutterbox (photo management), Discshelf (music player), CoinPilot (budgeting), Sumthing (calculator) and Castaway (media player, which needs a Castaway server to host the media). The Notepad++ sample entries from 1.0.x are removed automatically when you update to 1.1.0.
+The catalog ships with **Guardrail EHS** (free, open-source EHS / safety software, the first released Bytehawk Studio app), **ShoreDrop** (FTP, FTPS and SFTP client, installed from its portable zip) and eight **Coming soon** entries: Padcraft (word processor), Sparecopy (backup), Fleetwatch (PC management), Shutterbox (photo management), Discshelf (music player), CoinPilot (budgeting), Sumthing (calculator) and Castaway (media player, which needs a Castaway server to host the media). The Notepad++ sample entries from 1.0.x are removed automatically when you update to 1.1.0.
 
 #### Releasing an app so the launcher can install it
 
