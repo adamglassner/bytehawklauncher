@@ -65,12 +65,12 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 ; Self-update: the launcher runs Setup with /SILENT /RELAUNCH=1, so reopen it when done
 Filename: "{app}\{#MyAppExeName}"; Flags: nowait runasoriginaluser; Check: IsRelaunch
 
+; NOTE: There is deliberately no [UninstallDelete] section.
+; Uninstalling removes the program and its shortcuts only. The user's data in
+; %APPDATA%\BytehawkStudio\Launcher\ (settings, catalog, library, web apps, downloads) is left alone.
+
 [Code]
 function IsRelaunch: Boolean;
 begin
   Result := ExpandConstant('{param:RELAUNCH|0}') = '1';
 end;
-
-; NOTE: There is deliberately no [UninstallDelete] section.
-; Uninstalling removes the program and its shortcuts only. The user's data in
-; %APPDATA%\BytehawkStudio\Launcher\ (settings, catalog, library, web apps, downloads) is left alone.
