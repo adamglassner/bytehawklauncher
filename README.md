@@ -121,20 +121,15 @@ The launcher updates itself from **GitHub Releases on [`adamglassner/bytehawklau
 
 ### Publishing a new version
 
-GitHub Actions (`.github/workflows/build-release.yml`) does the build on a Windows machine. To release, push a version tag:
+GitHub Actions (`.github/workflows/build-release.yml`) does the build on a Windows machine. To release, change `<Version>` in `src/BytehawkStudioLauncher/BytehawkStudioLauncher.csproj` (for example to `1.0.1`) and push to `main`. Pushing a tag like `v1.0.1` works too.
 
-```powershell
-git tag v1.0.1
-git push origin v1.0.1
-```
-
-The workflow then:
-1. builds the single-file exe and the installer, stamping the version from the tag (no files to edit),
+When `main` has a version that hasn't been released yet, the workflow:
+1. builds the single-file exe and the installer, stamped with that version (it shows in the window title, About and the installer),
 2. runs a self-test that uses the real GitHub API, downloads and extracts real release assets, and checks URL validation and storage,
 3. starts the app with the Dark, Light and System themes and checks that it doesn't crash and that the theme setting persists,
 4. publishes a GitHub Release with `BytehawkStudioLauncher-1.0.1-Setup.exe` and `BytehawkStudioLauncher.exe`.
 
-Every installed launcher then offers 1.0.1. Pushes to `main` and pull requests run steps 1–3 without releasing. The built files are attached to each run as artifacts.
+Every installed launcher then offers 1.0.1. Pushes that don't change the version, and pull requests, run steps 1–3 without releasing. The built files are attached to each run as artifacts.
 
 You can run the self-test yourself: `BytehawkStudioLauncher.exe --self-test result.txt` writes PASS/FAIL lines to `result.txt`.
 
