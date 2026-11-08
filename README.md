@@ -1,4 +1,4 @@
-# Bytehawk Studio Launcher 1.0.0
+# Bytehawk Studio Launcher
 
 A Windows 10/11 launcher and downloader for Bytehawk Studio software, with room for your own programs and web apps.
 
@@ -85,9 +85,18 @@ Comments (`//`) and trailing commas are allowed. After editing, go to **Settings
 
 The catalog ships with nine **Coming soon** entries: Padcraft (word processor), ShoreDrop (FTP client), Sparecopy (backup), Fleetwatch (PC management), Shutterbox (photo management), Discshelf (music player), CoinPilot (budgeting), Sumthing (calculator) and Castaway (media player, which needs a Castaway server to host the media). It also ships with **two sample entries** labeled *"Sample — replace me"*. They point at a public open-source repo (Notepad++, not a Bytehawk Studio product) only so you can try the download flows: one uses the installer `.exe` and one uses the portable `.zip`. Delete them or replace their `repo` with a real Bytehawk Studio repo.
 
-### Remote catalog URL (optional)
+### The online catalog (managed in this GitHub repo)
 
-In **Settings → Remote catalog URL**, enter a URL that returns JSON in the same format, for example a raw GitHub URL such as `https://raw.githubusercontent.com/<owner>/<repo>/main/catalog.json`. On startup the launcher downloads it and shows those apps, plus any entries from your local `catalog.json` with a different `id`/`repo`. If the URL can't be reached, it uses the last downloaded copy, or just the local `catalog.json`. Entries from the remote catalog can't be edited or removed in the app.
+By default the launcher loads the Bytehawk Apps list from **`catalog.json` at the root of this repo**:
+`https://raw.githubusercontent.com/adamglassner/bytehawklauncher/main/catalog.json`.
+
+To add a real app, or to turn a "Coming soon" entry into one, edit `catalog.json` on GitHub: fill in `"repo"` and `"assetPattern"`, and set `"comingSoon": false`. Every launcher picks up the change on its next start, or immediately with **Settings → Reload catalog**. No new launcher release is needed. GitHub's raw file cache can take up to about 5 minutes to show the change.
+
+If GitHub can't be reached, the launcher uses the last downloaded copy, plus its built-in list. Apps added in the app with **Add Bytehawk app** are stored locally and shown alongside the online catalog.
+
+### Remote catalog URL
+
+**Settings → Remote catalog URL** points at the repo's catalog by default. You can change it to another URL that returns JSON in the same format, for example a raw GitHub URL such as `https://raw.githubusercontent.com/<owner>/<repo>/main/catalog.json`. On startup the launcher downloads it and shows those apps, plus any entries from your local `catalog.json` with a different `id`/`repo`. If the URL can't be reached, it uses the last downloaded copy, or just the local `catalog.json`. Entries from the remote catalog can't be edited or removed in the app.
 
 ---
 

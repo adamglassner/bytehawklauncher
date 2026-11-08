@@ -114,6 +114,16 @@ public static class SelfTest
                 }
             }
 
+            // ---- online catalog in the launcher repo ----
+            try
+            {
+                var json = await GitHubService.GetTextAsync(AppSettings.DefaultRemoteCatalogUrl);
+                var cat = System.Text.Json.JsonSerializer.Deserialize<CatalogFile>(json, JsonStore.Options);
+                var n = cat?.Apps?.Count ?? 0;
+                Check("Online catalog.json parses", n > 0, $"{n} apps, {cat?.Apps?.Count(a => a.ComingSoon)} coming soon");
+            }
+            catch (Exception ex) { Check("Online catalog.json parses", false, ex.Message); }
+
             // ---- launcher self-update source ----
             var self = await GitHubService.GetLatestReleaseAsync(LauncherUpdater.Repo, null);
             Check("Launcher update repo reachable", self.Status is GitHubStatus.Ok or GitHubStatus.NoRelease,

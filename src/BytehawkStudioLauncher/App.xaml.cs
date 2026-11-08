@@ -52,6 +52,13 @@ public partial class App : Application
         Log.Info($"Starting Bytehawk Studio Launcher {VersionText}");
         Settings = JsonStore.Load(AppPaths.Settings, () => new AppSettings());
         Settings.Theme = ThemeService.Normalize(Settings.Theme);
+        if (Settings.SettingsVersion < 2)
+        {
+            // 1.0.1: the Bytehawk Apps list comes from catalog.json in the GitHub repo by default.
+            if (string.IsNullOrWhiteSpace(Settings.RemoteCatalogUrl))
+                Settings.RemoteCatalogUrl = AppSettings.DefaultRemoteCatalogUrl;
+            Settings.SettingsVersion = 2;
+        }
         ThemeService.Apply(Settings.Theme);
         try { SaveSettings(); } catch (Exception ex) { Log.Error("Save settings", ex); }
 

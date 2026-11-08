@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "apps": [
+    {
+      "id": "padcraft",
+      "name": "Padcraft",
+      "description": "Word processor for writing and formatting documents. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "shoredrop",
+      "name": "ShoreDrop",
+      "description": "FTP, FTPS and SFTP client for moving files to and from your servers. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "sparecopy",
+      "name": "Sparecopy",
+      "description": "Backup for your PCs to a NAS, server or USB drive. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "fleetwatch",
+      "name": "Fleetwatch",
+      "description": "PC management: keep an eye on and look after the computers you're responsible for. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "shutterbox",
+      "name": "Shutterbox",
+      "description": "Photo management for organizing, browsing and finding your pictures. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "discshelf",
+      "name": "Discshelf",
+      "description": "Music player for your own music library. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "coinpilot",
+      "name": "CoinPilot",
+      "description": "Budgeting app for tracking spending and planning where your money goes. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "sumthing",
+      "name": "Sumthing",
+      "description": "Calculator. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "castaway",
+      "name": "Castaway",
+      "description": "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "sample-installer-exe",
+      "name": "Sample — replace me (installer .exe)",
+      "description": "Sample — replace me. Placeholder that points at a public open-source repo (Notepad++, not a Bytehawk Studio product) only to demonstrate the download → run installer flow.",
+      "repo": "notepad-plus-plus/notepad-plus-plus",
+      "assetPattern": "*.Installer.x64.exe",
+      "sample": true
+    },
+    {
+      "id": "sample-portable-zip",
+      "name": "Sample — replace me (portable .zip)",
+      "description": "Sample — replace me. Placeholder that points at the same public repo (Notepad++, not a Bytehawk Studio product) only to demonstrate the download → extract .zip → launch flow.",
+      "repo": "notepad-plus-plus/notepad-plus-plus",
+      "assetPattern": "*.portable.x64.zip",
+      "sample": true
+    }
+  ]
+}

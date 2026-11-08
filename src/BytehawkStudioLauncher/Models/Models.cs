@@ -13,8 +13,14 @@ public sealed class AppSettings
 
     public bool CheckUpdatesOnStartup { get; set; } = true;
 
-    /// <summary>Optional URL of a catalog JSON file (same format as catalog.json).</summary>
+    /// <summary>Optional URL of a catalog JSON file (same format as catalog.json). Defaults to the catalog in the launcher's GitHub repo.</summary>
     public string RemoteCatalogUrl { get; set; } = "";
+
+    /// <summary>Used to migrate older settings files (0 = written by 1.0.0).</summary>
+    public int SettingsVersion { get; set; }
+
+    public const string DefaultRemoteCatalogUrl =
+        "https://raw.githubusercontent.com/adamglassner/bytehawklauncher/main/catalog.json";
 }
 
 /// <summary>catalog.json — the list of Bytehawk Studio apps (hand-editable).</summary>
@@ -22,6 +28,8 @@ public sealed class CatalogFile
 {
     public int Version { get; set; } = 1;
     public List<CatalogEntry> Apps { get; set; } = new();
+    /// <summary>Ids of built-in entries the user removed, so they aren't added back.</summary>
+    public List<string> RemovedDefaults { get; set; } = new();
 }
 
 public sealed class CatalogEntry

@@ -88,6 +88,7 @@ public partial class MainWindow : Window
             _localCatalog = JsonStore.Load(AppPaths.Catalog, () => new CatalogFile());
         }
         _localCatalog.Apps ??= new();
+        MergeBuiltInApps();
 
         _installed = new(JsonStore.Load(AppPaths.Installed, () => new Dictionary<string, InstalledApp>()), StringComparer.OrdinalIgnoreCase);
         _releases = new(JsonStore.Load(AppPaths.ReleaseCache, () => new Dictionary<string, CachedRelease>()), StringComparer.OrdinalIgnoreCase);
@@ -103,6 +104,26 @@ public partial class MainWindow : Window
             JsonStore.LastLoadError = null;
             Dispatcher.InvokeAsync(() => MessageBox.Show(this, err, AppTitle, MessageBoxButton.OK, MessageBoxImage.Warning));
         }
+    }
+
+    /// <summary>
+    /// Adds built-in Bytehawk Studio entries that an older catalog.json doesn't have yet
+    /// (unless the user removed them), so new apps show up after an update.
+    /// </summary>
+    private void MergeBuiltInApps()
+    {
+        _localCatalog.RemovedDefaults ??= new();
+        var defaults = SampleCatalog().Apps;
+        var changed = false;
+        for (int i = 0; i < defaults.Count; i++)
+        {
+            var d = defaults[i];
+            if (_localCatalog.Apps.Any(a => a.Key.Equals(d.Key, StringComparison.OrdinalIgnoreCase))) continue;
+            if (_localCatalog.RemovedDefaults.Contains(d.Key, StringComparer.OrdinalIgnoreCase)) continue;
+            _localCatalog.Apps.Insert(Math.Min(i, _localCatalog.Apps.Count), d);
+            changed = true;
+        }
+        if (changed) TrySave(AppPaths.Catalog, _localCatalog);
     }
 
     private static CatalogFile SampleCatalog() => new()
@@ -461,7 +482,7 @@ public partial class MainWindow : Window
         if (vm == null) return;
         if (vm.Entry.FromRemote)
         {
-            MessageBox.Show(this, "This app comes from the remote catalog URL set in Settings. Edit it there.", AppTitle);
+            MessageBox.Show(this, "This app comes from the online catalog (Settings → Remote catalog URL). Change it by editing catalog.json in the GitHub repo; the launcher picks it up on its next start or Reload catalog.", AppTitle);
             return;
         }
         var dlg = new RepoDialog(vm.Entry) { Owner = this };
@@ -488,12 +509,14 @@ public partial class MainWindow : Window
         if (vm.IsDownloading) { MessageBox.Show(this, "Cancel the download first.", AppTitle); return; }
         if (vm.Entry.FromRemote)
         {
-            MessageBox.Show(this, "This app comes from the remote catalog URL set in Settings, so it can't be removed here.", AppTitle);
+            MessageBox.Show(this, "This app comes from the online catalog (Settings → Remote catalog URL), so it can't be removed here. Remove it from catalog.json in the GitHub repo, or clear the Remote catalog URL.", AppTitle);
             return;
         }
         if (MessageBox.Show(this, $"Remove \"{vm.Name}\" from the launcher?\n\nInstalled files are not deleted.", AppTitle,
                 MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
         _localCatalog.Apps.Remove(vm.Entry);
+        if (SampleCatalog().Apps.Any(d => d.Key.Equals(vm.Key, StringComparison.OrdinalIgnoreCase)))
+            _localCatalog.RemovedDefaults.Add(vm.Key);
         TrySave(AppPaths.Catalog, _localCatalog);
         RebuildAppCards();
     }
@@ -1040,6 +1063,8 @@ public partial class MainWindow : Window
     {
         _localCatalog = JsonStore.Load(AppPaths.Catalog, () => new CatalogFile());
         _localCatalog.Apps ??= new();
+        MergeBuiltInApps();
+        if (!string.IsNullOrWhiteSpace(App.Settings.RemoteCatalogUrl)) await LoadRemoteCatalogAsync(showResult: false);
         if (JsonStore.LastLoadError is { } err)
         {
             JsonStore.LastLoadError = null;
