@@ -13,7 +13,7 @@
     {
       "id": "draftly",
       "name": "Draftly",
-      "description": "Modern word processor for writing and formatting documents: rich text, pictures, tables and Light or Dark mode. Opens RTF, TXT and Word files.",
+      "description": "Modern word processor with tabs, headings, links, line numbers, pictures, tables and Light or Dark mode. Opens RTF, TXT, Markdown and Word files.",
       "repo": "adamglassner/draftly",
       "assetPattern": "Draftly-*-win-x64.zip;Draftly-*-Setup.exe",
       "exe": "Draftly.exe",
