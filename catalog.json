@@ -31,7 +31,7 @@
     {
       "id": "discshelf",
       "name": "Discshelf",
-      "description": "Music player for the music on your computer: Genre, Artist and Album browsing, album art, and Light, Dark or Classic (Songbird) themes. Plays MP3, AAC, FLAC, Ogg, Opus and WAV.",
+      "description": "Music player for the music on your computer, inspired by Songbird: albums, artists, playlists, Up Next, ratings, lyrics, a visualizer, gapless playback and crossfade, an equalizer, radio and Last.fm scrobbling. Modern, Classic and iTunes styles in light and dark. Plays MP3, AAC, FLAC, Ogg, Opus and WAV.",
       "repo": "adamglassner/discshelf",
       "assetPattern": "Discshelf-*-win-x64.zip;Discshelf-*-Setup.exe",
       "exe": "Discshelf.exe",
