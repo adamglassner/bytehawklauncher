@@ -157,11 +157,11 @@ public partial class MainWindow : Window
             Draftly(),
             ShoreDrop(),
             Discshelf(),
+            Sumthing(),
             ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
             ComingSoon("shutterbox", "Shutterbox", "Photo management for organizing, browsing and finding your pictures. Coming soon."),
             ComingSoon("coinpilot", "CoinPilot", "Budgeting app for tracking spending and planning where your money goes. Coming soon."),
-            ComingSoon("sumthing", "Sumthing", "Calculator. Coming soon."),
             ComingSoon("castaway", "Castaway", "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon."),
         },
     };
@@ -212,6 +212,18 @@ public partial class MainWindow : Window
         AssetPattern = "Discshelf-*-win-x64.zip;Discshelf-*-Setup.exe",
         Exe = "Discshelf.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/discshelf/main/assets/discshelf-256.png",
+    };
+
+    /// <summary>Sumthing — calculator (was "Coming soon" before 1.3.2).</summary>
+    private static CatalogEntry Sumthing() => new()
+    {
+        Id = "sumthing",
+        Name = "Sumthing",
+        Description = "Calculator with a paper tape, sums you can type in words, a unit and currency converter, and tip, discount, percent and date tools. Light, Dark or Classic (Windows 7) look.",
+        Repo = "adamglassner/sumthing",
+        AssetPattern = "Sumthing-*-win-x64.zip;Sumthing-*-Setup.exe",
+        Exe = "Sumthing.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/sumthing/main/assets/sumthing-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>

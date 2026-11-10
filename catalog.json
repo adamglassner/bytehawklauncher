@@ -38,6 +38,15 @@
       "icon": "https://raw.githubusercontent.com/adamglassner/discshelf/main/assets/discshelf-256.png"
     },
     {
+      "id": "sumthing",
+      "name": "Sumthing",
+      "description": "Calculator with a paper tape, sums you can type in words, a unit and currency converter, and tip, discount, percent and date tools. Light, Dark or Classic (Windows 7) look.",
+      "repo": "adamglassner/sumthing",
+      "assetPattern": "Sumthing-*-win-x64.zip;Sumthing-*-Setup.exe",
+      "exe": "Sumthing.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/sumthing/main/assets/sumthing-256.png"
+    },
+    {
       "id": "sparecopy",
       "name": "Sparecopy",
       "description": "Backup for your PCs to a NAS, server or USB drive. Coming soon.",
@@ -65,14 +74,6 @@
       "id": "coinpilot",
       "name": "CoinPilot",
       "description": "Budgeting app for tracking spending and planning where your money goes. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
-    },
-    {
-      "id": "sumthing",
-      "name": "Sumthing",
-      "description": "Calculator. Coming soon.",
       "repo": "",
       "assetPattern": "*.exe",
       "comingSoon": true
