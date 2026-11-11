@@ -158,6 +158,7 @@ public partial class MainWindow : Window
             ShoreDrop(),
             Discshelf(),
             Sumthing(),
+            Taskflare(),
             ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
             ComingSoon("shutterbox", "Shutterbox", "Photo management for organizing, browsing and finding your pictures. Coming soon."),
@@ -224,6 +225,18 @@ public partial class MainWindow : Window
         AssetPattern = "Sumthing-*-win-x64.zip;Sumthing-*-Setup.exe",
         Exe = "Sumthing.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/sumthing/main/assets/sumthing-256.png",
+    };
+
+    /// <summary>Taskflare — to-do list with a Muse AI connector (added in 1.3.3).</summary>
+    private static CatalogEntry Taskflare() => new()
+    {
+        Id = "taskflare",
+        Name = "Taskflare",
+        Description = "Free to-do list in the style of Microsoft To Do and Todoist: My Day, Important, Planned, lists, quick add that understands dates, reminders and Light or Dark mode. Meta's Muse AI can add tasks for you.",
+        Repo = "adamglassner/taskflare",
+        AssetPattern = "Taskflare-*-win-x64.zip;Taskflare-*-Setup.exe",
+        Exe = "Taskflare.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/taskflare/main/assets/taskflare-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
