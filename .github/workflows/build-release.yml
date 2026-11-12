@@ -93,6 +93,36 @@ jobs:
               [System.Drawing.Graphics]::FromImage($bmp).CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
               $bmp.Save("screenshots/theme-$theme.png")
             } catch { Write-Host "Screenshot not available: $_" }
+            if ($theme -eq 'Dark') {
+              # Search box probe: click into it like a user, then capture close-ups (caret blinks, so several frames)
+              try {
+                Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes
+                Add-Type -Namespace Native -Name Mouse -MemberDefinition '[DllImport("user32.dll")] public static extern void mouse_event(int f, int x, int y, int d, int e); [DllImport("user32.dll")] public static extern bool SetForegroundWindow(System.IntPtr h);'
+                $p.Refresh()
+                [Native.Mouse]::SetForegroundWindow($p.MainWindowHandle) | Out-Null
+                $root = [System.Windows.Automation.AutomationElement]::FromHandle($p.MainWindowHandle)
+                $cond = New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::AutomationIdProperty, 'SearchBox')
+                $sb = $root.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $cond)
+                $r = $sb.Current.BoundingRectangle
+                Write-Host "SearchBox bounds: $r"
+                function Shot($name) {
+                  $x = [int]$r.X - 20; $y = [int]$r.Y - 12; $w = [int]$r.Width + 40; $h = [int]$r.Height + 24
+                  $bmp = New-Object System.Drawing.Bitmap $w, $h
+                  [System.Drawing.Graphics]::FromImage($bmp).CopyFromScreen($x, $y, 0, 0, (New-Object System.Drawing.Size $w, $h))
+                  $big = New-Object System.Drawing.Bitmap ($w * 3), ($h * 3)
+                  $g = [System.Drawing.Graphics]::FromImage($big); $g.InterpolationMode = 'NearestNeighbor'
+                  $g.DrawImage($bmp, 0, 0, $w * 3, $h * 3); $big.Save("screenshots/$name.png")
+                }
+                Shot 'search-0-before-click'
+                # click in the middle of the box, where people usually click
+                [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point ([int]($r.X + $r.Width / 2)), ([int]($r.Y + $r.Height / 2))
+                [Native.Mouse]::mouse_event(0x0002, 0, 0, 0, 0); [Native.Mouse]::mouse_event(0x0004, 0, 0, 0, 0)
+                [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point 5, 5   # move the mouse pointer out of the way
+                foreach ($i in 1..4) { Start-Sleep -Milliseconds 260; Shot "search-1-focused-$i" }
+                [System.Windows.Forms.SendKeys]::SendWait('dr')
+                foreach ($i in 1..2) { Start-Sleep -Milliseconds 260; Shot "search-2-typed-$i" }
+              } catch { Write-Host "Search probe failed: $_" }
+            }
             Stop-Process -Id $p.Id -Force
             Start-Sleep -Seconds 2
             $saved = Get-Content (Join-Path $data 'settings.json') -Raw | ConvertFrom-Json
@@ -158,6 +188,7 @@ jobs:
           }
           $appLog = Join-Path $env:APPDATA 'BytehawkStudio\Launcher\launcher.log'
           if (Test-Path $appLog) { Copy-Item $appLog $d }
+          if (Test-Path screenshots) { Copy-Item screenshots (Join-Path $d 'screenshots') -Recurse }
           @(
             "commit=${{ github.sha }}"
             "status=${{ job.status }}"
