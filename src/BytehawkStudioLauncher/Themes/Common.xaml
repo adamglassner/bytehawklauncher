@@ -169,7 +169,7 @@
     <Setter Property="CaretBrush" Value="{DynamicResource TextPrimary}" />
     <Setter Property="SelectionBrush" Value="{DynamicResource Accent}" />
     <Setter Property="BorderThickness" Value="1" />
-    <Setter Property="Padding" Value="8,7" />
+    <Setter Property="Padding" Value="10,8" />
     <Setter Property="FontSize" Value="13" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
     <Setter Property="Template">
@@ -177,7 +177,9 @@
         <ControlTemplate TargetType="TextBox">
           <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" SnapsToDevicePixels="True">
-            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" Focusable="False"
+            <!-- No Margin here: WPF already applies the TextBox's Padding inside PART_ContentHost.
+                 Adding it again doubled the padding and pushed the caret/text right of the placeholder. -->
+            <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
                           HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
           </Border>
           <ControlTemplate.Triggers>
