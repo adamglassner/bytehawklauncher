@@ -56,6 +56,15 @@
       "icon": "https://raw.githubusercontent.com/adamglassner/taskflare/main/assets/taskflare-256.png"
     },
     {
+      "id": "boardwalk",
+      "name": "Boardwalk",
+      "description": "Kanban boards for your projects: as many boards as you like, statuses like New, In progress, On hold and Complete, and cards with labels, priority, due dates, checklists and links that you drag between them. Light or Dark mode. Sync between devices is coming soon.",
+      "repo": "adamglassner/boardwalk",
+      "assetPattern": "Boardwalk-*-win-x64.zip;Boardwalk-*-Setup.exe",
+      "exe": "Boardwalk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/boardwalk/main/assets/boardwalk-256.png"
+    },
+    {
       "id": "coinpilot",
       "name": "CoinPilot",
       "description": "Budgeting app for tracking spending and planning where your money goes, with sync to your phone on the way. Early preview: the Dashboard shows the planned layout and the other sections are coming soon.",

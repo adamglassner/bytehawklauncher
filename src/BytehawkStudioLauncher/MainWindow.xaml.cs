@@ -160,6 +160,7 @@ public partial class MainWindow : Window
             Discshelf(),
             Sumthing(),
             Taskflare(),
+            Boardwalk(),
             CoinPilot(),
             Shutterbox(),
             Sparecopy(),
@@ -239,6 +240,21 @@ public partial class MainWindow : Window
         Exe = "Taskflare.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/taskflare/main/assets/taskflare-256.png",
     };
+
+    /// <summary>Boardwalk — kanban boards, one per project (added in 1.3.10).</summary>
+    private static CatalogEntry Boardwalk() => new()
+    {
+        Id = "boardwalk",
+        Name = "Boardwalk",
+        Description = BoardwalkDescription,
+        Repo = "adamglassner/boardwalk",
+        AssetPattern = "Boardwalk-*-win-x64.zip;Boardwalk-*-Setup.exe",
+        Exe = "Boardwalk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/boardwalk/main/assets/boardwalk-256.png",
+    };
+
+    private const string BoardwalkDescription =
+        "Kanban boards for your projects: as many boards as you like, statuses like New, In progress, On hold and Complete, and cards with labels, priority, due dates, checklists and links that you drag between them. Light or Dark mode. Sync between devices is coming soon.";
 
     /// <summary>CoinPilot — budgeting app, early preview shell (was "Coming soon" before 1.3.4).</summary>
     private static CatalogEntry CoinPilot() => new()
