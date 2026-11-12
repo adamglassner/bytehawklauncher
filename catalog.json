@@ -83,17 +83,18 @@
       "icon": "https://raw.githubusercontent.com/adamglassner/sparecopy/main/assets/sparecopy-256.png"
     },
     {
+      "id": "castaway",
+      "name": "Castaway",
+      "description": "Media player for your own movies and shows in the style of Plex: libraries for Movies, TV Shows, Kids & Family, Documentaries, Stand-Up and Anime, in light or dark. Early preview: the Castaway server that holds and streams your media, and playback, are coming soon.",
+      "repo": "adamglassner/Castaway",
+      "assetPattern": "Castaway-*-win-x64.zip;Castaway-*-Setup.exe",
+      "exe": "Castaway.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/Castaway/main/assets/castaway-256.png"
+    },
+    {
       "id": "fleetwatch",
       "name": "Fleetwatch",
       "description": "PC management: keep an eye on and look after the computers you're responsible for. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
-    },
-    {
-      "id": "castaway",
-      "name": "Castaway",
-      "description": "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon.",
       "repo": "",
       "assetPattern": "*.exe",
       "comingSoon": true

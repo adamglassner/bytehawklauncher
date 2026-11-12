@@ -162,8 +162,8 @@ public partial class MainWindow : Window
             CoinPilot(),
             Shutterbox(),
             Sparecopy(),
+            Castaway(),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
-            ComingSoon("castaway", "Castaway", "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon."),
         },
     };
 
@@ -273,6 +273,18 @@ public partial class MainWindow : Window
         AssetPattern = "Sparecopy-*-win-x64.zip;Sparecopy-*-Setup.exe",
         Exe = "Sparecopy.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/sparecopy/main/assets/sparecopy-256.png",
+    };
+
+    /// <summary>Castaway — media player, early preview shell (was "Coming soon" before 1.3.8).</summary>
+    private static CatalogEntry Castaway() => new()
+    {
+        Id = "castaway",
+        Name = "Castaway",
+        Description = "Media player for your own movies and shows in the style of Plex: libraries for Movies, TV Shows, Kids & Family, Documentaries, Stand-Up and Anime, in light or dark. Early preview: the Castaway server that holds and streams your media, and playback, are coming soon.",
+        Repo = "adamglassner/Castaway",
+        AssetPattern = "Castaway-*-win-x64.zip;Castaway-*-Setup.exe",
+        Exe = "Castaway.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/Castaway/main/assets/castaway-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
