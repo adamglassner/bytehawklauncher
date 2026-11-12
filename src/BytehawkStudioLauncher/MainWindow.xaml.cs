@@ -232,7 +232,7 @@ public partial class MainWindow : Window
     {
         Id = "taskflare",
         Name = "Taskflare",
-        Description = "Free to-do list in the style of Microsoft To Do and Todoist: My Day, Important, Planned, lists, quick add that understands dates, reminders and Light or Dark mode. Meta's Muse AI can add tasks for you.",
+        Description = "Free to-do list in the style of Microsoft To Do and Todoist: My Day, Important, Planned, lists, quick add that understands dates, reminders and Light or Dark mode. Claude, ChatGPT, Gemini, Grok, Muse and Siri can add tasks for you.",
         Repo = "adamglassner/taskflare",
         AssetPattern = "Taskflare-*-win-x64.zip;Taskflare-*-Setup.exe",
         Exe = "Taskflare.exe",
