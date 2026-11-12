@@ -163,7 +163,7 @@ public partial class MainWindow : Window
             Shutterbox(),
             Sparecopy(),
             Castaway(),
-            ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
+            Fleetwatch(),
         },
     };
 
@@ -285,6 +285,17 @@ public partial class MainWindow : Window
         AssetPattern = "Castaway-*-win-x64.zip;Castaway-*-Setup.exe",
         Exe = "Castaway.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/Castaway/main/assets/castaway-256.png",
+    };
+
+    /// <summary>Fleetwatch — look after the PCs you're responsible for; installs a background agent that reports to your own server.</summary>
+    private static CatalogEntry Fleetwatch() => new()
+    {
+        Id = "fleetwatch",
+        Name = "Fleetwatch",
+        Description = "Look after the computers you're responsible for from one place: each PC's status and pending Windows updates, its error logs, and installing apps, updates and restarts remotely. Installs a background agent that reports to your own Fleetwatch server.",
+        Repo = "adamglassner/Fleetwatch",
+        AssetPattern = "FleetwatchAgentSetup*.exe",
+        Exe = "FleetwatchAgent.exe",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>

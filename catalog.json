@@ -94,10 +94,10 @@
     {
       "id": "fleetwatch",
       "name": "Fleetwatch",
-      "description": "PC management: keep an eye on and look after the computers you're responsible for. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "Look after the computers you're responsible for from one place: each PC's status and pending Windows updates, its error logs, and installing apps, updates and restarts remotely. Installs a background agent that reports to your own Fleetwatch server.",
+      "repo": "adamglassner/Fleetwatch",
+      "assetPattern": "FleetwatchAgentSetup*.exe",
+      "exe": "FleetwatchAgent.exe"
     }
   ]
 }
