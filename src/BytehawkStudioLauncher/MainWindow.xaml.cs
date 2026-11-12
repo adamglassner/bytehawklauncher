@@ -159,10 +159,10 @@ public partial class MainWindow : Window
             Discshelf(),
             Sumthing(),
             Taskflare(),
+            CoinPilot(),
             ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
             ComingSoon("shutterbox", "Shutterbox", "Photo management for organizing, browsing and finding your pictures. Coming soon."),
-            ComingSoon("coinpilot", "CoinPilot", "Budgeting app for tracking spending and planning where your money goes. Coming soon."),
             ComingSoon("castaway", "Castaway", "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon."),
         },
     };
@@ -237,6 +237,18 @@ public partial class MainWindow : Window
         AssetPattern = "Taskflare-*-win-x64.zip;Taskflare-*-Setup.exe",
         Exe = "Taskflare.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/taskflare/main/assets/taskflare-256.png",
+    };
+
+    /// <summary>CoinPilot — budgeting app, early preview shell (was "Coming soon" before 1.3.4).</summary>
+    private static CatalogEntry CoinPilot() => new()
+    {
+        Id = "coinpilot",
+        Name = "CoinPilot",
+        Description = "Budgeting app for tracking spending and planning where your money goes, with sync to your phone on the way. Early preview: the Dashboard shows the planned layout and the other sections are coming soon.",
+        Repo = "adamglassner/coinpilot",
+        AssetPattern = "CoinPilot-*-win-x64.zip;CoinPilot-*-Setup.exe",
+        Exe = "CoinPilot.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>

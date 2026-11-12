@@ -56,6 +56,15 @@
       "icon": "https://raw.githubusercontent.com/adamglassner/taskflare/main/assets/taskflare-256.png"
     },
     {
+      "id": "coinpilot",
+      "name": "CoinPilot",
+      "description": "Budgeting app for tracking spending and planning where your money goes, with sync to your phone on the way. Early preview: the Dashboard shows the planned layout and the other sections are coming soon.",
+      "repo": "adamglassner/coinpilot",
+      "assetPattern": "CoinPilot-*-win-x64.zip;CoinPilot-*-Setup.exe",
+      "exe": "CoinPilot.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png"
+    },
+    {
       "id": "sparecopy",
       "name": "Sparecopy",
       "description": "Backup for your PCs to a NAS, server or USB drive. Coming soon.",
@@ -75,14 +84,6 @@
       "id": "shutterbox",
       "name": "Shutterbox",
       "description": "Photo management for organizing, browsing and finding your pictures. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
-    },
-    {
-      "id": "coinpilot",
-      "name": "CoinPilot",
-      "description": "Budgeting app for tracking spending and planning where your money goes. Coming soon.",
       "repo": "",
       "assetPattern": "*.exe",
       "comingSoon": true
