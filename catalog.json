@@ -65,6 +65,15 @@
       "icon": "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png"
     },
     {
+      "id": "shutterbox",
+      "name": "Shutterbox",
+      "description": "Photo organizer for the pictures already on your PC: a timeline by day, month or year, albums, favorites, tags, search, a viewer with slideshows, and import from cameras and phones. Your files stay where they are.",
+      "repo": "adamglassner/Shutterbox",
+      "assetPattern": "Shutterbox-*-win-x64.zip;Shutterbox-*-Setup.exe",
+      "exe": "Shutterbox.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/Shutterbox/main/assets/shutterbox-256.png"
+    },
+    {
       "id": "sparecopy",
       "name": "Sparecopy",
       "description": "Backup for your PCs to a NAS, server or USB drive. Coming soon.",
@@ -76,14 +85,6 @@
       "id": "fleetwatch",
       "name": "Fleetwatch",
       "description": "PC management: keep an eye on and look after the computers you're responsible for. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
-    },
-    {
-      "id": "shutterbox",
-      "name": "Shutterbox",
-      "description": "Photo management for organizing, browsing and finding your pictures. Coming soon.",
       "repo": "",
       "assetPattern": "*.exe",
       "comingSoon": true

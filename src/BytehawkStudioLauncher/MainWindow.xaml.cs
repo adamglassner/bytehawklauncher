@@ -160,9 +160,9 @@ public partial class MainWindow : Window
             Sumthing(),
             Taskflare(),
             CoinPilot(),
+            Shutterbox(),
             ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
-            ComingSoon("shutterbox", "Shutterbox", "Photo management for organizing, browsing and finding your pictures. Coming soon."),
             ComingSoon("castaway", "Castaway", "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon."),
         },
     };
@@ -249,6 +249,18 @@ public partial class MainWindow : Window
         AssetPattern = "CoinPilot-*-win-x64.zip;CoinPilot-*-Setup.exe",
         Exe = "CoinPilot.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png",
+    };
+
+    /// <summary>Shutterbox — photo organizer (was "Coming soon" before 1.3.5).</summary>
+    private static CatalogEntry Shutterbox() => new()
+    {
+        Id = "shutterbox",
+        Name = "Shutterbox",
+        Description = "Photo organizer for the pictures already on your PC: a timeline by day, month or year, albums, favorites, tags, search, a viewer with slideshows, and import from cameras and phones. Your files stay where they are.",
+        Repo = "adamglassner/Shutterbox",
+        AssetPattern = "Shutterbox-*-win-x64.zip;Shutterbox-*-Setup.exe",
+        Exe = "Shutterbox.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/Shutterbox/main/assets/shutterbox-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
