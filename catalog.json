@@ -76,10 +76,11 @@
     {
       "id": "sparecopy",
       "name": "Sparecopy",
-      "description": "Backup for your PCs to a NAS, server or USB drive. Coming soon.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "Backup for your family's PCs to a NAS, server or USB drive, with one dashboard for every device at every house. Early preview: the Overview shows the planned layout and the other sections are coming soon.",
+      "repo": "adamglassner/sparecopy",
+      "assetPattern": "Sparecopy-*-win-x64.zip;Sparecopy-*-Setup.exe",
+      "exe": "Sparecopy.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/sparecopy/main/assets/sparecopy-256.png"
     },
     {
       "id": "fleetwatch",

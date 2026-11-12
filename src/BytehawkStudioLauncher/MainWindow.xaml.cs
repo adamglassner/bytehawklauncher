@@ -161,7 +161,7 @@ public partial class MainWindow : Window
             Taskflare(),
             CoinPilot(),
             Shutterbox(),
-            ComingSoon("sparecopy", "Sparecopy", "Backup for your PCs to a NAS, server or USB drive. Coming soon."),
+            Sparecopy(),
             ComingSoon("fleetwatch", "Fleetwatch", "PC management: keep an eye on and look after the computers you're responsible for. Coming soon."),
             ComingSoon("castaway", "Castaway", "Media player for your movies, shows and music. Requires a Castaway server: you set up the server on a PC or home server to host your media, and the player streams from it. Coming soon."),
         },
@@ -261,6 +261,18 @@ public partial class MainWindow : Window
         AssetPattern = "Shutterbox-*-win-x64.zip;Shutterbox-*-Setup.exe",
         Exe = "Shutterbox.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/Shutterbox/main/assets/shutterbox-256.png",
+    };
+
+    /// <summary>Sparecopy — family backup, early preview shell (was "Coming soon" before 1.3.7).</summary>
+    private static CatalogEntry Sparecopy() => new()
+    {
+        Id = "sparecopy",
+        Name = "Sparecopy",
+        Description = "Backup for your family's PCs to a NAS, server or USB drive, with one dashboard for every device at every house. Early preview: the Overview shows the planned layout and the other sections are coming soon.",
+        Repo = "adamglassner/sparecopy",
+        AssetPattern = "Sparecopy-*-win-x64.zip;Sparecopy-*-Setup.exe",
+        Exe = "Sparecopy.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/sparecopy/main/assets/sparecopy-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
