@@ -165,6 +165,8 @@ public partial class MainWindow : Window
             Shutterbox(),
             Sparecopy(),
             Castaway(),
+            Larksong(),
+            LarksongClassic(),
             Fleetwatch(),
         },
     };
@@ -255,6 +257,30 @@ public partial class MainWindow : Window
 
     private const string BoardwalkDescription =
         "Kanban boards for your projects: as many boards as you like, statuses like New, In progress, On hold and Complete, and cards with labels, priority, due dates, checklists and links that you drag between them. Light or Dark mode. Sync between devices is coming soon.";
+
+    /// <summary>Larksong — alarm clock (added in 1.3.11). Installed from its portable Windows zip.</summary>
+    private static CatalogEntry Larksong() => new()
+    {
+        Id = "larksong",
+        Name = "Larksong",
+        Description = "Alarm clock with your own sounds and gently rising volume, wake to the radio, sleep sounds, bedtime reminders, a stopwatch and timer, world clocks and weather. Styles include Larksong, Dawn, Dusk, Retro, a clock radio with a world radio tuner, and Terminal.",
+        Repo = "adamglassner/larksong",
+        AssetPattern = "Larksong-*-win-x64.zip",
+        Exe = "Larksong.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/larksong/main/desktop/icons/larksong.png",
+    };
+
+    /// <summary>Larksong Classic — the alarm clock for Windows 95 to 11 (added in 1.3.11). Installed from its zip.</summary>
+    private static CatalogEntry LarksongClassic() => new()
+    {
+        Id = "larksong-classic",
+        Name = "Larksong Classic",
+        Description = "Larksong for older PCs: one small program that runs on every version from Windows 95 to Windows 11, with alarms, a stopwatch and timer, world clocks and a bedtime reminder. Backups move your alarms between it and Larksong.",
+        Repo = "adamglassner/larksong-classic",
+        AssetPattern = "Larksong-Classic-*.zip",
+        Exe = "Larksong.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/larksong-classic/main/assets/larksong-classic-256.png",
+    };
 
     /// <summary>CoinPilot — budgeting app, early preview shell (was "Coming soon" before 1.3.4).</summary>
     private static CatalogEntry CoinPilot() => new()

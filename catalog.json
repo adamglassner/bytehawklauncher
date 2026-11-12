@@ -101,6 +101,24 @@
       "icon": "https://raw.githubusercontent.com/adamglassner/Castaway/main/assets/castaway-256.png"
     },
     {
+      "id": "larksong",
+      "name": "Larksong",
+      "description": "Alarm clock with your own sounds and gently rising volume, wake to the radio, sleep sounds, bedtime reminders, a stopwatch and timer, world clocks and weather. Styles include Larksong, Dawn, Dusk, Retro, a clock radio with a world radio tuner, and Terminal.",
+      "repo": "adamglassner/larksong",
+      "assetPattern": "Larksong-*-win-x64.zip",
+      "exe": "Larksong.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/larksong/main/desktop/icons/larksong.png"
+    },
+    {
+      "id": "larksong-classic",
+      "name": "Larksong Classic",
+      "description": "Larksong for older PCs: one small program that runs on every version from Windows 95 to Windows 11, with alarms, a stopwatch and timer, world clocks and a bedtime reminder. Backups move your alarms between it and Larksong.",
+      "repo": "adamglassner/larksong-classic",
+      "assetPattern": "Larksong-Classic-*.zip",
+      "exe": "Larksong.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/larksong-classic/main/assets/larksong-classic-256.png"
+    },
+    {
       "id": "fleetwatch",
       "name": "Fleetwatch",
       "description": "Look after the computers you're responsible for from one place: each PC's status and pending Windows updates, its error logs, and installing apps, updates and restarts remotely. Installs a background agent that reports to your own Fleetwatch server.",
