@@ -101,6 +101,7 @@ public partial class MainWindow : Window
         MergeBuiltInApps();
 
         _installed = new(JsonStore.Load(AppPaths.Installed, () => new Dictionary<string, InstalledApp>()), StringComparer.OrdinalIgnoreCase);
+        if (NoteSelfUpdates()) TrySave(AppPaths.Installed, _installed);
         _releases = new(JsonStore.Load(AppPaths.ReleaseCache, () => new Dictionary<string, CachedRelease>()), StringComparer.OrdinalIgnoreCase);
         _library = JsonStore.Load(AppPaths.Library, () => new List<LibraryEntry>());
         _webApps = JsonStore.Load(AppPaths.WebApps, () => new List<WebAppEntry>());
@@ -1454,6 +1455,34 @@ public partial class MainWindow : Window
     private void ReportError(string? message)
     {
         if (message != null) MessageBox.Show(this, message, AppTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+    }
+
+    /// <summary>
+    /// Apps like Draftly can update themselves. If an installed app's program is now a newer version
+    /// than the launcher recorded, record that, so the launcher doesn't offer the same update again.
+    /// </summary>
+    private bool NoteSelfUpdates()
+    {
+        bool changed = false;
+        foreach (var inst in _installed.Values)
+        {
+            try
+            {
+                string? exe = inst.LaunchPath is { } lp && File.Exists(lp) ? lp : null;
+                if (exe == null && inst.InstallFolder is { } f && Directory.Exists(f) &&
+                    Directory.GetFiles(f, "*.exe", SearchOption.TopDirectoryOnly) is { Length: 1 } only)
+                    exe = only[0];
+                if (exe == null) continue;
+                var fileVersion = SoftwareDialog.ReadFileVersion(exe);
+                if (fileVersion.Length > 0 && GitHubService.CompareVersions(fileVersion, inst.Version) > 0)
+                {
+                    inst.Version = "v" + fileVersion;
+                    changed = true;
+                }
+            }
+            catch { }
+        }
+        return changed;
     }
 
     private void TrySave<T>(string path, T value)
