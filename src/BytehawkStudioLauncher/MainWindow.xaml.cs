@@ -339,6 +339,7 @@ public partial class MainWindow : Window
         Repo = "adamglassner/Fleetwatch",
         AssetPattern = "FleetwatchAgentSetup*.exe",
         Exe = "FleetwatchAgent.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/Fleetwatch/main/assets/fleetwatch-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
