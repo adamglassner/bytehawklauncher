@@ -1,0 +1,12 @@
+2026-11-13 19:22:16 [INFO] Running C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-53108490\GuardrailEHS-0.6.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /NOICONS /DIR="C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-53108490\apps\guardrail-ehs\app"
+2026-11-13 19:22:23 [INFO] Running C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-53108490\GuardrailEHS-0.6.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /NOICONS /DIR="C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-53108490\apps\guardrail-ehs\app"
+2026-11-13 19:22:31 [INFO] Icon for https://github.com from https://github.com/fluidicon.png (128px)
+2026-11-13 19:22:31 [INFO] Icon for https://www.wikipedia.org from https://www.wikipedia.org/static/apple-touch/wikipedia.png (128px)
+2026-11-13 19:22:31 [INFO] Icon page fetch failed for https://bytehawk-launcher-test.invalid: No such host is known. (bytehawk-launcher-test.invalid:443)
+2026-11-13 19:22:31 [INFO] Icon candidate https://bytehawk-launcher-test.invalid/apple-touch-icon.png failed: No such host is known. (bytehawk-launcher-test.invalid:443)
+2026-11-13 19:22:31 [INFO] Icon candidate https://bytehawk-launcher-test.invalid/favicon.ico failed: No such host is known. (bytehawk-launcher-test.invalid:443)
+2026-11-13 19:22:32 [INFO] Shortcut C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-53108490\Test App.lnk -> C:\Windows\system32\notepad.exe /A
+2026-11-13 19:22:32 [INFO] Shortcut C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-53108490\Example.url -> https://example.com/
+2026-11-13 19:22:34 [INFO] Starting Bytehawk Studio Launcher 1.4.1
+2026-11-13 19:23:02 [INFO] Starting Bytehawk Studio Launcher 1.4.1
+2026-11-13 19:23:19 [INFO] Starting Bytehawk Studio Launcher 1.4.1

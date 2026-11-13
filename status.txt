@@ -1,0 +1,6 @@
+commit=1ef43e1f8d0e4c7d9d5d299ece005f1ddaf072e5
+status=success
+version=1.4.1
+release=true
+run=https://github.com/adamglassner/bytehawklauncher/actions/runs/43491303133
+time=2026-11-13T19:23:50.4038731+00:00

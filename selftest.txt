@@ -1,0 +1,64 @@
+Bytehawk Studio Launcher 1.4.1 self-test 2026-11-13 19:22:14Z
+PASS  Version is set  — 1.4.1
+PASS  Parse repo URL  — owner/repo
+PASS  Parse repo /releases URL  — owner/repo
+PASS  Parse owner/repo  — owner/repo
+PASS  Reject non-repo text
+PASS  Version compare v1.3.0 > 1.2.0
+PASS  Version compare 1.10 > 1.9
+PASS  Version compare v1.0.0 == 1.0.0
+PASS  URL without scheme gets https://
+PASS  URL with path kept
+PASS  URL localhost:3000 accepted
+PASS  Invalid URL rejected  — A web address can't contain spaces.
+PASS  Host without dot rejected
+PASS  Asset pattern with exclude
+PASS  Asset pattern zip
+PASS  Asset pattern no match
+PASS  JSON save/load
+PASS  Latest tag from github.com (no API)  — v0.6.0
+PASS  GitHub repo lookup  — guardrailehs
+PASS  GitHub latest release  — v0.6.0
+PASS  Tag check agrees with the API  — v0.6.0 vs v0.6.0
+PASS  Conditional request (ETag)  — NotModified
+PASS  Catalog pattern picks the Setup .exe  — GuardrailEHS-0.6.0-Setup.exe
+PASS  Portable .zip asset present  — GuardrailEHS-0.6.0-win-x64.zip
+PASS  Download Setup .exe from GitHub  — 49543809 of 49543809 bytes, 6 progress reports
+PASS  Progress reported total
+PASS  Download size + SHA-256 verified  — sha256:91a86600c0e64c15d6ebcd20c346d2f45f54e7c6e8c8c55d1402a2aac0358494
+PASS  Corrupted download rejected  — the downloaded file is damaged (checksum mismatch)
+PASS  Detects Inno Setup  — inno
+PASS  Silent install  — C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-53108490\apps\guardrail-ehs\app\Guardrail.exe
+PASS  Finds Guardrail.exe
+PASS  Not reported as running
+PASS  Icon read from installed program
+PASS  Reinstall over existing copy (update path)
+PASS  Uninstall removes the app folder
+PASS  Zip size + SHA-256 verified
+PASS  Zip install finds Guardrail.exe  — C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-53108490\apps\guardrail-zip\v0.6.0\Guardrail.exe
+PASS  Zip uninstall
+PASS  Cancel download cleans up
+PASS  Icon links parsed (SVG skipped, touch icon preferred)  — /f32.png=132, /touch.png=300
+PASS  Web app icon from https://github.com  — 9080 bytes
+PASS  Web app icon from https://www.wikipedia.org  — 1859 bytes
+PASS  No icon for unreachable site
+PASS  Store app version from package name
+PASS  Store app id detection
+PASS  List installed Store apps  — 6 found, 6 with icons; e.g. Feedback Hub, Get Started, Settings
+PASS  Installed Store app is detected  — Microsoft.WindowsFeedbackHub_8wekyb3d8bbwe!App
+PASS  Missing Store app is detected as missing
+PASS  Version read from an .exe  — notepad.exe = 10.0.26100.32860
+PASS  Create .lnk shortcut  — C:\Windows\System32\notepad.exe
+PASS  Shortcut run-as-admin flag
+PASS  Create .url shortcut with icon
+PASS  Start menu lookup runs
+PASS  Web apps JSON export/import
+PASS  Web apps bookmarks.html export/import  — Example|Productivity|https://example.com/; Docs & Notes||https://docs.example.org/a?b=1
+PASS  Import browser bookmarks (folders → categories, skips javascript:)  — Mail|; Learning & More|School
+PASS  Duplicate detection ignores www/scheme/slash
+PASS  Online catalog.json parses  — 14 apps, 0 coming soon
+PASS  Guardrail EHS is the first app  — Guardrail EHS
+PASS  No sample entries left
+PASS  Launcher update repo reachable  — latest v1.4.0, newer than 1.4.1: False
+PASS  Launcher release has a Setup .exe  — BytehawkStudioLauncher-1.4.0-Setup.exe
+ALL PASSED
