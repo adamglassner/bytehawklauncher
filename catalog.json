@@ -67,7 +67,7 @@
     {
       "id": "coinpilot",
       "name": "CoinPilot",
-      "description": "Budgeting app for tracking spending and planning where your money goes, with sync to your phone on the way. Early preview: the Dashboard shows the planned layout and the other sections are coming soon.",
+      "description": "Budgeting app for tracking spending and planning where your money goes, with sync to your phone on the way. Early preview: Transactions, Budgets and the Dashboard work; Goals, Accounts, Bills and Reports are coming soon.",
       "repo": "adamglassner/coinpilot",
       "assetPattern": "CoinPilot-*-win-x64.zip;CoinPilot-*-Setup.exe",
       "exe": "CoinPilot.exe",
