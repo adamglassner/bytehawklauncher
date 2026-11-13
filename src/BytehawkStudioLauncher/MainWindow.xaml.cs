@@ -282,15 +282,15 @@ public partial class MainWindow : Window
         Icon = "https://raw.githubusercontent.com/adamglassner/larksong-classic/main/assets/larksong-classic-256.png",
     };
 
-    /// <summary>CoinPilot — budgeting app, early preview shell (was "Coming soon" before 1.3.4).</summary>
+    /// <summary>WillowWallet (called CoinPilot before 1.4.1) — budgeting app. The id stays "coinpilot" so installs carry over.</summary>
     private static CatalogEntry CoinPilot() => new()
     {
         Id = "coinpilot",
-        Name = "CoinPilot",
-        Description = "Budgeting app for tracking spending and planning where your money goes, with sync to your phone on the way. Early preview: the Dashboard shows the planned layout and the other sections are coming soon.",
+        Name = "WillowWallet",
+        Description = "Budgeting app: budgets, transactions with bank statement import, accounts and net worth, debt payoff plans, bills with reminders, savings goals, reports and a safe place for tax documents. Optional PIN/password encryption. Sync with your phone is on the way. (Formerly CoinPilot.)",
         Repo = "adamglassner/coinpilot",
-        AssetPattern = "CoinPilot-*-win-x64.zip;CoinPilot-*-Setup.exe",
-        Exe = "CoinPilot.exe",
+        AssetPattern = "WillowWallet-*-win-x64.zip;WillowWallet-*-Setup.exe",
+        Exe = "WillowWallet.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png",
     };
 

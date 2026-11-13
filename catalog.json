@@ -66,11 +66,11 @@
     },
     {
       "id": "coinpilot",
-      "name": "CoinPilot",
-      "description": "Budgeting app: budgets, transactions with bank statement import, accounts and net worth, debt payoff plans, bills with reminders, savings goals, reports and a safe place for tax documents. Optional PIN/password encryption. Sync with your phone is on the way.",
+      "name": "WillowWallet",
+      "description": "Budgeting app: budgets, transactions with bank statement import, accounts and net worth, debt payoff plans, bills with reminders, savings goals, reports and a safe place for tax documents. Optional PIN/password encryption. Sync with your phone is on the way. (Formerly CoinPilot.)",
       "repo": "adamglassner/coinpilot",
-      "assetPattern": "CoinPilot-*-win-x64.zip;CoinPilot-*-Setup.exe",
-      "exe": "CoinPilot.exe",
+      "assetPattern": "WillowWallet-*-win-x64.zip;WillowWallet-*-Setup.exe",
+      "exe": "WillowWallet.exe",
       "icon": "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png"
     },
     {
