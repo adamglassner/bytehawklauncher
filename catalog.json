@@ -67,7 +67,7 @@
     {
       "id": "coinpilot",
       "name": "CoinPilot",
-      "description": "Budgeting app: transactions, budgets, accounts and net worth, debt payoff plans, bills, savings goals and reports. Sync with your phone is on the way.",
+      "description": "Budgeting app: budgets, transactions with bank statement import, accounts and net worth, debt payoff plans, bills with reminders, savings goals, reports and a safe place for tax documents. Optional PIN/password encryption. Sync with your phone is on the way.",
       "repo": "adamglassner/coinpilot",
       "assetPattern": "CoinPilot-*-win-x64.zip;CoinPilot-*-Setup.exe",
       "exe": "CoinPilot.exe",
