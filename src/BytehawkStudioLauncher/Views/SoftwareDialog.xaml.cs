@@ -36,6 +36,7 @@ public partial class SoftwareDialog : Window
             NameBox.Text = editing.Name;
             ArgsBox.Text = editing.Arguments;
             DescriptionBox.Text = editing.Description;
+            WebsiteBox.Text = editing.Website;
             VersionBox.Text = editing.Version;
             CategoryBox.Text = editing.Category;
             AdminBox.IsChecked = editing.RunAsAdmin;
@@ -164,6 +165,12 @@ public partial class SoftwareDialog : Window
 
     private void Ok_Click(object sender, RoutedEventArgs e)
     {
+        var website = "";
+        if (!string.IsNullOrWhiteSpace(WebsiteBox.Text))
+        {
+            website = WebAppDialog.NormalizeUrl(WebsiteBox.Text, out var webError) ?? "";
+            if (website.Length == 0) { ShowError("Website: " + webError); return; }
+        }
         if (_appId.Length > 0)
         {
             if (string.IsNullOrWhiteSpace(NameBox.Text)) { ShowError("Enter a display name."); return; }
@@ -175,6 +182,7 @@ public partial class SoftwareDialog : Window
                 Path = "",
                 Name = NameBox.Text.Trim(),
                 Description = DescriptionBox.Text.Trim(),
+            Website = website,
                 Version = VersionBox.Text.Trim(),
                 Category = CategoryPicker.Normalize(CategoryBox.Text, _categories),
             };
@@ -200,6 +208,7 @@ public partial class SoftwareDialog : Window
             Name = NameBox.Text.Trim(),
             Arguments = ArgsBox.Text.Trim(),
             Description = DescriptionBox.Text.Trim(),
+            Website = website,
             Version = VersionBox.Text.Trim(),
             Category = CategoryPicker.Normalize(CategoryBox.Text, _categories),
             RunAsAdmin = AdminBox.IsChecked == true,

@@ -37,6 +37,9 @@
     <TextBlock Text="Description (optional)" Style="{StaticResource FieldLabel}" />
     <TextBox x:Name="DescriptionBox" TextWrapping="Wrap" Height="56" VerticalContentAlignment="Top" MaxLength="300" />
 
+    <TextBlock Text="Website (optional)" Style="{StaticResource FieldLabel}" />
+    <TextBox x:Name="WebsiteBox" ToolTip="The program's home page, e.g. example.com. Opens from the globe button on the card." />
+
     <Grid>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="160" />

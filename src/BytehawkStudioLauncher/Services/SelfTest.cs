@@ -190,6 +190,63 @@ public static class SelfTest
             var ver = SoftwareDialog.ReadFileVersion(sysExe);
             Check("Version read from an .exe", ver.Length > 0 && char.IsDigit(ver[0]), $"{Path.GetFileName(sysExe)} = {ver}");
 
+            // ---- shortcuts ----
+            try
+            {
+                var notepad = Path.Combine(Environment.SystemDirectory, "notepad.exe");
+                var lnk = Path.Combine(temp, "Test App.lnk");
+                ShortcutService.CreateLnk(lnk, notepad, "/A", null, notepad + ",0", "Bytehawk test");
+                Check("Create .lnk shortcut", File.Exists(lnk) && string.Equals(ShortcutService.ResolveLnkTarget(lnk), notepad, StringComparison.OrdinalIgnoreCase),
+                      ShortcutService.ResolveLnkTarget(lnk) ?? "unresolved");
+                ShortcutService.SetRunAsAdmin(lnk);
+                Check("Shortcut run-as-admin flag", (File.ReadAllBytes(lnk)[0x15] & 0x20) != 0);
+                var url = Path.Combine(temp, "Example.url");
+                var icoPath = Path.Combine(temp, "example.ico");
+                var icoOk = ShortcutService.WriteIco(System.Windows.Media.Imaging.BitmapSource.Create(32, 32, 96, 96,
+                    System.Windows.Media.PixelFormats.Bgra32, null, new byte[32 * 32 * 4], 32 * 4), icoPath);
+                ShortcutService.CreateUrl(url, "https://example.com/", icoPath);
+                var urlText = File.ReadAllText(url);
+                Check("Create .url shortcut with icon", icoOk && urlText.Contains("URL=https://example.com/") && urlText.Contains("IconFile="));
+                Check("Start menu lookup runs", ShortcutService.StartMenuHasShortcutTo(@"C:\Bytehawk\not-installed.exe") == false);
+            }
+            catch (Exception ex) { Check("Shortcuts", false, ex.Message); }
+
+            // ---- web apps export / import ----
+            {
+                var apps = new List<WebAppEntry>
+                {
+                    new() { Name = "Example", Url = "https://example.com/", Description = "Test site", Category = "Productivity" },
+                    new() { Name = "Docs & Notes", Url = "https://docs.example.org/a?b=1", Category = "" },
+                };
+                var fromJson = WebAppTransfer.Read(WebAppTransfer.ToJson(apps));
+                Check("Web apps JSON export/import", fromJson.Count == 2 && fromJson[0].Category == "Productivity" && fromJson[0].Description == "Test site"
+                      && fromJson[1].Name == "Docs & Notes");
+                var fromHtml = WebAppTransfer.Read(WebAppTransfer.ToBookmarksHtml(apps));
+                Check("Web apps bookmarks.html export/import", fromHtml.Count == 2 && fromHtml.Any(w => w.Category == "Productivity" && w.Url == "https://example.com/"),
+                      string.Join("; ", fromHtml.Select(w => $"{w.Name}|{w.Category}|{w.Url}")));
+                const string chrome = """
+                    <!DOCTYPE NETSCAPE-Bookmark-file-1>
+                    <DL><p>
+                        <DT><H3 PERSONAL_TOOLBAR_FOLDER="true">Bookmarks bar</H3>
+                        <DL><p>
+                            <DT><A HREF="https://mail.example.com/" ADD_DATE="1">Mail</A>
+                            <DT><H3>School</H3>
+                            <DL><p>
+                                <DT><A HREF="https://learn.example.edu/">Learning &amp; More</A>
+                            </DL><p>
+                            <DT><A HREF="javascript:alert(1)">Bookmarklet</A>
+                        </DL><p>
+                    </DL><p>
+                    """;
+                var fromChrome = WebAppTransfer.Read(chrome);
+                Check("Import browser bookmarks (folders → categories, skips javascript:)",
+                      fromChrome.Count == 2 && fromChrome.Any(w => w.Name == "Learning & More" && w.Category == "School")
+                      && fromChrome.Any(w => w.Name == "Mail" && w.Category == ""),
+                      string.Join("; ", fromChrome.Select(w => $"{w.Name}|{w.Category}")));
+                Check("Duplicate detection ignores www/scheme/slash",
+                      WebAppTransfer.UrlKey("http://www.Example.com/") == WebAppTransfer.UrlKey("https://example.com"));
+            }
+
             // ---- online catalog in the launcher repo ----
             try
             {

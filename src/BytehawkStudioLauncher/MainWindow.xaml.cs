@@ -372,6 +372,8 @@ public partial class MainWindow : Window
         if (!string.IsNullOrWhiteSpace(App.Settings.RemoteCatalogUrl))
             await LoadRemoteCatalogAsync(showResult: false);
 
+        _ = AddMissingStartMenuEntriesAsync();
+
         if (App.Settings.CheckUpdatesOnStartup)
         {
             await RefreshReleasesAsync(manual: false);
@@ -777,8 +779,11 @@ public partial class MainWindow : Window
         var file = PickExe($"Choose the program to launch for {vm.Name}", start);
         if (file == null) return;
         vm.Installed.LaunchPath = file;
+        vm.Installed.StartMenuChecked = false;
         TrySave(AppPaths.Installed, _installed);
         RefreshCard(vm);
+        _ = EnsureStartMenuAsync(vm.Name, vm.Entry.Description, vm.Installed).ContinueWith(_ =>
+            Dispatcher.InvokeAsync(() => TrySave(AppPaths.Installed, _installed)), TaskScheduler.Default);
     }
 
     private string? PickExe(string title, string? startIn)
@@ -970,6 +975,7 @@ public partial class MainWindow : Window
             }
 
             _installed[vm.Entry.Key] = record;
+            await EnsureStartMenuAsync(vm.Name, vm.Entry.Description, record);
             TrySave(AppPaths.Installed, _installed);
             Log.Info($"Recorded {vm.Entry.Key} {record.Version} kind={record.Kind} launch={record.LaunchPath}");
             return true;
@@ -1022,6 +1028,7 @@ public partial class MainWindow : Window
             if (inst.DownloadedFile is { } f) try { if (File.Exists(f)) File.Delete(f); } catch { /* ignore */ }
             _installed.Remove(vm.Key);
             TrySave(AppPaths.Installed, _installed);
+            RemoveOurStartMenuEntry(vm.Name);
             Log.Info($"Uninstalled {vm.Key}");
         }
         catch (Exception ex)
@@ -1480,6 +1487,178 @@ public partial class MainWindow : Window
     // =====================================================================
     // helpers
     // =====================================================================
+
+    // =====================================================================
+    // Shortcuts: Start menu for installed Bytehawk apps, desktop shortcuts for any card
+    // =====================================================================
+
+    /// <summary>
+    /// Adds Programs\Bytehawk Studio\&lt;name&gt;.lnk for an installed app's .exe unless a Start menu
+    /// shortcut to it already exists (installers usually add their own). Runs off the UI thread.
+    /// </summary>
+    private static async Task EnsureStartMenuAsync(string name, string? description, InstalledApp record)
+    {
+        if (record.StartMenuChecked || string.IsNullOrEmpty(record.LaunchPath)) return;
+        var exe = record.LaunchPath;
+        try
+        {
+            var created = await Task.Run(() => ShortcutService.EnsureStartMenuEntry(name, exe, description));
+            if (created != null) Log.Info($"Start menu entry added: {created}");
+            record.StartMenuChecked = true;
+        }
+        catch (Exception ex) { Log.Error($"Start menu entry for {name}", ex); }
+    }
+
+    private async Task AddMissingStartMenuEntriesAsync()
+    {
+        var changed = false;
+        foreach (var vm in _apps.Where(a => a.Installed is { StartMenuChecked: false, LaunchPath: not null }).ToList())
+        {
+            await EnsureStartMenuAsync(vm.Name, vm.Entry.Description, vm.Installed!);
+            changed |= vm.Installed!.StartMenuChecked;
+        }
+        if (changed) TrySave(AppPaths.Installed, _installed);
+    }
+
+    private static void RemoveOurStartMenuEntry(string name)
+    {
+        try
+        {
+            var lnk = Path.Combine(ShortcutService.StartMenuDir, ShortcutService.SafeName(name) + ".lnk");
+            if (File.Exists(lnk)) File.Delete(lnk);
+            if (Directory.Exists(ShortcutService.StartMenuDir) && !Directory.EnumerateFileSystemEntries(ShortcutService.StartMenuDir).Any())
+                Directory.Delete(ShortcutService.StartMenuDir);
+        }
+        catch (Exception ex) { Log.Error($"Remove Start menu entry {name}", ex); }
+    }
+
+    /// <summary>Creates a desktop shortcut via <paramref name="create"/>(path), asking before replacing an existing file.</summary>
+    private void MakeDesktopShortcut(string name, string extension, Action<string> create)
+    {
+        var path = Path.Combine(ShortcutService.DesktopDir, ShortcutService.SafeName(name) + extension);
+        if (File.Exists(path) && MessageBox.Show(this, $"There's already a \"{Path.GetFileName(path)}\" on your desktop. Replace it?",
+                AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+        try
+        {
+            create(path);
+            MessageBox.Show(this, $"Added \"{Path.GetFileNameWithoutExtension(path)}\" to your desktop.", AppTitle,
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"Desktop shortcut {path}", ex);
+            ReportError($"Couldn't create the desktop shortcut:\n{ex.Message}");
+        }
+    }
+
+    private void BhDesktop_Click(object sender, RoutedEventArgs e)
+    {
+        var vm = Ctx<BytehawkAppVM>(sender);
+        if (vm?.Installed?.LaunchPath is not { } target || !File.Exists(target)) { if (vm != null) RefreshCard(vm); return; }
+        if (target.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase))
+            MakeDesktopShortcut(vm.Name, ".lnk", p => File.Copy(target, p, overwrite: true));
+        else
+            MakeDesktopShortcut(vm.Name, ".lnk", p => ShortcutService.CreateLnk(p, target, iconLocation: target + ",0", description: vm.Entry.Description));
+    }
+
+    private void SwDesktop_Click(object sender, RoutedEventArgs e)
+    {
+        var vm = Ctx<SoftwareVM>(sender);
+        if (vm == null) return;
+        var entry = vm.Entry;
+        if (vm.IsStoreApp)
+        {
+            // Store apps have no .exe: point at explorer.exe shell:AppsFolder\<id> and use the app's own icon.
+            var ico = Path.Combine(WebIconService.IconsDir, "store-" + entry.Id + ".ico");
+            if (StoreApps.GetIcon(entry.AppId) is System.Windows.Media.Imaging.BitmapSource icon) ShortcutService.WriteIco(icon, ico);
+            MakeDesktopShortcut(entry.Name, ".lnk", p => ShortcutService.CreateLnk(p, "explorer.exe", StoreApps.ShellPath(entry.AppId), "",
+                File.Exists(ico) ? ico + ",0" : null, entry.Description));
+            return;
+        }
+        if (!File.Exists(entry.Path)) { ReportError($"The file isn't there anymore:\n{entry.Path}\n\nUse Edit to point to it again."); return; }
+        if (entry.Path.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase) && string.IsNullOrWhiteSpace(entry.Arguments) && !entry.RunAsAdmin)
+            MakeDesktopShortcut(entry.Name, ".lnk", p => File.Copy(entry.Path, p, overwrite: true));
+        else
+            MakeDesktopShortcut(entry.Name, ".lnk", p =>
+            {
+                ShortcutService.CreateLnk(p, entry.Path, entry.Arguments, null, entry.Path + ",0", entry.Description);
+                if (entry.RunAsAdmin) ShortcutService.SetRunAsAdmin(p);
+            });
+    }
+
+    private void SwWebsite_Click(object sender, RoutedEventArgs e)
+    {
+        var vm = Ctx<SoftwareVM>(sender);
+        if (vm != null && vm.HasWebsite) ReportError(ShellHelper.OpenUrl(vm.Website));
+    }
+
+    private void WebDesktop_Click(object sender, RoutedEventArgs e)
+    {
+        var vm = Ctx<WebAppVM>(sender);
+        if (vm == null) return;
+        string? ico = null;
+        var png = WebIconService.CachePath(vm.Entry.Id);
+        if (File.Exists(png) && ShortcutService.LoadPng(png) is { } bmp)
+        {
+            ico = Path.Combine(WebIconService.IconsDir, vm.Entry.Id + ".ico");
+            if (!ShortcutService.WriteIco(bmp, ico)) ico = null;
+        }
+        MakeDesktopShortcut(vm.Name, ".url", p => ShortcutService.CreateUrl(p, vm.Url, ico));
+    }
+
+    // =====================================================================
+    // Web Apps export / import
+    // =====================================================================
+
+    private void ExportWebApps_Click(object sender, RoutedEventArgs e)
+    {
+        if (_webApps.Count == 0) { ReportError("There are no web apps to export yet."); return; }
+        var dlg = new SaveFileDialog
+        {
+            Title = "Export web apps",
+            FileName = $"Bytehawk web apps {DateTime.Now:yyyy-MM-dd}",
+            DefaultExt = ".json",
+            Filter = "Bytehawk web apps (*.json)|*.json|Browser bookmarks (*.html)|*.html",
+        };
+        if (dlg.ShowDialog(this) != true) return;
+        try
+        {
+            if (dlg.FileName.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                File.WriteAllText(dlg.FileName, WebAppTransfer.ToBookmarksHtml(_webApps));
+            else
+                File.WriteAllText(dlg.FileName, WebAppTransfer.ToJson(_webApps));
+            MessageBox.Show(this, $"Exported {_webApps.Count} web app(s) to\n{dlg.FileName}", AppTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex) { ReportError($"Couldn't export:\n{ex.Message}"); }
+    }
+
+    private void ImportWebApps_Click(object sender, RoutedEventArgs e)
+    {
+        var dlg = new OpenFileDialog
+        {
+            Title = "Import web apps",
+            Filter = "Web apps or bookmarks (*.json;*.html;*.htm)|*.json;*.html;*.htm|All files (*.*)|*.*",
+        };
+        if (dlg.ShowDialog(this) != true) return;
+        List<WebAppEntry> incoming;
+        try { incoming = WebAppTransfer.Read(File.ReadAllText(dlg.FileName)); }
+        catch (Exception ex) { ReportError($"Couldn't read that file:\n{ex.Message}"); return; }
+        if (incoming.Count == 0) { ReportError("No web addresses were found in that file."); return; }
+
+        var known = new HashSet<string>(_webApps.Select(w => WebAppTransfer.UrlKey(w.Url)), StringComparer.OrdinalIgnoreCase);
+        var added = 0;
+        foreach (var w in incoming)
+        {
+            if (!known.Add(WebAppTransfer.UrlKey(w.Url))) continue;
+            _webApps.Add(w);
+            added++;
+        }
+        TrySave(AppPaths.WebApps, _webApps);
+        RebuildWebCards();
+        var skipped = incoming.Count - added;
+        MessageBox.Show(this, $"Imported {added} web app(s)." + (skipped > 0 ? $" Skipped {skipped} already in your list." : ""),
+            AppTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+    }
 
     private static T? Ctx<T>(object sender) where T : class => (sender as FrameworkElement)?.DataContext as T;
 

@@ -14,6 +14,12 @@ Built with C# / WPF on .NET 8 and published as a self-contained single-file `.ex
 
 **Categories:** give My Software and Web Apps entries a category (Productivity, Education, Games and so on, or type your own). Cards are grouped under category headings, and filter chips at the top of each page show one category at a time. Search matches categories too.
 
+**Shortcuts:** every card has a **Create desktop shortcut** button (monitor icon). Programs get a `.lnk`, keeping their arguments and "Run as administrator". Store apps get a `.lnk` that opens them by app ID. Web apps get a `.url` that opens in your browser, with the site's icon. When the launcher installs a Bytehawk app, it adds the app to the **Start menu** (`Programs\Bytehawk Studio\`) unless the app's own installer already did. Uninstalling from the launcher removes that entry again.
+
+**Website links:** My Software entries can have a website (for example the program's home page). A globe button on the card opens it.
+
+**Export / import web apps:** on the Web Apps page, **Export** saves your web apps as Bytehawk JSON (keeps names, descriptions and categories) or as a browser bookmarks `.html` file. **Import** reads either one, including bookmark files exported from Chrome, Edge or Firefox; their folders become categories. Addresses already in your list are skipped.
+
 **Microsoft Store apps** have no .exe to point at, so the launcher stores their app ID (for example `Microsoft.WindowsCalculator_8wekyb3d8bbwe!App`) and starts them through `shell:AppsFolder`. Launch arguments and "Run as administrator" aren't available for them. If a Store app is uninstalled, its card says so.
 
 ---

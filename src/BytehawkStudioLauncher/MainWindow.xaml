@@ -67,6 +67,8 @@
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
               <Button Style="{StaticResource IconButton}" Content="&#xE8A7;" ToolTip="Open release page on GitHub"
                       Visibility="{Binding HasRepo, Converter={StaticResource BoolToVis}}" Click="BhReleasePage_Click" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE7F4;" ToolTip="Create desktop shortcut" Click="BhDesktop_Click"
+                      Visibility="{Binding CanCreateShortcut, Converter={StaticResource BoolToVis}}" />
               <Button Style="{StaticResource IconButton}" Content="&#xE8E5;" ToolTip="Choose launch file"
                       Visibility="{Binding CanChangeLaunchFile, Converter={StaticResource BoolToVis}}" Click="BhChooseLaunch_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Uninstall"
@@ -121,6 +123,9 @@
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
               <Button Style="{StaticResource IconButton}" Content="&#xE838;" ToolTip="Open file location" Click="SwOpenLocation_Click"
                       Visibility="{Binding CanOpenLocation, Converter={StaticResource BoolToVis}}" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE774;" ToolTip="{Binding Website}" Click="SwWebsite_Click"
+                      Visibility="{Binding HasWebsite, Converter={StaticResource BoolToVis}}" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE7F4;" ToolTip="Create desktop shortcut" Click="SwDesktop_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE70F;" ToolTip="Edit" Click="SwEdit_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Remove from launcher (the file is not deleted)" Click="SwRemove_Click" />
             </StackPanel>
@@ -154,6 +159,7 @@
           <DockPanel Margin="0,14,0,0">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
               <Button Style="{StaticResource IconButton}" Content="&#xE72C;" ToolTip="Refresh icon from the website" Click="WebRefreshIcon_Click" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE7F4;" ToolTip="Create desktop shortcut" Click="WebDesktop_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE70F;" ToolTip="Edit" Click="WebEdit_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Remove" Click="WebRemove_Click" />
             </StackPanel>
@@ -361,6 +367,19 @@
           <RowDefinition />
         </Grid.RowDefinitions>
         <DockPanel Margin="28,24,28,16">
+          <Button DockPanel.Dock="Right" VerticalAlignment="Top" Margin="8,0,0,0" Click="ExportWebApps_Click" ToolTip="Save your web apps to a file">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xEDE1;" FontFamily="{StaticResource IconFont}" Margin="0,1,8,0" VerticalAlignment="Center" />
+              <TextBlock Text="Export" />
+            </StackPanel>
+          </Button>
+          <Button DockPanel.Dock="Right" VerticalAlignment="Top" Margin="8,0,0,0" Click="ImportWebApps_Click"
+                  ToolTip="Add web apps from a Bytehawk export or a browser bookmarks file (.html)">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xE8B5;" FontFamily="{StaticResource IconFont}" Margin="0,1,8,0" VerticalAlignment="Center" />
+              <TextBlock Text="Import" />
+            </StackPanel>
+          </Button>
           <Button DockPanel.Dock="Right" Style="{StaticResource AccentButton}" VerticalAlignment="Top" Click="AddWebApp_Click">
             <StackPanel Orientation="Horizontal">
               <TextBlock Text="&#xE710;" FontFamily="{StaticResource IconFont}" Margin="0,1,8,0" VerticalAlignment="Center" />

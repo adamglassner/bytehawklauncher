@@ -134,6 +134,8 @@ public sealed class BytehawkAppVM : ObservableObject
     public bool ShowSecondaryLaunch => ShowPrimary && HasUpdate && !IsMissing && !NeedsLaunchChoice;
 
     public bool CanChangeLaunchFile => IsInstalled && !IsDownloading;
+    /// <summary>Installed and its launch file exists, so a desktop shortcut can point at it.</summary>
+    public bool CanCreateShortcut => IsInstalled && !NeedsLaunchChoice && !IsMissing && !IsDownloading;
 
     /// <summary>Apps the launcher installed itself can be uninstalled from the card.</summary>
     public bool CanUninstall => IsInstalled && AppInstaller.IsManagedKind(Installed!.Kind) && !IsDownloading && !Busy;
@@ -221,6 +223,8 @@ public sealed class SoftwareVM : ObservableObject
         }
     }
     public bool IsStoreApp => !string.IsNullOrWhiteSpace(Entry.AppId);
+    public string Website => Entry.Website ?? "";
+    public bool HasWebsite => !string.IsNullOrWhiteSpace(Entry.Website);
     /// <summary>What the card shows under the description: the file path, or the Store app id.</summary>
     public string Location => IsStoreApp ? Entry.AppId : Entry.Path;
     public bool CanOpenLocation => !IsStoreApp;

@@ -80,6 +80,8 @@ public sealed class InstalledApp
     public string? InstallFolder { get; set; }
     /// <summary>The program the Launch button runs (remembered choice).</summary>
     public string? LaunchPath { get; set; }
+    /// <summary>True once the launcher has made sure this app has a Start menu entry.</summary>
+    public bool StartMenuChecked { get; set; }
 }
 
 /// <summary>cache/releases.json — cached GitHub "latest release" responses.</summary>
@@ -120,6 +122,8 @@ public sealed class LibraryEntry
     public string Version { get; set; } = "";
     /// <summary>Optional category, e.g. "Productivity" or "Games". Empty = Uncategorized.</summary>
     public string Category { get; set; } = "";
+    /// <summary>Optional website for the program (opened with the card's globe button).</summary>
+    public string Website { get; set; } = "";
     /// <summary>For Microsoft Store / packaged apps: the AppUserModelID (Path is empty). Started via shell:AppsFolder.</summary>
     public string AppId { get; set; } = "";
     public DateTime AddedAt { get; set; } = DateTime.Now;
