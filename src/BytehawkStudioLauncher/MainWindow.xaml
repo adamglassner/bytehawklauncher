@@ -90,6 +90,21 @@
             <ProgressBar Value="{Binding Download.Percent, Mode=OneWay}" IsIndeterminate="{Binding Download.IsIndeterminate, Mode=OneWay}" Maximum="100" />
             <TextBlock Text="{Binding Download.Detail}" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,6,0,0" />
           </StackPanel>
+
+          <!-- server that goes with the app -->
+          <Border DockPanel.Dock="Bottom" Margin="0,12,0,0" Padding="10,8" CornerRadius="8" Background="{DynamicResource AccentSoft}"
+                  Visibility="{Binding HasServer, Converter={StaticResource BoolToVis}}">
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Content="Get server" Padding="12,4" Click="BhServer_Click"
+                      ToolTip="Download the server: Windows installer, Docker or Linux" />
+              <TextBlock Text="&#xE753;" FontFamily="{StaticResource IconFont}" FontSize="18" Foreground="{DynamicResource Accent}"
+                         VerticalAlignment="Center" Margin="0,0,10,0" />
+              <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="{Binding ServerName}" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="Sync your devices on your own server" FontSize="11" Foreground="{DynamicResource TextSecondary}" TextTrimming="CharacterEllipsis" />
+              </StackPanel>
+            </DockPanel>
+          </Border>
         </DockPanel>
       </Border>
     </DataTemplate>

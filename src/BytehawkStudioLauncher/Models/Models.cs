@@ -53,6 +53,8 @@ public sealed class CatalogEntry
     public bool Sample { get; set; }
     /// <summary>Announced product with no release yet: shown with a "Coming soon" badge and no download. Needs an id; repo can be empty.</summary>
     public bool ComingSoon { get; set; }
+    /// <summary>Optional server that goes with the app (e.g. WillowWallet Server for syncing): shown as "Get server" on the card.</summary>
+    public ServerDownload? Server { get; set; }
 
     [JsonIgnore]
     public string Key => (!string.IsNullOrWhiteSpace(Id) ? Id! : !string.IsNullOrWhiteSpace(Repo) ? Repo : Name).Trim().ToLowerInvariant();
@@ -63,6 +65,24 @@ public sealed class CatalogEntry
     /// <summary>Set at runtime for entries that came from the remote catalog URL.</summary>
     [JsonIgnore]
     public bool FromRemote { get; set; }
+}
+
+/// <summary>A self-hosted server for an app, released in the same repo under its own tag prefix.</summary>
+public sealed class ServerDownload
+{
+    public string Name { get; set; } = "";
+    public string Description { get; set; } = "";
+    /// <summary>"owner/repo"; the app's repo when empty.</summary>
+    public string? Repo { get; set; }
+    /// <summary>Server releases are tagged like "server-v0.1.0".</summary>
+    public string TagPrefix { get; set; } = "server-v";
+    /// <summary>The Windows installer in that release.</summary>
+    public string WindowsAsset { get; set; } = "*-Setup.exe";
+    /// <summary>Docker image, e.g. ghcr.io/owner/app-server.</summary>
+    public string? DockerImage { get; set; }
+    public int Port { get; set; } = 8080;
+    /// <summary>Where to read more (setup guide).</summary>
+    public string? GuideUrl { get; set; }
 }
 
 /// <summary>installed.json — what the launcher installed for each catalog entry (keyed by entry Key).</summary>

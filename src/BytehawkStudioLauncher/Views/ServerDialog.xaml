@@ -1,0 +1,102 @@
+<Window x:Class="Bytehawk.Launcher.Views.ServerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Get server" Width="580" SizeToContent="Height" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
+        Background="{DynamicResource WindowBg}" Foreground="{DynamicResource TextPrimary}"
+        FontFamily="{StaticResource UiFont}" FontSize="13">
+  <Window.Resources>
+    <Style x:Key="Option" TargetType="Border">
+      <Setter Property="Background" Value="{DynamicResource CardBg}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Stroke}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="14,12" />
+      <Setter Property="Margin" Value="0,10,0,0" />
+    </Style>
+    <Style x:Key="OptionIcon" TargetType="Border">
+      <Setter Property="Width" Value="38" />
+      <Setter Property="Height" Value="38" />
+      <Setter Property="CornerRadius" Value="9" />
+      <Setter Property="Background" Value="{DynamicResource AccentSoft}" />
+      <Setter Property="VerticalAlignment" Value="Top" />
+      <Setter Property="Margin" Value="0,0,12,0" />
+    </Style>
+    <Style x:Key="Glyph" TargetType="TextBlock">
+      <Setter Property="FontFamily" Value="{StaticResource IconFont}" />
+      <Setter Property="FontSize" Value="18" />
+      <Setter Property="Foreground" Value="{DynamicResource Accent}" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+  </Window.Resources>
+
+  <StackPanel Margin="24,20,24,22">
+    <DockPanel>
+      <Border DockPanel.Dock="Left" Width="48" Height="48" CornerRadius="12" Background="{DynamicResource AccentSoft}" Margin="0,0,14,0">
+        <TextBlock Text="&#xE753;" Style="{StaticResource Glyph}" FontSize="24" />
+      </Border>
+      <StackPanel VerticalAlignment="Center">
+        <TextBlock x:Name="Heading" Text="Server" Style="{StaticResource SectionTitle}" FontSize="18" Margin="0" />
+        <TextBlock x:Name="VersionText" Text="Looking up the latest version…" FontSize="12" Foreground="{DynamicResource TextSecondary}" Margin="0,3,0,0" />
+      </StackPanel>
+    </DockPanel>
+    <TextBlock x:Name="DescriptionText" Style="{StaticResource Subtle}" Margin="0,14,0,4" TextWrapping="Wrap" />
+
+    <!-- Windows -->
+    <Border Style="{StaticResource Option}">
+      <DockPanel>
+        <Border Style="{StaticResource OptionIcon}"><TextBlock Text="&#xE7F8;" Style="{StaticResource Glyph}" /></Border>
+        <Button x:Name="WindowsButton" DockPanel.Dock="Right" Style="{StaticResource AccentButton}" Content="Download" MinWidth="104"
+                VerticalAlignment="Center" Margin="12,0,0,0" IsEnabled="False" Click="Windows_Click" />
+        <StackPanel>
+          <TextBlock Text="Windows" FontWeight="SemiBold" />
+          <TextBlock x:Name="WindowsText" Style="{StaticResource Subtle}" TextWrapping="Wrap" Margin="0,2,0,0"
+                     Text="Installer for Windows 10 and 11. Runs in the background as a Windows service and opens its web panel when it's done." />
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <!-- Docker -->
+    <Border Style="{StaticResource Option}" x:Name="DockerOption">
+      <StackPanel>
+        <DockPanel>
+          <Border Style="{StaticResource OptionIcon}"><TextBlock Text="&#xE7B8;" Style="{StaticResource Glyph}" /></Border>
+          <Button DockPanel.Dock="Right" Content="Copy" MinWidth="104" VerticalAlignment="Center" Margin="12,0,0,0" Click="CopyDocker_Click" x:Name="CopyButton" />
+          <StackPanel>
+            <TextBlock Text="Docker" FontWeight="SemiBold" />
+            <TextBlock Style="{StaticResource Subtle}" TextWrapping="Wrap" Margin="0,2,0,0"
+                       Text="For a NAS, home server or VPS. Run this, then open the web panel to finish setting up." />
+          </StackPanel>
+        </DockPanel>
+        <Border Margin="50,10,0,0" Padding="10,8" CornerRadius="6" Background="{DynamicResource InputBg}"
+                BorderBrush="{DynamicResource Stroke}" BorderThickness="1">
+          <TextBox x:Name="DockerCommand" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0" Background="Transparent" Padding="0"
+                   Foreground="{DynamicResource TextPrimary}" FontFamily="Cascadia Mono, Consolas" FontSize="12" />
+        </Border>
+      </StackPanel>
+    </Border>
+
+    <!-- Linux and other -->
+    <Border Style="{StaticResource Option}">
+      <DockPanel>
+        <Border Style="{StaticResource OptionIcon}"><TextBlock Text="&#xE756;" Style="{StaticResource Glyph}" /></Border>
+        <Button x:Name="OtherButton" DockPanel.Dock="Right" Content="Open page" MinWidth="104" VerticalAlignment="Center" Margin="12,0,0,0" Click="Other_Click" />
+        <StackPanel>
+          <TextBlock Text="Linux and portable" FontWeight="SemiBold" />
+          <TextBlock Style="{StaticResource Subtle}" TextWrapping="Wrap" Margin="0,2,0,0"
+                     Text="Standalone builds for Linux (x64 and ARM64, with a systemd service) and a portable Windows zip. No install needed." />
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <TextBlock x:Name="ErrorText" Foreground="{DynamicResource DangerText}" TextWrapping="Wrap" Margin="0,12,0,0" Visibility="Collapsed" />
+
+    <DockPanel Margin="0,18,0,0">
+      <TextBlock x:Name="GuideLink" VerticalAlignment="Center" Visibility="Collapsed">
+        <Hyperlink Click="Guide_Click" Foreground="{DynamicResource Accent}">Setup guide</Hyperlink>
+      </TextBlock>
+      <Button Content="Close" IsCancel="True" MinWidth="90" HorizontalAlignment="Right" />
+    </DockPanel>
+  </StackPanel>
+</Window>

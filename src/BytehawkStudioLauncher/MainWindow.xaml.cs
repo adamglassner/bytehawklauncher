@@ -138,6 +138,16 @@ public partial class MainWindow : Window
         // 1.1.1: the "Padcraft (coming soon)" placeholder became Draftly (a different id), so drop it.
         changed |= _localCatalog.Apps.RemoveAll(a => a.ComingSoon && a.Key.Equals("padcraft", StringComparison.OrdinalIgnoreCase)) > 0;
         if (_localCatalog.RemovedDefaults.RemoveAll(k => k.Equals("padcraft", StringComparison.OrdinalIgnoreCase)) > 0) changed = true;
+        // 1.5.0: apps that gained a server (WillowWallet Server) get its "Get server" option.
+        foreach (var a in _localCatalog.Apps.Where(a => a.Server == null))
+        {
+            var d = defaults.FirstOrDefault(x => x.Server != null && x.Key.Equals(a.Key, StringComparison.OrdinalIgnoreCase));
+            if (d == null) continue;
+            a.Server = d.Server;
+            a.Name = d.Name;
+            a.Description = d.Description;
+            changed = true;
+        }
         for (int i = 0; i < defaults.Count; i++)
         {
             var d = defaults[i];
@@ -287,11 +297,25 @@ public partial class MainWindow : Window
     {
         Id = "coinpilot",
         Name = "WillowWallet",
-        Description = "Budgeting app: budgets, transactions with bank statement import, accounts and net worth, debt payoff plans, bills with reminders, savings goals, reports and a safe place for tax documents. Optional PIN/password encryption. Sync with your phone is on the way. (Formerly CoinPilot.)",
+        Description = "Budgeting app: budgets, transactions with bank statement import, accounts and net worth, debt payoff plans, bills with reminders, savings goals, reports and a safe place for tax documents. Optional PIN/password encryption, and optional end-to-end encrypted sync with the Android app through your own WillowWallet Server. (Formerly CoinPilot.)",
         Repo = "adamglassner/coinpilot",
         AssetPattern = "WillowWallet-*-win-x64.zip;WillowWallet-*-Setup.exe",
         Exe = "WillowWallet.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png",
+        Server = WillowWalletServer(),
+    };
+
+    /// <summary>WillowWallet Server (1.5.0): self-hosted, end-to-end encrypted sync for the Windows and Android apps.</summary>
+    private static ServerDownload WillowWalletServer() => new()
+    {
+        Name = "WillowWallet Server",
+        Description = "Run your own server to sync WillowWallet between your PC and phone, with accounts for everyone in your household. Your data is encrypted on each device before it's sent, so the server can't read it. Manage it from its web panel.",
+        Repo = "adamglassner/coinpilot",
+        TagPrefix = "server-v",
+        WindowsAsset = "WillowWalletServer-*-Setup.exe",
+        DockerImage = "ghcr.io/adamglassner/willowwallet-server",
+        Port = 8484,
+        GuideUrl = "https://github.com/adamglassner/coinpilot/blob/main/server/README.md",
     };
 
     /// <summary>Shutterbox — photo organizer (was "Coming soon" before 1.3.5).</summary>
@@ -738,6 +762,59 @@ public partial class MainWindow : Window
     {
         var vm = Ctx<BytehawkAppVM>(sender);
         if (vm != null) ReportError(ShellHelper.OpenUrl(vm.ReleasePageUrl));
+    }
+
+    /// <summary>"Get server": the Windows installer (downloaded here, then run), Docker or the release page.</summary>
+    private async void BhServer_Click(object sender, RoutedEventArgs e)
+    {
+        var vm = Ctx<BytehawkAppVM>(sender);
+        if (vm?.Entry.Server == null || vm.IsDownloading) return;
+        var dialog = new ServerDialog(vm.Entry) { Owner = this };
+        if (dialog.ShowDialog() != true || dialog.WindowsInstaller is not { } asset) return;
+
+        Directory.CreateDirectory(DownloadFolder);
+        var dest = Path.Combine(DownloadFolder, SafeFileName(asset.Name));
+        var item = new DownloadItemVM { AppName = vm.Entry.Server.Name, FileName = asset.Name, Destination = dest };
+        _downloads.Insert(0, item);
+        vm.Note = null;
+        vm.Download = item;
+        try
+        {
+            await Downloader.DownloadAsync(asset.DownloadUrl, dest, new Progress<DownloadProgress>(item.Report), item.Cts.Token);
+            item.Detail = "Checking the download…";
+            var problem = await AppInstaller.VerifyDownloadAsync(dest, asset, item.Cts.Token);
+            if (problem != null)
+            {
+                try { File.Delete(dest); } catch { /* ignore */ }
+                throw new InvalidDataException(problem);
+            }
+            item.Percent = 100;
+            item.IsIndeterminate = false;
+            item.IsActive = false;
+            item.Status = "Downloaded";
+            item.Detail = "Opening the installer. Windows will ask to allow it, since the server runs as a service.";
+            var launchProblem = ShellHelper.Launch(dest);
+            vm.Note = launchProblem == null ? $"{vm.Entry.Server.Name} installer opened." : launchProblem;
+        }
+        catch (OperationCanceledException)
+        {
+            try { if (File.Exists(dest)) File.Delete(dest); } catch { /* ignore */ }
+            item.Status = "Cancelled";
+            item.Detail = "Download cancelled.";
+            item.IsActive = false;
+        }
+        catch (Exception ex)
+        {
+            Log.Error("Server download failed", ex);
+            item.Status = "Failed";
+            item.Detail = $"Download failed: {ex.Message}";
+            item.IsActive = false;
+            vm.Note = "Server download failed. See the Downloads page for details.";
+        }
+        finally
+        {
+            vm.Download = null;
+        }
     }
 
     private async void BhPrimary_Click(object sender, RoutedEventArgs e)

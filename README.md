@@ -108,7 +108,24 @@ If GitHub can't be reached, the page shows *"Couldn't reach GitHub — showing l
 
 Comments (`//`) and trailing commas are allowed. After editing, go to **Settings → Reload catalog** (or restart the launcher). **Settings → Open catalog.json** opens the file in Notepad. If the file can't be parsed, the launcher keeps a copy as `catalog.json.bad` and tells you.
 
-The catalog ships with **Guardrail EHS** (free, open-source EHS / safety software, the first released Bytehawk Studio app), **Draftly** (word processor, installed from its portable zip), **ShoreDrop** (FTP, FTPS and SFTP client, installed from its portable zip), **Discshelf** (music player, installed from its portable zip), **Sumthing** (calculator, installed from its portable zip; since 1.3.2), **Taskflare** (to-do list with a Muse AI connector, installed from its portable zip; since 1.3.3), **Boardwalk** (kanban boards, one per project, installed from its portable zip; since 1.3.10), **WillowWallet** (budgeting, formerly CoinPilot, installed from its portable zip; since 1.3.4), **Shutterbox** (photo organizer, installed from its portable zip; since 1.3.5), **Sparecopy** (family backup to a NAS, server or USB drive, early preview, installed from its portable zip; since 1.3.7), **Castaway** (media player for your own movies and shows, early preview, installed from its portable zip; since 1.3.8), **Larksong** (alarm clock, installed from its portable Windows zip; since 1.3.11), **Larksong Classic** (the alarm clock for Windows 95 to 11, installed from its zip; since 1.3.11) and one **Coming soon** entry: Fleetwatch (PC management). The Notepad++ sample entries from 1.0.x are removed automatically when you update to 1.1.0, and the old "Padcraft (coming soon)" placeholder is replaced by Draftly in 1.1.1.
+The catalog ships with **Guardrail EHS** (free, open-source EHS / safety software, the first released Bytehawk Studio app), **Draftly** (word processor, installed from its portable zip), **ShoreDrop** (FTP, FTPS and SFTP client, installed from its portable zip), **Discshelf** (music player, installed from its portable zip), **Sumthing** (calculator, installed from its portable zip; since 1.3.2), **Taskflare** (to-do list with a Muse AI connector, installed from its portable zip; since 1.3.3), **Boardwalk** (kanban boards, one per project, installed from its portable zip; since 1.3.10), **WillowWallet** (budgeting, formerly CoinPilot, installed from its portable zip; since 1.3.4; its card has **Get server** for WillowWallet Server since 1.5.0), **Shutterbox** (photo organizer, installed from its portable zip; since 1.3.5), **Sparecopy** (family backup to a NAS, server or USB drive, early preview, installed from its portable zip; since 1.3.7), **Castaway** (media player for your own movies and shows, early preview, installed from its portable zip; since 1.3.8), **Larksong** (alarm clock, installed from its portable Windows zip; since 1.3.11), **Larksong Classic** (the alarm clock for Windows 95 to 11, installed from its zip; since 1.3.11) and one **Coming soon** entry: Fleetwatch (PC management). The Notepad++ sample entries from 1.0.x are removed automatically when you update to 1.1.0, and the old "Padcraft (coming soon)" placeholder is replaced by Draftly in 1.1.1.
+
+#### Apps with a server
+
+An entry can have a `server` that goes with the app, shown as a **Get server** row on its card. The dialog offers the server's Windows installer (downloaded and opened; it installs a Windows service), a Docker command to copy, and the release page for Linux and portable builds. Server releases live in the app's repo under their own tag prefix, so they never replace the app's "latest" release:
+
+```json
+"server": {
+  "name": "WillowWallet Server",
+  "description": "Run your own server to sync WillowWallet between your PC and phone…",
+  "repo": "adamglassner/coinpilot",
+  "tagPrefix": "server-v",
+  "windowsAsset": "WillowWalletServer-*-Setup.exe",
+  "dockerImage": "ghcr.io/adamglassner/willowwallet-server",
+  "port": 8484,
+  "guideUrl": "https://github.com/adamglassner/coinpilot/blob/main/server/README.md"
+}
+```
 
 #### Releasing an app so the launcher can install it
 

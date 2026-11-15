@@ -84,6 +84,8 @@ public sealed class BytehawkAppVM : ObservableObject
     public bool IsSample => Entry.Sample;
     public bool IsComingSoon => Entry.ComingSoon;
     public bool HasRepo => Entry.HasRepo;
+    public bool HasServer => Entry.Server != null && !Entry.ComingSoon;
+    public string ServerName => Entry.Server?.Name ?? "";
     public string RepoText => Entry.HasRepo ? Entry.Repo : "Bytehawk Studio";
     public string ReleasePageUrl => Release?.HtmlUrl ?? $"https://github.com/{Entry.Repo}/releases";
 

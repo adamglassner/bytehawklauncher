@@ -67,11 +67,21 @@
     {
       "id": "coinpilot",
       "name": "WillowWallet",
-      "description": "Budgeting app: budgets, transactions with bank statement import, accounts and net worth, debt payoff plans, bills with reminders, savings goals, reports and a safe place for tax documents. Optional PIN/password encryption. Sync with your phone is on the way. (Formerly CoinPilot.)",
+      "description": "Budgeting app: budgets, transactions with bank statement import, accounts and net worth, debt payoff plans, bills with reminders, savings goals, reports and a safe place for tax documents. Optional PIN/password encryption, and optional end-to-end encrypted sync with the Android app through your own WillowWallet Server. (Formerly CoinPilot.)",
       "repo": "adamglassner/coinpilot",
       "assetPattern": "WillowWallet-*-win-x64.zip;WillowWallet-*-Setup.exe",
       "exe": "WillowWallet.exe",
-      "icon": "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png"
+      "icon": "https://raw.githubusercontent.com/adamglassner/coinpilot/main/assets/coinpilot-256.png",
+      "server": {
+        "name": "WillowWallet Server",
+        "description": "Run your own server to sync WillowWallet between your PC and phone, with accounts for everyone in your household. Your data is encrypted on each device before it's sent, so the server can't read it. Manage it from its web panel.",
+        "repo": "adamglassner/coinpilot",
+        "tagPrefix": "server-v",
+        "windowsAsset": "WillowWalletServer-*-Setup.exe",
+        "dockerImage": "ghcr.io/adamglassner/willowwallet-server",
+        "port": 8484,
+        "guideUrl": "https://github.com/adamglassner/coinpilot/blob/main/server/README.md"
+      }
     },
     {
       "id": "shutterbox",

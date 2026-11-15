@@ -157,6 +157,62 @@ public static class GitHubService
         }
     }
 
+    /// <summary>
+    /// The newest published release whose tag starts with <paramref name="tagPrefix"/> (e.g. "server-v"), for repos that
+    /// release more than one product. One API call (GET /repos/{owner}/{repo}/releases).
+    /// </summary>
+    public static async Task<GitHubResult<CachedRelease>> GetLatestReleaseWithPrefixAsync(string ownerRepo, string tagPrefix, CancellationToken ct = default)
+    {
+        if (IsRateLimited) return RateLimitResult<CachedRelease>();
+        try
+        {
+            using var resp = await Api.GetAsync($"repos/{ownerRepo}/releases?per_page=40", ct);
+            NoteRateLimit(resp);
+            if (IsRateLimitResponse(resp)) return RateLimitResult<CachedRelease>();
+            if (!resp.IsSuccessStatusCode)
+                return new(GitHubStatus.Error, null, $"GitHub returned {(int)resp.StatusCode} {resp.ReasonPhrase}.");
+            using var doc = JsonDocument.Parse(await resp.Content.ReadAsStringAsync(ct));
+            foreach (var r in doc.RootElement.EnumerateArray())
+            {
+                var tag = Str(r, "tag_name") ?? "";
+                bool draft = r.TryGetProperty("draft", out var d) && d.ValueKind == JsonValueKind.True;
+                bool pre = r.TryGetProperty("prerelease", out var pr) && pr.ValueKind == JsonValueKind.True;
+                if (draft || pre || !tag.StartsWith(tagPrefix, StringComparison.OrdinalIgnoreCase)) continue;
+                var rel = new CachedRelease
+                {
+                    Repo = ownerRepo,
+                    Tag = tag,
+                    Name = Str(r, "name"),
+                    HtmlUrl = Str(r, "html_url"),
+                    PublishedAt = r.TryGetProperty("published_at", out var p) && p.ValueKind == JsonValueKind.String && p.TryGetDateTime(out var dt) ? dt : null,
+                    FetchedAt = DateTime.UtcNow,
+                };
+                if (r.TryGetProperty("assets", out var assets) && assets.ValueKind == JsonValueKind.Array)
+                    foreach (var a in assets.EnumerateArray())
+                        rel.Assets.Add(new ReleaseAsset
+                        {
+                            Name = Str(a, "name") ?? "",
+                            DownloadUrl = Str(a, "browser_download_url") ?? "",
+                            Size = a.TryGetProperty("size", out var sz) && sz.TryGetInt64(out var n) ? n : 0,
+                            Digest = Str(a, "digest"),
+                        });
+                return new(GitHubStatus.Ok, rel, null);
+            }
+            return new(GitHubStatus.NoRelease, new CachedRelease { Repo = ownerRepo, NoRelease = true, FetchedAt = DateTime.UtcNow }, "No release yet.");
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested) { throw; }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+        {
+            Log.Error($"GetLatestReleaseWithPrefix {ownerRepo}", ex);
+            return new(GitHubStatus.NetworkError, null, "Couldn't reach GitHub.");
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"GetLatestReleaseWithPrefix {ownerRepo}", ex);
+            return new(GitHubStatus.Error, null, ex.Message);
+        }
+    }
+
     private static readonly HttpClient Web = CreateWebClient();
 
     private static HttpClient CreateWebClient()
