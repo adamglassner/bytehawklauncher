@@ -528,6 +528,24 @@ public partial class MainWindow : Window
                              .Where(e => e.HasRepo || e.ComingSoon);
     }
 
+    /// <summary>
+    /// An online catalog written for an older launcher may describe a server without the details this version uses
+    /// (finding and uninstalling it): take those from the built-in entry for the same app and server.
+    /// </summary>
+    private static void FillServerDetails(IEnumerable<CatalogEntry> entries)
+    {
+        var builtIn = SampleCatalog().Apps.Where(a => a.Server != null).ToList();
+        foreach (var e in entries)
+        {
+            var d = builtIn.FirstOrDefault(b => b.Key.Equals(e.Key, StringComparison.OrdinalIgnoreCase))?.Server;
+            if (d == null) continue;
+            if (e.Server == null) { e.Server = d; continue; }
+            if (!e.Server.Name.Equals(d.Name, StringComparison.OrdinalIgnoreCase)) continue;
+            e.Server.WindowsUninstallKey ??= d.WindowsUninstallKey;
+            e.Server.WindowsDataFolder ??= d.WindowsDataFolder;
+        }
+    }
+
     private static List<CatalogEntry>? ParseRemoteCatalog(string json)
     {
         try
@@ -535,6 +553,7 @@ public partial class MainWindow : Window
             var cat = System.Text.Json.JsonSerializer.Deserialize<CatalogFile>(json, JsonStore.Options);
             if (cat?.Apps == null) return null;
             foreach (var e in cat.Apps) e.FromRemote = true;
+            FillServerDetails(cat.Apps);
             return cat.Apps.Where(e => (e.HasRepo || e.ComingSoon) && !IsOldSample(e)).ToList();
         }
         catch (Exception ex)
