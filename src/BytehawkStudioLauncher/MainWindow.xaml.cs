@@ -775,7 +775,7 @@ public partial class MainWindow : Window
             SearchBox.Text = "WillowWallet";
             await Task.Delay(2500);
             SaveVisual(this, Path.Combine(folder, $"willowwallet-card-{theme}.png"));
-            var entry = _apps.FirstOrDefault(a => a.Entry.Server != null)?.Entry;
+            var entry = _apps.FirstOrDefault(a => a.Entry.Server != null)?.Entry ?? SampleCatalog().Apps.FirstOrDefault(a => a.Server != null);
             if (entry != null)
             {
                 var dialog = new ServerDialog(entry) { Owner = this };
