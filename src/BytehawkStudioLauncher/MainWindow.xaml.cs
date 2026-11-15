@@ -53,6 +53,8 @@ public partial class MainWindow : Window
         ThemeService.ThemeChanged += () => ThemeService.ApplyTitleBar(this);
 
         BytehawkList.ItemsSource = _apps;
+        // A server installed or uninstalled outside the launcher shows up when you come back to it
+        Activated += (_, _) => { foreach (var v in _apps.Where(a => a.HasServer)) RefreshCard(v); };
         SoftwareList.ItemsSource = _software;
         WebList.ItemsSource = _web;
         DownloadsList.ItemsSource = _downloads;
@@ -139,7 +141,7 @@ public partial class MainWindow : Window
         changed |= _localCatalog.Apps.RemoveAll(a => a.ComingSoon && a.Key.Equals("padcraft", StringComparison.OrdinalIgnoreCase)) > 0;
         if (_localCatalog.RemovedDefaults.RemoveAll(k => k.Equals("padcraft", StringComparison.OrdinalIgnoreCase)) > 0) changed = true;
         // 1.5.0: apps that gained a server (WillowWallet Server) get its "Get server" option.
-        foreach (var a in _localCatalog.Apps.Where(a => a.Server == null))
+        foreach (var a in _localCatalog.Apps.Where(a => a.Server == null || a.Server.WindowsUninstallKey == null))
         {
             var d = defaults.FirstOrDefault(x => x.Server != null && x.Key.Equals(a.Key, StringComparison.OrdinalIgnoreCase));
             if (d == null) continue;
@@ -316,6 +318,8 @@ public partial class MainWindow : Window
         DockerImage = "ghcr.io/adamglassner/willowwallet-server",
         Port = 8484,
         GuideUrl = "https://github.com/adamglassner/coinpilot/blob/main/server/README.md",
+        WindowsUninstallKey = "{6C4E2B1A-7F3D-4E85-9A2C-1D8B5F0E7A44}_is1",
+        WindowsDataFolder = @"%ProgramData%\WillowWallet Server",
     };
 
     /// <summary>Shutterbox — photo organizer (was "Coming soon" before 1.3.5).</summary>
@@ -780,8 +784,20 @@ public partial class MainWindow : Window
             {
                 var dialog = new ServerDialog(entry) { Owner = this };
                 dialog.Show();
-                await Task.Delay(6000);
+                await dialog.WhenLoaded;
+                await Task.Delay(1500);
                 SaveVisual(dialog, Path.Combine(folder, $"get-server-dialog-{theme}.png"));
+                if (dialog.IsInstalled && Environment.GetEnvironmentVariable("BH_TEST_SERVER_UNINSTALL") == "1")
+                {
+                    // CI installed the real server first: confirm, uninstall it with its data, record what happened
+                    dialog.OpenUninstall();
+                    await Task.Delay(800);
+                    SaveVisual(dialog, Path.Combine(folder, $"get-server-uninstall-{theme}.png"));
+                    await dialog.ConfirmUninstallAsync(deleteData: true);
+                    await Task.Delay(800);
+                    SaveVisual(dialog, Path.Combine(folder, $"get-server-uninstalled-{theme}.png"));
+                    File.WriteAllText(Path.Combine(folder, "uninstall-result.txt"), dialog.IsInstalled ? "still installed" : "uninstalled");
+                }
                 dialog.Close();
             }
         }
@@ -816,7 +832,9 @@ public partial class MainWindow : Window
         var vm = Ctx<BytehawkAppVM>(sender);
         if (vm?.Entry.Server == null || vm.IsDownloading) return;
         var dialog = new ServerDialog(vm.Entry) { Owner = this };
-        if (dialog.ShowDialog() != true || dialog.WindowsInstaller is not { } asset) return;
+        var download = dialog.ShowDialog() == true;
+        RefreshCard(vm);
+        if (!download || dialog.WindowsInstaller is not { } asset) return;
 
         Directory.CreateDirectory(DownloadFolder);
         var dest = Path.Combine(DownloadFolder, SafeFileName(asset.Name));

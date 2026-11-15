@@ -139,17 +139,41 @@ jobs:
           if (-not (Test-Path (Join-Path $data 'catalog.json'))) { throw 'catalog.json was not created' }
           $summary >> $env:GITHUB_STEP_SUMMARY
 
-      - name: Screenshots of the WillowWallet card and Get server dialog
+      - name: Get server — install the real WillowWallet Server, screenshots, uninstall through the dialog
         shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           $data = Join-Path $env:APPDATA 'BytehawkStudio\Launcher'
-          foreach ($theme in 'Light', 'Dark') {
+          function Shots($theme, $uninstall) {
             @{ theme = $theme; checkUpdatesOnStartup = $false; remoteCatalogUrl = '' } | ConvertTo-Json | Set-Content (Join-Path $data 'settings.json')
+            $env:BH_TEST_SERVER_UNINSTALL = $uninstall
             $p = Start-Process dist/BytehawkStudioLauncher.exe -ArgumentList '--screenshots', (Join-Path $PWD 'screenshots') -PassThru
-            if (-not $p.WaitForExit(60000)) { Stop-Process -Id $p.Id -Force; Write-Host "::warning::Screenshot run timed out ($theme)" }
+            if (-not $p.WaitForExit(180000)) { Stop-Process -Id $p.Id -Force; Write-Host "::warning::Screenshot run timed out ($theme)" }
             Start-Sleep -Seconds 2
           }
+          # Before installing: the plain Get server dialog
+          Shots 'Light' '0'
+          Rename-Item screenshots/get-server-dialog-light.png get-server-dialog-not-installed-light.png
+          # Install the newest server release the way a person would (silently here)
+          $rel = (Invoke-RestMethod -Headers @{ Authorization = "Bearer $env:GH_TOKEN" } "https://api.github.com/repos/adamglassner/coinpilot/releases?per_page=40") |
+                 Where-Object { $_.tag_name -like 'server-v*' -and -not $_.prerelease } | Select-Object -First 1
+          $asset = $rel.assets | Where-Object { $_.name -like '*-Setup.exe' } | Select-Object -First 1
+          Invoke-WebRequest $asset.browser_download_url -OutFile "$env:RUNNER_TEMP\server-setup.exe"
+          Start-Process "$env:RUNNER_TEMP\server-setup.exe" -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART' -Wait
+          for ($i = 0; $i -lt 40; $i++) { try { Invoke-RestMethod http://localhost:8484/api/v1/info | Out-Null; break } catch { Start-Sleep 1 } }
+          if (-not (Get-Service WillowWalletServer -ErrorAction SilentlyContinue)) { throw "Server didn't install ($($rel.tag_name))" }
+          Write-Host "Installed $($rel.tag_name)"
+          # Installed: card and dialog (dark), then uninstall with its data through the dialog (light)
+          Shots 'Dark' '0'
+          Shots 'Light' '1'
           Get-ChildItem screenshots
+          $result = Get-Content screenshots/uninstall-result.txt -ErrorAction SilentlyContinue
+          Write-Host "Uninstall through the launcher: $result"
+          if ($result -ne 'uninstalled') { Get-Content (Join-Path $data 'launcher.log') -Tail 40; throw "The launcher didn't uninstall the server ($result)" }
+          if (Get-Service WillowWalletServer -ErrorAction SilentlyContinue) { throw "Service still there after uninstall" }
+          if (Test-Path 'C:\ProgramData\WillowWallet Server') { throw "Data folder still there after uninstall with 'delete data'" }
+          "## Get server`n- Installed $($rel.tag_name), launcher found it, uninstalled it with its data: OK" >> $env:GITHUB_STEP_SUMMARY
 
       - name: Publish screenshots to the "screenshots" branch
         if: github.event_name != 'pull_request'

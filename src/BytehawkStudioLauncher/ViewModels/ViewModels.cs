@@ -86,6 +86,11 @@ public sealed class BytehawkAppVM : ObservableObject
     public bool HasRepo => Entry.HasRepo;
     public bool HasServer => Entry.Server != null && !Entry.ComingSoon;
     public string ServerName => Entry.Server?.Name ?? "";
+    /// <summary>The server's Windows install on this PC, if any.</summary>
+    public InstalledServer? ServerInstalled { get; private set; }
+    public string ServerSubtitle => ServerInstalled is { } s
+        ? (s.Version.Length > 0 ? $"Installed on this PC · version {s.Version}" : "Installed on this PC")
+        : "Sync your devices on your own server";
     public string RepoText => Entry.HasRepo ? Entry.Repo : "Bytehawk Studio";
     public string ReleasePageUrl => Release?.HtmlUrl ?? $"https://github.com/{Entry.Repo}/releases";
 
@@ -191,6 +196,7 @@ public sealed class BytehawkAppVM : ObservableObject
         Entry = entry;
         Installed = installed;
         Release = release;
+        ServerInstalled = entry.Server == null ? null : ServerInstall.Find(entry.Server);
         RefreshAll();
     }
 }

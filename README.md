@@ -112,7 +112,7 @@ The catalog ships with **Guardrail EHS** (free, open-source EHS / safety softwar
 
 #### Apps with a server
 
-An entry can have a `server` that goes with the app, shown as a **Get server** row on its card. The dialog offers the server's Windows installer (downloaded and opened; it installs a Windows service), a Docker command to copy, and the release page for Linux and portable builds. Server releases live in the app's repo under their own tag prefix, so they never replace the app's "latest" release:
+An entry can have a `server` that goes with the app, shown as a **Get server** row on its card. The dialog offers the server's Windows installer (downloaded and opened; it installs a Windows service), a Docker command to copy, and the release page for Linux and portable builds. When the server is installed on the PC, the card says so and the dialog offers **Update** or **Reinstall** and **Uninstall** (keeping the server's data, or deleting it too). Server releases live in the app's repo under their own tag prefix, so they never replace the app's "latest" release:
 
 ```json
 "server": {
@@ -123,7 +123,9 @@ An entry can have a `server` that goes with the app, shown as a **Get server** r
   "windowsAsset": "WillowWalletServer-*-Setup.exe",
   "dockerImage": "ghcr.io/adamglassner/willowwallet-server",
   "port": 8484,
-  "guideUrl": "https://github.com/adamglassner/coinpilot/blob/main/server/README.md"
+  "guideUrl": "https://github.com/adamglassner/coinpilot/blob/main/server/README.md",
+  "windowsUninstallKey": "{6C4E2B1A-7F3D-4E85-9A2C-1D8B5F0E7A44}_is1",
+  "windowsDataFolder": "%ProgramData%\\WillowWallet Server"
 }
 ```
 

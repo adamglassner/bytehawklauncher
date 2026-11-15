@@ -83,6 +83,10 @@ public sealed class ServerDownload
     public int Port { get; set; } = 8080;
     /// <summary>Where to read more (setup guide).</summary>
     public string? GuideUrl { get; set; }
+    /// <summary>The Windows installer's uninstall key (Inno Setup: "{AppId}_is1"), to find and uninstall it.</summary>
+    public string? WindowsUninstallKey { get; set; }
+    /// <summary>Where the Windows install keeps its data (environment variables allowed).</summary>
+    public string? WindowsDataFolder { get; set; }
 }
 
 /// <summary>installed.json — what the launcher installed for each catalog entry (keyed by entry Key).</summary>

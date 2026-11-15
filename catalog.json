@@ -80,7 +80,9 @@
         "windowsAsset": "WillowWalletServer-*-Setup.exe",
         "dockerImage": "ghcr.io/adamglassner/willowwallet-server",
         "port": 8484,
-        "guideUrl": "https://github.com/adamglassner/coinpilot/blob/main/server/README.md"
+        "guideUrl": "https://github.com/adamglassner/coinpilot/blob/main/server/README.md",
+        "windowsUninstallKey": "{6C4E2B1A-7F3D-4E85-9A2C-1D8B5F0E7A44}_is1",
+        "windowsDataFolder": "%ProgramData%\\WillowWallet Server"
       }
     },
     {
