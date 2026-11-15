@@ -65,6 +65,11 @@ public partial class App : Application
         var window = new MainWindow();
         MainWindow = window;
         window.Show();
+
+        // CI: BytehawkStudioLauncher.exe --screenshots <folder> saves the WillowWallet card and its Get server dialog
+        var shots = Array.IndexOf(e.Args, "--screenshots");
+        if (shots >= 0 && shots + 1 < e.Args.Length)
+            _ = Dispatcher.InvokeAsync(async () => await window.SaveServerScreenshotsAsync(e.Args[shots + 1]));
     }
 
     private void OnUnhandled(object sender, DispatcherUnhandledExceptionEventArgs e)

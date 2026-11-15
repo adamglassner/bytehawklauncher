@@ -764,6 +764,52 @@ public partial class MainWindow : Window
         if (vm != null) ReportError(ShellHelper.OpenUrl(vm.ReleasePageUrl));
     }
 
+    /// <summary>For CI screenshots: the WillowWallet card (found by searching) and its Get server dialog, then exit.</summary>
+    public async Task SaveServerScreenshotsAsync(string folder)
+    {
+        try
+        {
+            Directory.CreateDirectory(folder);
+            string theme = ThemeService.IsDarkApplied ? "dark" : "light";
+            await Task.Delay(4000);
+            SearchBox.Text = "WillowWallet";
+            await Task.Delay(2500);
+            SaveVisual(this, Path.Combine(folder, $"willowwallet-card-{theme}.png"));
+            var entry = _apps.FirstOrDefault(a => a.Entry.Server != null)?.Entry;
+            if (entry != null)
+            {
+                var dialog = new ServerDialog(entry) { Owner = this };
+                dialog.Show();
+                await Task.Delay(6000);
+                SaveVisual(dialog, Path.Combine(folder, $"get-server-dialog-{theme}.png"));
+                dialog.Close();
+            }
+        }
+        catch (Exception ex) { Log.Error("Screenshots", ex); }
+        Application.Current.Shutdown();
+    }
+
+    private static void SaveVisual(Window w, string path)
+    {
+        w.UpdateLayout();
+        var content = (FrameworkElement)w.Content;
+        double scale = System.Windows.Media.VisualTreeHelper.GetDpi(w).DpiScaleX;
+        var bmp = new System.Windows.Media.Imaging.RenderTargetBitmap(
+            (int)Math.Ceiling(content.ActualWidth * scale * 1.5), (int)Math.Ceiling(content.ActualHeight * scale * 1.5),
+            96 * scale * 1.5, 96 * scale * 1.5, System.Windows.Media.PixelFormats.Pbgra32);
+        var visual = new System.Windows.Media.DrawingVisual();
+        using (var dc = visual.RenderOpen())
+        {
+            dc.DrawRectangle(w.Background, null, new Rect(0, 0, content.ActualWidth, content.ActualHeight));
+            dc.DrawRectangle(new System.Windows.Media.VisualBrush(content), null, new Rect(0, 0, content.ActualWidth, content.ActualHeight));
+        }
+        bmp.Render(visual);
+        var enc = new System.Windows.Media.Imaging.PngBitmapEncoder();
+        enc.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bmp));
+        using var f = File.Create(path);
+        enc.Save(f);
+    }
+
     /// <summary>"Get server": the Windows installer (downloaded here, then run), Docker or the release page.</summary>
     private async void BhServer_Click(object sender, RoutedEventArgs e)
     {
