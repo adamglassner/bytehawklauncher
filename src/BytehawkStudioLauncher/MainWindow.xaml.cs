@@ -818,7 +818,10 @@ public partial class MainWindow : Window
             NavServers.IsChecked = true;
             await Task.Delay(3000);
             SaveVisual(this, Path.Combine(folder, $"servers-page-{theme}.png"));
-            var entry = _servers.FirstOrDefault()?.App.Entry ?? SampleCatalog().Apps.FirstOrDefault(a => a.Server != null);
+            // BH_TEST_SERVER picks which server's dialog to show (e.g. "WillowWallet Server"); otherwise the first one.
+            string? only = Environment.GetEnvironmentVariable("BH_TEST_SERVER");
+            bool Pick(CatalogEntry e) => e.Server != null && (string.IsNullOrEmpty(only) || e.Server.Name == only);
+            var entry = _servers.Select(s => s.App.Entry).FirstOrDefault(Pick) ?? SampleCatalog().Apps.FirstOrDefault(Pick);
             if (entry != null)
             {
                 var dialog = new ServerDialog(entry) { Owner = this };
