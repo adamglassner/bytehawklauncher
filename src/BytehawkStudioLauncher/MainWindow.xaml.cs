@@ -143,7 +143,7 @@ public partial class MainWindow : Window
         // 1.1.1: the "Padcraft (coming soon)" placeholder became Draftly (a different id), so drop it.
         changed |= _localCatalog.Apps.RemoveAll(a => a.ComingSoon && a.Key.Equals("padcraft", StringComparison.OrdinalIgnoreCase)) > 0;
         if (_localCatalog.RemovedDefaults.RemoveAll(k => k.Equals("padcraft", StringComparison.OrdinalIgnoreCase)) > 0) changed = true;
-        // 1.5.0: apps that gained a server (WillowWallet Server) get its "Get server" option.
+        // 1.5.0 / 1.7.0: apps that gained a server (WillowWallet Server, Guardrail Server) get it on the Bytehawk Servers page.
         foreach (var a in _localCatalog.Apps.Where(a => a.Server == null || a.Server.WindowsUninstallKey == null))
         {
             var d = defaults.FirstOrDefault(x => x.Server != null && x.Key.Equals(a.Key, StringComparison.OrdinalIgnoreCase));
@@ -191,11 +191,27 @@ public partial class MainWindow : Window
     {
         Id = "guardrail-ehs",
         Name = "Guardrail EHS",
-        Description = "Free, open-source environmental, health & safety software: actions, observations, safety training and more, with your records kept on your own PC.",
+        Description = "Free, open-source environmental, health & safety and fleet safety software: incidents, actions, inspections, training, fleet, Crash Review AI and safety references, with your records kept on your own PC. Optional Guardrail Server puts a whole team on the same data.",
         Repo = "adamglassner/guardrailehs",
         AssetPattern = "GuardrailEHS-*-Setup.exe;*-win-x64.zip",
         Exe = "Guardrail.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png",
+        Server = GuardrailServer(),
+    };
+
+    /// <summary>Guardrail Server (1.7.0): self-hosted team sync for Guardrail EHS, from one PC up to a cluster.</summary>
+    private static ServerDownload GuardrailServer() => new()
+    {
+        Name = "Guardrail Server",
+        Description = "Run your own server so your whole team shares Guardrail EHS records, with accounts, roles and a web panel. Starts as one Windows service with everything on this PC, and scales up to many servers with PostgreSQL and S3 storage (Docker and Kubernetes setups included).",
+        Repo = "adamglassner/guardrailehs",
+        TagPrefix = "server-v",
+        WindowsAsset = "GuardrailServer-*-Setup.exe",
+        DockerImage = "ghcr.io/adamglassner/guardrail-server",
+        Port = 5080,
+        GuideUrl = "https://github.com/adamglassner/guardrailehs/blob/main/server/README.md",
+        WindowsUninstallKey = "{8E1D4C72-3B5A-4F09-9C6E-2A7B1D0F5E93}_is1",
+        WindowsDataFolder = @"%ProgramData%\Guardrail Server",
     };
 
     /// <summary>ShoreDrop — FTP, FTPS and SFTP client (portable zip from its GitHub releases).</summary>

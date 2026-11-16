@@ -4,11 +4,23 @@
     {
       "id": "guardrail-ehs",
       "name": "Guardrail EHS",
-      "description": "Free, open-source environmental, health & safety software: actions, observations, safety training and more, with your records kept on your own PC.",
+      "description": "Free, open-source environmental, health & safety and fleet safety software: incidents, actions, inspections, training, fleet, Crash Review AI and safety references, with your records kept on your own PC. Optional Guardrail Server puts a whole team on the same data.",
       "repo": "adamglassner/guardrailehs",
       "assetPattern": "GuardrailEHS-*-Setup.exe;*-win-x64.zip",
       "exe": "Guardrail.exe",
-      "icon": "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png"
+      "icon": "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png",
+      "server": {
+        "name": "Guardrail Server",
+        "description": "Run your own server so your whole team shares Guardrail EHS records, with accounts, roles and a web panel. Starts as one Windows service with everything on this PC, and scales up to many servers with PostgreSQL and S3 storage (Docker and Kubernetes setups included).",
+        "repo": "adamglassner/guardrailehs",
+        "tagPrefix": "server-v",
+        "windowsAsset": "GuardrailServer-*-Setup.exe",
+        "dockerImage": "ghcr.io/adamglassner/guardrail-server",
+        "port": 5080,
+        "guideUrl": "https://github.com/adamglassner/guardrailehs/blob/main/server/README.md",
+        "windowsUninstallKey": "{8E1D4C72-3B5A-4F09-9C6E-2A7B1D0F5E93}_is1",
+        "windowsDataFolder": "%ProgramData%\\Guardrail Server"
+      }
     },
     {
       "id": "draftly",
