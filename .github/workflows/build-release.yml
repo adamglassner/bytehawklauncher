@@ -139,7 +139,7 @@ jobs:
           if (-not (Test-Path (Join-Path $data 'catalog.json'))) { throw 'catalog.json was not created' }
           $summary >> $env:GITHUB_STEP_SUMMARY
 
-      - name: Get server — install the real WillowWallet Server, screenshots, uninstall through the dialog
+      - name: Bytehawk Servers — install the real WillowWallet Server, screenshots, uninstall through the launcher
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -173,7 +173,7 @@ jobs:
           if ($result -ne 'uninstalled') { Get-Content (Join-Path $data 'launcher.log') -Tail 40; throw "The launcher didn't uninstall the server ($result)" }
           if (Get-Service WillowWalletServer -ErrorAction SilentlyContinue) { throw "Service still there after uninstall" }
           if (Test-Path 'C:\ProgramData\WillowWallet Server') { throw "Data folder still there after uninstall with 'delete data'" }
-          "## Get server`n- Installed $($rel.tag_name), launcher found it, uninstalled it with its data: OK" >> $env:GITHUB_STEP_SUMMARY
+          "## Bytehawk Servers`n- Installed $($rel.tag_name), launcher found it, uninstalled it with its data: OK" >> $env:GITHUB_STEP_SUMMARY
 
       - name: Publish screenshots to the "screenshots" branch
         if: github.event_name != 'pull_request'

@@ -20,13 +20,13 @@ public partial class ServerDialog : Window
     public ReleaseAsset? WindowsInstaller { get; private set; }
     public string? VersionTag => _release?.Tag;
 
-    public ServerDialog(CatalogEntry app)
+    public ServerDialog(CatalogEntry app, bool startWithUninstall = false)
     {
         InitializeComponent();
         SourceInitialized += (_, _) => ThemeService.ApplyTitleBar(this);
         _server = app.Server!;
         _repo = string.IsNullOrWhiteSpace(_server.Repo) ? app.Repo : _server.Repo!;
-        Title = "Get " + _server.Name;
+        Title = _server.Name;
         Heading.Text = _server.Name;
         DescriptionText.Text = _server.Description;
         if (string.IsNullOrWhiteSpace(_server.DockerImage)) DockerOption.Visibility = Visibility.Collapsed;
@@ -39,6 +39,7 @@ public partial class ServerDialog : Window
         if (!string.IsNullOrWhiteSpace(_server.GuideUrl)) GuideLink.Visibility = Visibility.Visible;
         _baseWindowsText = WindowsText.Text;
         ShowInstallState();
+        if (startWithUninstall && _installed != null) OpenUninstall();
         Loaded += async (_, _) => { await LoadAsync(); _loaded.TrySetResult(); };
     }
 
@@ -80,7 +81,7 @@ public partial class ServerDialog : Window
             InstalledBadge.Visibility = Visibility.Collapsed;
             UninstallButton.Visibility = Visibility.Collapsed;
             UninstallPanel.Visibility = Visibility.Collapsed;
-            WindowsButton.Content = "Download";
+            WindowsButton.Content = "Install";
             WindowsText.Text = _baseWindowsText + size;
         }
         else

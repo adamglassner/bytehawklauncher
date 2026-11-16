@@ -33,6 +33,7 @@ public partial class MainWindow : Window
 
     // view models
     private readonly ObservableCollection<BytehawkAppVM> _apps = new();
+    private readonly ObservableCollection<ServerCardVM> _servers = new();
     private readonly ObservableCollection<SoftwareVM> _software = new();
     private readonly ObservableCollection<WebAppVM> _web = new();
     private readonly ObservableCollection<DownloadItemVM> _downloads = new();
@@ -53,8 +54,10 @@ public partial class MainWindow : Window
         ThemeService.ThemeChanged += () => ThemeService.ApplyTitleBar(this);
 
         BytehawkList.ItemsSource = _apps;
+        ServersList.ItemsSource = _servers;
+        CollectionViewSource.GetDefaultView(_servers).Filter = o => MatchesSearch(((ServerCardVM)o).Name) || MatchesSearch(((ServerCardVM)o).App.Name);
         // A server installed or uninstalled outside the launcher shows up when you come back to it
-        Activated += (_, _) => { foreach (var v in _apps.Where(a => a.HasServer)) RefreshCard(v); };
+        Activated += (_, _) => { foreach (var c in _servers) c.Refresh(); };
         SoftwareList.ItemsSource = _software;
         WebList.ItemsSource = _web;
         DownloadsList.ItemsSource = _downloads;
@@ -622,6 +625,7 @@ public partial class MainWindow : Window
             }
             vm.Update(e, Installed(e), Release(e));
         }
+        RebuildServerCards();
         UpdateEmptyStates();
     }
 
@@ -787,7 +791,7 @@ public partial class MainWindow : Window
         if (vm != null) ReportError(ShellHelper.OpenUrl(vm.ReleasePageUrl));
     }
 
-    /// <summary>For CI screenshots: the WillowWallet card (found by searching) and its Get server dialog, then exit.</summary>
+    /// <summary>For CI screenshots: the Bytehawk Servers page and the server's options dialog, then exit.</summary>
     public async Task SaveServerScreenshotsAsync(string folder)
     {
         try
@@ -795,10 +799,10 @@ public partial class MainWindow : Window
             Directory.CreateDirectory(folder);
             string theme = ThemeService.IsDarkApplied ? "dark" : "light";
             await Task.Delay(4000);
-            SearchBox.Text = "WillowWallet";
-            await Task.Delay(2500);
-            SaveVisual(this, Path.Combine(folder, $"willowwallet-card-{theme}.png"));
-            var entry = _apps.FirstOrDefault(a => a.Entry.Server != null)?.Entry ?? SampleCatalog().Apps.FirstOrDefault(a => a.Server != null);
+            NavServers.IsChecked = true;
+            await Task.Delay(3000);
+            SaveVisual(this, Path.Combine(folder, $"servers-page-{theme}.png"));
+            var entry = _servers.FirstOrDefault()?.App.Entry ?? SampleCatalog().Apps.FirstOrDefault(a => a.Server != null);
             if (entry != null)
             {
                 var dialog = new ServerDialog(entry) { Owner = this };
@@ -816,8 +820,12 @@ public partial class MainWindow : Window
                     await Task.Delay(800);
                     SaveVisual(dialog, Path.Combine(folder, $"get-server-uninstalled-{theme}.png"));
                     File.WriteAllText(Path.Combine(folder, "uninstall-result.txt"), dialog.IsInstalled ? "still installed" : "uninstalled");
+                    dialog.Close();
+                    foreach (var c in _servers) c.Refresh();
+                    await Task.Delay(800);
+                    SaveVisual(this, Path.Combine(folder, $"servers-page-after-uninstall-{theme}.png"));
                 }
-                dialog.Close();
+                else dialog.Close();
             }
         }
         catch (Exception ex) { Log.Error("Screenshots", ex); }
@@ -828,15 +836,16 @@ public partial class MainWindow : Window
     {
         w.UpdateLayout();
         var content = (FrameworkElement)w.Content;
-        double scale = System.Windows.Media.VisualTreeHelper.GetDpi(w).DpiScaleX;
+        var m = content.Margin;
+        double width = content.ActualWidth + m.Left + m.Right, height = content.ActualHeight + m.Top + m.Bottom;
+        double scale = System.Windows.Media.VisualTreeHelper.GetDpi(w).DpiScaleX * 1.5;
         var bmp = new System.Windows.Media.Imaging.RenderTargetBitmap(
-            (int)Math.Ceiling(content.ActualWidth * scale * 1.5), (int)Math.Ceiling(content.ActualHeight * scale * 1.5),
-            96 * scale * 1.5, 96 * scale * 1.5, System.Windows.Media.PixelFormats.Pbgra32);
+            (int)Math.Ceiling(width * scale), (int)Math.Ceiling(height * scale), 96 * scale, 96 * scale, System.Windows.Media.PixelFormats.Pbgra32);
         var visual = new System.Windows.Media.DrawingVisual();
         using (var dc = visual.RenderOpen())
         {
-            dc.DrawRectangle(w.Background, null, new Rect(0, 0, content.ActualWidth, content.ActualHeight));
-            dc.DrawRectangle(new System.Windows.Media.VisualBrush(content), null, new Rect(0, 0, content.ActualWidth, content.ActualHeight));
+            dc.DrawRectangle(w.Background, null, new Rect(0, 0, width, height));
+            dc.DrawRectangle(new System.Windows.Media.VisualBrush(content), null, new Rect(m.Left, m.Top, content.ActualWidth, content.ActualHeight));
         }
         bmp.Render(visual);
         var enc = new System.Windows.Media.Imaging.PngBitmapEncoder();
@@ -845,22 +854,118 @@ public partial class MainWindow : Window
         enc.Save(f);
     }
 
-    /// <summary>"Get server": the Windows installer (downloaded here, then run), Docker or the release page.</summary>
-    private async void BhServer_Click(object sender, RoutedEventArgs e)
-    {
-        var vm = Ctx<BytehawkAppVM>(sender);
-        if (vm?.Entry.Server == null || vm.IsDownloading) return;
-        var dialog = new ServerDialog(vm.Entry) { Owner = this };
-        var download = dialog.ShowDialog() == true;
-        RefreshCard(vm);
-        if (!download || dialog.WindowsInstaller is not { } asset) return;
+    // =====================================================================
+    // Bytehawk Servers
+    // =====================================================================
 
+    /// <summary>One card per server that goes with a Bytehawk app (e.g. WillowWallet Server).</summary>
+    private void RebuildServerCards()
+    {
+        var apps = _apps.Where(a => a.HasServer).ToList();
+        foreach (var c in _servers.ToList())
+            if (!apps.Any(a => a.Key.Equals(c.Key, StringComparison.OrdinalIgnoreCase)) && !c.IsDownloading)
+                _servers.Remove(c);
+        for (int i = 0; i < apps.Count; i++)
+        {
+            var card = _servers.FirstOrDefault(c => c.Key.Equals(apps[i].Key, StringComparison.OrdinalIgnoreCase));
+            if (card == null) _servers.Insert(Math.Min(i, _servers.Count), new ServerCardVM(apps[i]));
+            else { card.SetApp(apps[i]); card.Refresh(); }
+        }
+        UpdateEmptyStates();
+    }
+
+    private DateTime _serverReleasesCheckedAt;
+
+    /// <summary>Latest release of each server (one GitHub call per server; at most every 30 minutes unless asked).</summary>
+    private async Task RefreshServerReleasesAsync(bool manual)
+    {
+        if (!manual && DateTime.UtcNow - _serverReleasesCheckedAt < TimeSpan.FromMinutes(30) && _servers.All(c => c.Release != null)) return;
+        _serverReleasesCheckedAt = DateTime.UtcNow;
+        ServersRefreshButton.IsEnabled = false;
+        ServersRefreshText.Text = "Checking…";
+        try
+        {
+            foreach (var card in _servers.ToList())
+            {
+                var repo = string.IsNullOrWhiteSpace(card.Server.Repo) ? card.App.Entry.Repo : card.Server.Repo!;
+                var r = await GitHubService.GetLatestReleaseWithPrefixAsync(repo, card.Server.TagPrefix);
+                card.SetRelease(r.Status == GitHubStatus.Ok ? r.Value : null, r.Status switch
+                {
+                    GitHubStatus.Ok => null,
+                    GitHubStatus.NoRelease => "Not released yet",
+                    GitHubStatus.RateLimited => "GitHub limit reached; try again later",
+                    GitHubStatus.NetworkError => "Offline: couldn't check the latest version",
+                    _ => "Couldn't check the latest version",
+                });
+                card.Refresh();
+            }
+        }
+        finally
+        {
+            ServersRefreshButton.IsEnabled = true;
+            ServersRefreshText.Text = "Check for updates";
+        }
+    }
+
+    private async void ServersRefresh_Click(object sender, RoutedEventArgs e) => await RefreshServerReleasesAsync(manual: true);
+
+    /// <summary>Install / Update downloads and runs the Windows installer; Open panel opens the web panel.</summary>
+    private async void SvPrimary_Click(object sender, RoutedEventArgs e)
+    {
+        var card = Ctx<ServerCardVM>(sender);
+        if (card == null) return;
+        if (card.IsInstalled && !card.HasUpdate) { OpenServerPanel(card); return; }
+        if (card.Release == null) await RefreshServerReleasesAsync(manual: true);
+        var asset = card.Release == null ? null : GitHubService.MatchAsset(card.Release.Assets, card.Server.WindowsAsset);
+        if (asset == null) { card.Note = card.ReleaseProblem ?? "No Windows installer in the latest release."; return; }
+        await InstallServerAsync(card, asset);
+    }
+
+    private void SvOpenPanel_Click(object sender, RoutedEventArgs e)
+    {
+        if (Ctx<ServerCardVM>(sender) is { } card) OpenServerPanel(card);
+    }
+
+    private void OpenServerPanel(ServerCardVM card) => ReportError(ShellHelper.OpenUrl($"http://localhost:{card.Server.Port}/"));
+
+    /// <summary>Docker, Linux and the Windows options (and uninstall) in one dialog.</summary>
+    private async void SvMore_Click(object sender, RoutedEventArgs e)
+    {
+        if (Ctx<ServerCardVM>(sender) is { } card) await ShowServerDialogAsync(card, uninstall: false);
+    }
+
+    private async void SvUninstall_Click(object sender, RoutedEventArgs e)
+    {
+        if (Ctx<ServerCardVM>(sender) is { } card) await ShowServerDialogAsync(card, uninstall: true);
+    }
+
+    private async Task ShowServerDialogAsync(ServerCardVM card, bool uninstall)
+    {
+        if (card.IsDownloading) return;
+        var dialog = new ServerDialog(card.App.Entry, uninstall) { Owner = this };
+        var download = dialog.ShowDialog() == true;
+        card.Refresh();
+        if (download && dialog.WindowsInstaller is { } asset) await InstallServerAsync(card, asset);
+    }
+
+    private void SvReleasePage_Click(object sender, RoutedEventArgs e)
+    {
+        if (Ctx<ServerCardVM>(sender) is not { } card) return;
+        var repo = string.IsNullOrWhiteSpace(card.Server.Repo) ? card.App.Entry.Repo : card.Server.Repo!;
+        ReportError(ShellHelper.OpenUrl(card.Release?.HtmlUrl ?? $"https://github.com/{repo}/releases"));
+    }
+
+    private void SvCancel_Click(object sender, RoutedEventArgs e) => Ctx<ServerCardVM>(sender)?.Download?.Cts.Cancel();
+
+    /// <summary>Downloads the server's Windows installer, checks it, runs it (Windows asks for permission) and waits.</summary>
+    private async Task InstallServerAsync(ServerCardVM card, ReleaseAsset asset)
+    {
         Directory.CreateDirectory(DownloadFolder);
         var dest = Path.Combine(DownloadFolder, SafeFileName(asset.Name));
-        var item = new DownloadItemVM { AppName = vm.Entry.Server.Name, FileName = asset.Name, Destination = dest };
+        var item = new DownloadItemVM { AppName = card.Server.Name, FileName = asset.Name, Destination = dest };
         _downloads.Insert(0, item);
-        vm.Note = null;
-        vm.Download = item;
+        card.Note = null;
+        card.Download = item;
         try
         {
             await Downloader.DownloadAsync(asset.DownloadUrl, dest, new Progress<DownloadProgress>(item.Report), item.Cts.Token);
@@ -875,9 +980,20 @@ public partial class MainWindow : Window
             item.IsIndeterminate = false;
             item.IsActive = false;
             item.Status = "Downloaded";
-            item.Detail = "Opening the installer. Windows will ask to allow it, since the server runs as a service.";
-            var launchProblem = ShellHelper.Launch(dest);
-            vm.Note = launchProblem == null ? $"{vm.Entry.Server.Name} installer opened." : launchProblem;
+            item.Detail = "Installer opened. Windows asks to allow it, since the server runs as a service.";
+            card.Download = null;
+            card.Busy = true;
+            card.Note = "Finish the installer to continue…";
+            int? exit = null;
+            try
+            {
+                using var p = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(dest) { UseShellExecute = true });
+                if (p != null) { await p.WaitForExitAsync(); exit = p.ExitCode; }
+            }
+            catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223) { card.Note = "Install was cancelled."; return; }
+            card.Refresh();
+            card.Note = card.IsInstalled ? $"{card.Server.Name} {card.Installed!.Version} is running on this PC." :
+                        exit is 0 or null ? "The installer closed without installing." : $"The installer stopped (code {exit}).";
         }
         catch (OperationCanceledException)
         {
@@ -892,11 +1008,13 @@ public partial class MainWindow : Window
             item.Status = "Failed";
             item.Detail = $"Download failed: {ex.Message}";
             item.IsActive = false;
-            vm.Note = "Server download failed. See the Downloads page for details.";
+            card.Note = "Server download failed. See the Downloads page for details.";
         }
         finally
         {
-            vm.Download = null;
+            card.Download = null;
+            card.Busy = false;
+            card.Refresh();
         }
     }
 
@@ -1483,6 +1601,12 @@ public partial class MainWindow : Window
     {
         if (PageBytehawk == null) return; // during InitializeComponent
         PageBytehawk.Visibility = NavBytehawk.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        PageServers.Visibility = NavServers.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        if (NavServers.IsChecked == true)
+        {
+            foreach (var c in _servers) c.Refresh();
+            _ = RefreshServerReleasesAsync(manual: false);
+        }
         PageSoftware.Visibility = NavSoftware.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
         PageWeb.Visibility = NavWeb.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
         PageDownloads.Visibility = NavDownloads.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
@@ -1503,6 +1627,7 @@ public partial class MainWindow : Window
         SearchPlaceholder.Visibility = has ? Visibility.Collapsed : Visibility.Visible;
         ClearSearch.Visibility = has ? Visibility.Visible : Visibility.Collapsed;
         CollectionViewSource.GetDefaultView(_apps).Refresh();
+        CollectionViewSource.GetDefaultView(_servers).Refresh();
         CollectionViewSource.GetDefaultView(_software).Refresh();
         CollectionViewSource.GetDefaultView(_web).Refresh();
         UpdateEmptyStates();
@@ -1520,6 +1645,8 @@ public partial class MainWindow : Window
         BytehawkEmpty.Visibility = CollectionViewSource.GetDefaultView(_apps).IsEmpty ? Visibility.Visible : Visibility.Collapsed;
         SoftwareEmpty.Visibility = CollectionViewSource.GetDefaultView(_software).IsEmpty ? Visibility.Visible : Visibility.Collapsed;
         WebEmpty.Visibility = CollectionViewSource.GetDefaultView(_web).IsEmpty ? Visibility.Visible : Visibility.Collapsed;
+        if (ServersEmpty != null)
+            ServersEmpty.Visibility = CollectionViewSource.GetDefaultView(_servers).IsEmpty ? Visibility.Visible : Visibility.Collapsed;
         var searching = !string.IsNullOrEmpty(SearchBox.Text);
         SoftwareEmpty.Text = searching ? "No software matches your search." : "Nothing here yet. Use “Add software” to add any program from your PC.";
         WebEmpty.Text = searching ? "No web apps match your search." : "No web apps yet. Use “Add web app” to bookmark a site.";

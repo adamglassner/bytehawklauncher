@@ -85,12 +85,6 @@ public sealed class BytehawkAppVM : ObservableObject
     public bool IsComingSoon => Entry.ComingSoon;
     public bool HasRepo => Entry.HasRepo;
     public bool HasServer => Entry.Server != null && !Entry.ComingSoon;
-    public string ServerName => Entry.Server?.Name ?? "";
-    /// <summary>The server's Windows install on this PC, if any.</summary>
-    public InstalledServer? ServerInstalled { get; private set; }
-    public string ServerSubtitle => ServerInstalled is { } s
-        ? (s.Version.Length > 0 ? $"Installed on this PC · version {s.Version}" : "Installed on this PC")
-        : "Sync your devices on your own server";
     public string RepoText => Entry.HasRepo ? Entry.Repo : "Bytehawk Studio";
     public string ReleasePageUrl => Release?.HtmlUrl ?? $"https://github.com/{Entry.Repo}/releases";
 
@@ -196,9 +190,71 @@ public sealed class BytehawkAppVM : ObservableObject
         Entry = entry;
         Installed = installed;
         Release = release;
-        ServerInstalled = entry.Server == null ? null : ServerInstall.Find(entry.Server);
         RefreshAll();
     }
+}
+
+/// <summary>Card on the Bytehawk Servers page: a self-hosted server that goes with a Bytehawk app.</summary>
+public sealed class ServerCardVM : ObservableObject
+{
+    private DownloadItemVM? _download;
+    private string? _note;
+    private bool _busy;
+
+    public ServerCardVM(BytehawkAppVM app) { App = app; Refresh(); }
+
+    /// <summary>The app the server is for (its icon, name and catalog entry).</summary>
+    public BytehawkAppVM App { get; private set; }
+    public ServerDownload Server => App.Entry.Server!;
+    public string Key => App.Key;
+    public string Name => Server.Name;
+    public string ForApp => $"Sync server for {App.Name}";
+    public string Description => string.IsNullOrWhiteSpace(Server.Description) ? $"Self-hosted server for {App.Name}." : Server.Description;
+    public string Platforms => string.IsNullOrWhiteSpace(Server.DockerImage) ? "Windows · Linux" : "Windows · Docker · Linux";
+
+    public InstalledServer? Installed { get; private set; }
+    public CachedRelease? Release { get; private set; }
+    /// <summary>Why there's no version to show (not released yet, offline…), or null while checking.</summary>
+    public string? ReleaseProblem { get; private set; }
+
+    public void SetApp(BytehawkAppVM app) { App = app; RefreshAll(); }
+
+    /// <summary>Looks again at whether the server is installed on this PC.</summary>
+    public void Refresh()
+    {
+        Installed = ServerInstall.Find(Server);
+        RefreshAll();
+    }
+
+    public void SetRelease(CachedRelease? release, string? problem)
+    {
+        Release = release;
+        ReleaseProblem = problem;
+        RefreshAll();
+    }
+
+    public bool IsInstalled => Installed != null;
+    public string LatestVersion => Release == null || Release.NoRelease ? "" :
+        Release.Tag.StartsWith(Server.TagPrefix, StringComparison.OrdinalIgnoreCase) ? Release.Tag[Server.TagPrefix.Length..] : Release.Tag;
+    public bool HasUpdate => IsInstalled && LatestVersion.Length > 0 && GitHubService.CompareVersions(LatestVersion, Installed!.Version) > 0;
+    public string InstalledBadge => Installed is { Version.Length: > 0 } i ? $"Installed · {i.Version}" : "Installed";
+
+    public string VersionLine =>
+        IsInstalled ? (LatestVersion.Length > 0 ? $"Running on this PC · latest {LatestVersion}" : "Running on this PC as a Windows service")
+        : LatestVersion.Length > 0 ? $"Latest version {LatestVersion}"
+        : ReleaseProblem ?? "Checking for the latest version…";
+
+    public DownloadItemVM? Download { get => _download; set { if (Set(ref _download, value)) RefreshAll(); } }
+    public bool IsDownloading => Download?.IsActive == true;
+    public bool Busy { get => _busy; set { if (Set(ref _busy, value)) RefreshAll(); } }
+    public string? Note { get => _note; set { if (Set(ref _note, value)) OnPropertyChanged(nameof(HasNote)); } }
+    public bool HasNote => !string.IsNullOrEmpty(Note);
+
+    /// <summary>Install (Windows installer) / Update / Open panel.</summary>
+    public string PrimaryText => !IsInstalled ? "Install" : HasUpdate ? "Update" : "Open panel";
+    public bool ShowPrimary => !IsDownloading && !Busy;
+    public bool ShowOpenPanel => IsInstalled && HasUpdate && !IsDownloading && !Busy;
+    public bool CanUninstall => IsInstalled && !IsDownloading && !Busy;
 }
 
 /// <summary>Card for an entry in My Software.</summary>

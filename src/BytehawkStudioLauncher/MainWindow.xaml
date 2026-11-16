@@ -90,21 +90,80 @@
             <ProgressBar Value="{Binding Download.Percent, Mode=OneWay}" IsIndeterminate="{Binding Download.IsIndeterminate, Mode=OneWay}" Maximum="100" />
             <TextBlock Text="{Binding Download.Detail}" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,6,0,0" />
           </StackPanel>
+        </DockPanel>
+      </Border>
+    </DataTemplate>
 
-          <!-- server that goes with the app -->
-          <Border DockPanel.Dock="Bottom" Margin="0,12,0,0" Padding="10,8" CornerRadius="8" Background="{DynamicResource AccentSoft}"
-                  Visibility="{Binding HasServer, Converter={StaticResource BoolToVis}}">
-            <DockPanel>
-              <Button DockPanel.Dock="Right" Content="Get server" Padding="12,4" Click="BhServer_Click"
-                      ToolTip="Download the server: Windows installer, Docker or Linux" />
-              <TextBlock Text="&#xE753;" FontFamily="{StaticResource IconFont}" FontSize="18" Foreground="{DynamicResource Accent}"
-                         VerticalAlignment="Center" Margin="0,0,10,0" />
-              <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="{Binding ServerName}" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
-                <TextBlock Text="{Binding ServerSubtitle}" FontSize="11" Foreground="{DynamicResource TextSecondary}" TextTrimming="CharacterEllipsis" />
-              </StackPanel>
-            </DockPanel>
-          </Border>
+    <!-- ===== Bytehawk server card ===== -->
+    <DataTemplate x:Key="ServerCard" DataType="{x:Type vm:ServerCardVM}">
+      <Border Style="{StaticResource Card}" Width="330" MinHeight="236">
+        <DockPanel LastChildFill="False">
+          <!-- header: the app's icon with a server badge -->
+          <DockPanel DockPanel.Dock="Top">
+            <Grid DockPanel.Dock="Left" Width="48" Height="48" VerticalAlignment="Top">
+              <Border Width="44" Height="44" CornerRadius="10" Background="{DynamicResource AccentSoft}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid>
+                  <Image Source="{DynamicResource LogoMark}" Width="34" Height="34" RenderOptions.BitmapScalingMode="HighQuality"
+                         Visibility="{Binding App.NoAppIcon, Converter={StaticResource BoolToVis}}" />
+                  <Image Source="{Binding App.AppIcon}" Width="34" Height="34" RenderOptions.BitmapScalingMode="HighQuality"
+                         Visibility="{Binding App.HasAppIcon, Converter={StaticResource BoolToVis}}" />
+                </Grid>
+              </Border>
+              <Border Width="22" Height="22" CornerRadius="11" Background="{DynamicResource Accent}" BorderBrush="{DynamicResource CardBg}" BorderThickness="2"
+                      HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <TextBlock Text="&#xE753;" FontFamily="{StaticResource IconFont}" FontSize="10" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+            </Grid>
+            <StackPanel Margin="10,0,0,0">
+              <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" />
+              <TextBlock Text="{Binding ForApp}" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,4,0,0" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+          </DockPanel>
+
+          <TextBlock DockPanel.Dock="Top" Text="{Binding Description}" Style="{StaticResource Subtle}" Margin="0,12,0,0"
+                     MaxHeight="54" TextTrimming="CharacterEllipsis" ToolTip="{Binding Description}" />
+
+          <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,10,0,0">
+            <TextBlock Text="&#xE7F4;" FontFamily="{StaticResource IconFont}" FontSize="12" Foreground="{DynamicResource TextSecondary}"
+                       VerticalAlignment="Center" Margin="0,1,6,0" />
+            <TextBlock Text="{Binding Platforms}" FontSize="12" Foreground="{DynamicResource TextSecondary}" />
+          </StackPanel>
+          <TextBlock DockPanel.Dock="Top" Text="{Binding VersionLine}" FontSize="12" Margin="0,4,0,0" Foreground="{DynamicResource TextSecondary}" />
+
+          <WrapPanel DockPanel.Dock="Top" Margin="0,8,0,0">
+            <Border Style="{StaticResource Badge}" Margin="0,0,6,0" Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVis}}">
+              <TextBlock Text="{Binding InstalledBadge}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource Accent}" />
+            </Border>
+            <Border Style="{StaticResource Badge}" Visibility="{Binding HasUpdate, Converter={StaticResource BoolToVis}}">
+              <TextBlock Text="Update available" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource Accent}" />
+            </Border>
+            <TextBlock Text="{Binding Note}" FontSize="12" Foreground="{DynamicResource WarningText}" TextWrapping="Wrap" Margin="0,4,0,0"
+                       Visibility="{Binding HasNote, Converter={StaticResource BoolToVis}}" />
+          </WrapPanel>
+
+          <!-- actions -->
+          <DockPanel DockPanel.Dock="Bottom" Margin="0,14,0,0">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+              <Button Style="{StaticResource IconButton}" Content="&#xE712;" ToolTip="Docker, Linux and other ways to run it" Click="SvMore_Click" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE8A7;" ToolTip="Open release page on GitHub" Click="SvReleasePage_Click" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Uninstall from this PC"
+                      Visibility="{Binding CanUninstall, Converter={StaticResource BoolToVis}}" Click="SvUninstall_Click" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Button Style="{StaticResource AccentButton}" Content="{Binding PrimaryText}" MinWidth="96"
+                      Visibility="{Binding ShowPrimary, Converter={StaticResource BoolToVis}}" Click="SvPrimary_Click" />
+              <Button Content="Open panel" Margin="8,0,0,0"
+                      Visibility="{Binding ShowOpenPanel, Converter={StaticResource BoolToVis}}" Click="SvOpenPanel_Click" />
+              <Button Content="Cancel" Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}" Click="SvCancel_Click" />
+            </StackPanel>
+          </DockPanel>
+
+          <!-- progress -->
+          <StackPanel DockPanel.Dock="Bottom" Margin="0,12,0,0" Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}">
+            <ProgressBar Value="{Binding Download.Percent, Mode=OneWay}" IsIndeterminate="{Binding Download.IsIndeterminate, Mode=OneWay}" Maximum="100" />
+            <TextBlock Text="{Binding Download.Detail}" FontSize="11" Foreground="{DynamicResource TextSecondary}" Margin="0,6,0,0" />
+          </StackPanel>
         </DockPanel>
       </Border>
     </DataTemplate>
@@ -238,6 +297,7 @@
         </StackPanel>
         <StackPanel>
           <RadioButton x:Name="NavBytehawk" Style="{StaticResource NavItem}" Tag="&#xE71D;" Content="Bytehawk Apps" IsChecked="True" Checked="Nav_Checked" />
+          <RadioButton x:Name="NavServers" Style="{StaticResource NavItem}" Tag="&#xE753;" Content="Bytehawk Servers" Checked="Nav_Checked" />
           <RadioButton x:Name="NavSoftware" Style="{StaticResource NavItem}" Tag="&#xE8F1;" Content="My Software" Checked="Nav_Checked" />
           <RadioButton x:Name="NavWeb" Style="{StaticResource NavItem}" Tag="&#xE774;" Content="Web Apps" Checked="Nav_Checked" />
           <RadioButton x:Name="NavDownloads" Style="{StaticResource NavItem}" Tag="&#xE896;" Content="Downloads" Checked="Nav_Checked" />
@@ -331,6 +391,34 @@
             <ItemsControl x:Name="BytehawkList" ItemTemplate="{StaticResource BytehawkCard}" ItemsPanel="{StaticResource CardPanel}" />
             <TextBlock x:Name="BytehawkEmpty" Style="{StaticResource Subtle}" Margin="0,8,0,0" Visibility="Collapsed"
                        Text="No Bytehawk apps match. Use “Add Bytehawk app” to add one from a GitHub repo." />
+          </StackPanel>
+        </ScrollViewer>
+      </Grid>
+
+      <!-- ===== Bytehawk Servers page ===== -->
+      <Grid x:Name="PageServers" Grid.Row="2" Visibility="Collapsed">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <DockPanel Margin="28,24,28,12">
+          <Button x:Name="ServersRefreshButton" DockPanel.Dock="Right" VerticalAlignment="Top" Click="ServersRefresh_Click">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xE72C;" FontFamily="{StaticResource IconFont}" Margin="0,1,8,0" VerticalAlignment="Center" />
+              <TextBlock x:Name="ServersRefreshText" Text="Check for updates" />
+            </StackPanel>
+          </Button>
+          <StackPanel>
+            <TextBlock Text="Bytehawk Servers" Style="{StaticResource PageTitle}" />
+            <TextBlock Style="{StaticResource Subtle}" Margin="0,4,0,0" TextWrapping="Wrap"
+                       Text="Servers you run yourself for Bytehawk apps, like syncing your devices. Install one on this PC, or run it with Docker or on Linux." />
+          </StackPanel>
+        </DockPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="28,4,12,12">
+          <StackPanel>
+            <ItemsControl x:Name="ServersList" ItemTemplate="{StaticResource ServerCard}" ItemsPanel="{StaticResource CardPanel}" />
+            <TextBlock x:Name="ServersEmpty" Style="{StaticResource Subtle}" Margin="0,8,0,0" Visibility="Collapsed"
+                       Text="No Bytehawk servers match your search." />
           </StackPanel>
         </ScrollViewer>
       </Grid>
