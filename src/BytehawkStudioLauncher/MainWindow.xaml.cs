@@ -255,7 +255,7 @@ public partial class MainWindow : Window
     {
         Id = "sumthing",
         Name = "Sumthing",
-        Description = "Calculator with a paper tape, sums you can type in words, a unit and currency converter, and tip, discount, percent and date tools. Light, Dark or Classic (Windows 7) look.",
+        Description = "Calculator with a TI-84 / TI-Nspire style graphing calculator, a scientific home screen, statistics and regressions, a paper tape, sums you type in words, a unit and currency converter and everyday tools. Light or Dark, with Modern or Classic (Windows 7) keys.",
         Repo = "adamglassner/sumthing",
         AssetPattern = "Sumthing-*-win-x64.zip;Sumthing-*-Setup.exe",
         Exe = "Sumthing.exe",

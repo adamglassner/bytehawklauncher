@@ -60,7 +60,7 @@
     {
       "id": "sumthing",
       "name": "Sumthing",
-      "description": "Calculator with a paper tape, sums you can type in words, a unit and currency converter, and tip, discount, percent and date tools. Light, Dark or Classic (Windows 7) look.",
+      "description": "Calculator with a TI-84 / TI-Nspire style graphing calculator, a scientific home screen, statistics and regressions, a paper tape, sums you type in words, a unit and currency converter and everyday tools. Light or Dark, with Modern or Classic (Windows 7) keys.",
       "repo": "adamglassner/sumthing",
       "assetPattern": "Sumthing-*-win-x64.zip;Sumthing-*-Setup.exe",
       "exe": "Sumthing.exe",
