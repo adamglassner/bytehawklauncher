@@ -382,10 +382,10 @@ public partial class MainWindow : Window
     {
         Id = "fleetwatch",
         Name = "Fleetwatch",
-        Description = "Look after the computers you're responsible for from one place: each PC's status and pending Windows updates, its error logs, and installing apps, updates and restarts remotely. Installs a background agent that reports to your own Fleetwatch server.",
+        Description = "Look after the computers you and your family rely on — see each PC's status and updates and lend a hand remotely. Early preview.",
         Repo = "adamglassner/Fleetwatch",
-        AssetPattern = "FleetwatchAgentSetup*.exe",
-        Exe = "FleetwatchAgent.exe",
+        AssetPattern = "Fleetwatch-*-win-x64.zip",
+        Exe = "Fleetwatch.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/Fleetwatch/main/assets/fleetwatch-256.png",
     };
 
