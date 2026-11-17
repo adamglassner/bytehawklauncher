@@ -1,0 +1,234 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Bytehawk.Launcher.App"
+             Name="Bytehawk Studio Launcher"
+             RequestedThemeVariant="Default">
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <!-- ===== Buttons ===== -->
+    <Style Selector="Button">
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="14,7" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Stroke}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource HoverBg}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Stroke}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
+
+    <Style Selector="Button.accent">
+      <Setter Property="Background" Value="{DynamicResource Accent}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnAccent}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.accent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentHover}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource AccentHover}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnAccent}" />
+    </Style>
+    <Style Selector="Button.accent:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentHover}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnAccent}" />
+    </Style>
+
+    <Style Selector="Button.icon">
+      <Setter Property="Width" Value="34" />
+      <Setter Property="Height" Value="34" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+    </Style>
+
+    <!-- sidebar items -->
+    <Style Selector="Button.nav">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="12,10" />
+      <Setter Property="Margin" Value="10,2" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+    </Style>
+    <Style Selector="Button.nav.selected">
+      <Setter Property="Background" Value="{DynamicResource AccentSoft}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.nav.selected /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentSoft}" />
+    </Style>
+
+    <!-- segmented theme switcher / filter chips -->
+    <Style Selector="Button.seg">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="10,5" />
+      <Setter Property="Margin" Value="2" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+    </Style>
+    <Style Selector="Button.seg.selected">
+      <Setter Property="Background" Value="{DynamicResource Accent}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnAccent}" />
+    </Style>
+    <Style Selector="Button.seg.selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource AccentHover}" />
+      <Setter Property="Foreground" Value="{DynamicResource OnAccent}" />
+    </Style>
+
+    <!-- ===== Inputs ===== -->
+    <Style Selector="TextBox">
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="10,7" />
+      <Setter Property="Background" Value="{DynamicResource InputBg}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Stroke}" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+      <Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
+      <Setter Property="Background" Value="{DynamicResource InputBg}" />
+    </Style>
+    <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+      <Setter Property="Background" Value="{DynamicResource InputBg}" />
+    </Style>
+    <Style Selector="ProgressBar">
+      <Setter Property="Foreground" Value="{DynamicResource Accent}" />
+      <Setter Property="Background" Value="{DynamicResource TrackBg}" />
+      <Setter Property="MinHeight" Value="6" />
+      <Setter Property="Height" Value="6" />
+      <Setter Property="CornerRadius" Value="3" />
+    </Style>
+
+    <!-- ===== Surfaces & text ===== -->
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{DynamicResource CardBg}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Stroke}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="18" />
+      <Setter Property="Margin" Value="0,0,16,16" />
+    </Style>
+    <Style Selector="Border.badge">
+      <Setter Property="Background" Value="{DynamicResource AccentSoft}" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="8,2" />
+      <Setter Property="Margin" Value="0,0,6,0" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Border.badge.soon">
+      <Setter Property="Background" Value="{DynamicResource WarningSoft}" />
+    </Style>
+    <Style Selector="TextBlock.title">
+      <Setter Property="FontSize" Value="24" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
+    </Style>
+    <Style Selector="TextBlock.section">
+      <Setter Property="FontSize" Value="16" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Margin" Value="0,0,0,10" />
+    </Style>
+    <Style Selector="TextBlock.subtle">
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.label">
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondary}" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Margin" Value="0,12,0,5" />
+    </Style>
+
+    <!-- line icons: a 24x24 Path inside a Viewbox, drawn in the parent's text colour -->
+    <Style Selector="Path.ico">
+      <Setter Property="Width" Value="24" />
+      <Setter Property="Height" Value="24" />
+      <Setter Property="StrokeThickness" Value="2" />
+      <Setter Property="StrokeLineCap" Value="Round" />
+      <Setter Property="StrokeJoin" Value="Round" />
+      <Setter Property="Stroke" Value="{Binding $parent[ContentPresenter].Foreground}" />
+    </Style>
+    <Style Selector="Viewbox.ico">
+      <Setter Property="Width" Value="16" />
+      <Setter Property="Height" Value="16" />
+    </Style>
+  </Application.Styles>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="WindowBg" Color="#0F1420" />
+          <SolidColorBrush x:Key="SidebarBg" Color="#0B0F19" />
+          <SolidColorBrush x:Key="CardBg" Color="#1A2233" />
+          <SolidColorBrush x:Key="HoverBg" Color="#243049" />
+          <SolidColorBrush x:Key="InputBg" Color="#121A28" />
+          <SolidColorBrush x:Key="Stroke" Color="#2A3550" />
+          <SolidColorBrush x:Key="TextPrimary" Color="#E6EDF7" />
+          <SolidColorBrush x:Key="TextSecondary" Color="#93A1B8" />
+          <SolidColorBrush x:Key="Accent" Color="#22D3EE" />
+          <SolidColorBrush x:Key="AccentHover" Color="#67E8F9" />
+          <SolidColorBrush x:Key="OnAccent" Color="#06232C" />
+          <SolidColorBrush x:Key="AccentSoft" Color="#2622D3EE" />
+          <SolidColorBrush x:Key="WarningText" Color="#FBBF24" />
+          <SolidColorBrush x:Key="WarningSoft" Color="#26FBBF24" />
+          <SolidColorBrush x:Key="DangerText" Color="#F87171" />
+          <SolidColorBrush x:Key="SuccessText" Color="#34D399" />
+          <SolidColorBrush x:Key="TrackBg" Color="#243049" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="WindowBg" Color="#F5F7FA" />
+          <SolidColorBrush x:Key="SidebarBg" Color="#EBEFF5" />
+          <SolidColorBrush x:Key="CardBg" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="HoverBg" Color="#E6ECF3" />
+          <SolidColorBrush x:Key="InputBg" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="Stroke" Color="#D5DCE6" />
+          <SolidColorBrush x:Key="TextPrimary" Color="#0F172A" />
+          <SolidColorBrush x:Key="TextSecondary" Color="#5B6577" />
+          <SolidColorBrush x:Key="Accent" Color="#0891B2" />
+          <SolidColorBrush x:Key="AccentHover" Color="#0E7490" />
+          <SolidColorBrush x:Key="OnAccent" Color="#FFFFFF" />
+          <SolidColorBrush x:Key="AccentSoft" Color="#1F0891B2" />
+          <SolidColorBrush x:Key="WarningText" Color="#B45309" />
+          <SolidColorBrush x:Key="WarningSoft" Color="#1FB45309" />
+          <SolidColorBrush x:Key="DangerText" Color="#DC2626" />
+          <SolidColorBrush x:Key="SuccessText" Color="#047857" />
+          <SolidColorBrush x:Key="TrackBg" Color="#E2E8F0" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+
+      <!-- icon shapes (24x24, stroked) -->
+      <StreamGeometry x:Key="IcoApps">M4,4 L10,4 L10,10 L4,10 Z M14,4 L20,4 L20,10 L14,10 Z M4,14 L10,14 L10,20 L4,20 Z M14,14 L20,14 L20,20 L14,20 Z</StreamGeometry>
+      <StreamGeometry x:Key="IcoServer">M4,4 L20,4 L20,10 L4,10 Z M4,14 L20,14 L20,20 L4,20 Z M7.5,7 L8.5,7 M7.5,17 L8.5,17</StreamGeometry>
+      <StreamGeometry x:Key="IcoSoftware">M3,5 L21,5 L21,19 L3,19 Z M3,9 L21,9 M6,7 L6.5,7 M8.5,7 L9,7</StreamGeometry>
+      <StreamGeometry x:Key="IcoGlobe">M3,12 A9,9 0 1 0 21,12 A9,9 0 1 0 3,12 M3,12 L21,12 M12,3 C8,7 8,17 12,21 M12,3 C16,7 16,17 12,21</StreamGeometry>
+      <StreamGeometry x:Key="IcoDownload">M12,4 L12,15 M7,10 L12,15 L17,10 M5,20 L19,20</StreamGeometry>
+      <StreamGeometry x:Key="IcoUpload">M12,15 L12,4 M7,9 L12,4 L17,9 M5,20 L19,20</StreamGeometry>
+      <StreamGeometry x:Key="IcoSettings">M8,12 A4,4 0 1 0 16,12 A4,4 0 1 0 8,12 M12,2 L12,5 M12,19 L12,22 M2,12 L5,12 M19,12 L22,12 M4.9,4.9 L7,7 M17,17 L19.1,19.1 M4.9,19.1 L7,17 M17,7 L19.1,4.9</StreamGeometry>
+      <StreamGeometry x:Key="IcoSearch">M4,10.5 A6.5,6.5 0 1 0 17,10.5 A6.5,6.5 0 1 0 4,10.5 M15.3,15.3 L20,20</StreamGeometry>
+      <StreamGeometry x:Key="IcoPlus">M12,5 L12,19 M5,12 L19,12</StreamGeometry>
+      <StreamGeometry x:Key="IcoRefresh">M19,12 A7,7 0 1 1 16.95,7.05 M17,3 L17,7.5 L12.5,7.5</StreamGeometry>
+      <StreamGeometry x:Key="IcoFolder">M3,6 L9,6 L11,9 L21,9 L21,18 L3,18 Z</StreamGeometry>
+      <StreamGeometry x:Key="IcoTrash">M5,7 L19,7 M10,7 L10,4.5 L14,4.5 L14,7 M7,7 L8,20 L16,20 L17,7</StreamGeometry>
+      <StreamGeometry x:Key="IcoEdit">M5,19 L5,15.5 L15.5,5 L19,8.5 L8.5,19 Z</StreamGeometry>
+      <StreamGeometry x:Key="IcoExternal">M14,4 L20,4 L20,10 M20,4 L11,13 M18,14 L18,20 L4,20 L4,6 L10,6</StreamGeometry>
+      <StreamGeometry x:Key="IcoDesktop">M3,4 L21,4 L21,16 L3,16 Z M9,20 L15,20 M12,16 L12,20</StreamGeometry>
+      <StreamGeometry x:Key="IcoClose">M6,6 L18,18 M18,6 L6,18</StreamGeometry>
+      <StreamGeometry x:Key="IcoSun">M8,12 A4,4 0 1 0 16,12 A4,4 0 1 0 8,12 M12,2 L12,4 M12,20 L12,22 M2,12 L4,12 M20,12 L22,12 M5,5 L6.5,6.5 M17.5,17.5 L19,19 M5,19 L6.5,17.5 M17.5,6.5 L19,5</StreamGeometry>
+      <StreamGeometry x:Key="IcoMoon">M20,14.5 A8,8 0 1 1 9.5,4 A6.5,6.5 0 0 0 20,14.5 Z</StreamGeometry>
+      <StreamGeometry x:Key="IcoCopy">M8,8 L20,8 L20,20 L8,20 Z M4,16 L4,4 L16,4</StreamGeometry>
+      <StreamGeometry x:Key="IcoWarning">M12,3 L22,20 L2,20 Z M12,10 L12,14 M12,17 L12,17.5</StreamGeometry>
+      <StreamGeometry x:Key="IcoStop">M6,6 L18,6 L18,18 L6,18 Z</StreamGeometry>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

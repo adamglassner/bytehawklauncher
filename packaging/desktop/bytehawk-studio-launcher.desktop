@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Bytehawk Studio Launcher
+Comment=Download, update and launch Bytehawk Studio apps
+Exec=BytehawkStudioLauncher
+Icon=bytehawk-studio-launcher
+Terminal=false
+Categories=Utility;
+StartupWMClass=BytehawkStudioLauncher

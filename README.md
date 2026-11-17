@@ -149,6 +149,54 @@ If GitHub can't be reached, the launcher uses the last downloaded copy, plus its
 
 ---
 
+## macOS and Linux launcher
+
+`src/BytehawkStudioLauncher.Desktop` is the launcher for **macOS** (Apple Silicon and Intel, macOS 11+) and **Linux** (x64), built with [Avalonia](https://avaloniaui.net). It has the same look, theme options and sections as the Windows launcher: Bytehawk Apps, Bytehawk Servers, My Software, Web Apps, Downloads and Settings. The Windows launcher is unchanged and stays a separate WPF app. Both share the catalog, models, GitHub, download and web-app import/export code.
+
+**Every Bytehawk app is listed on every system.** An app with no build for the system you're on shows **"Coming soon to macOS"** or **"Coming soon to Linux"** and has no Download button. For example, Draftly shows as Coming soon on macOS until it has a Mac version. Bytehawk Servers work the same way.
+
+How apps are installed:
+
+| System | Download | Installed to |
+|---|---|---|
+| macOS | `.zip` or `.dmg` with an `.app` | `~/Applications` (no password needed) |
+| Linux | `.AppImage`, `.tar.gz`, `.zip` | the launcher's `apps/` folder, plus an applications-menu entry |
+| Linux | `.deb` / `.rpm` | the system package manager, which asks for your password |
+
+On Linux, servers install as a system service using their package's `install.sh`; the system asks for your password. On macOS and Linux they can also run with Docker ("Run with Docker"), which keeps the data in a Docker volume.
+
+**Giving an app a macOS or Linux build:** add a `macos` and/or `linux` block to its entry in `catalog.json`. `{arch}` becomes `arm64` or `x64`:
+
+```json
+"macos": { "assetPattern": "ShoreDrop-*-macOS-{arch}.zip", "app": "ShoreDrop.app" },
+"linux": { "tagPrefix": "linux-v", "assetPattern": "larksong_*_amd64.deb", "exe": "/opt/larksong/bin/Larksong", "package": "larksong" }
+```
+
+| Field | Meaning |
+|---|---|
+| `assetPattern` | Which release file to download (same wildcard rules as Windows), with `{arch}` for the processor |
+| `tagPrefix` | Optional. Set it when this platform has its own releases (e.g. `macos-v`, `linux-v`); empty = the app's latest release |
+| `app` | macOS: the `.app` inside the zip/dmg (found automatically if omitted) |
+| `exe` | Linux: the program inside the archive, or the absolute path a `.deb`/`.rpm` installs |
+| `package` | Linux `.deb`/`.rpm`: the package name, used to uninstall |
+
+Servers get `linuxAsset` (e.g. `GuardrailServer-*-linux-{arch}.tar.gz`), `linuxInstallDir`, `linuxService` and `dockerName`.
+
+**Releases:** change `<Version>` in `src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj` and push to `main`. The `macOS & Linux launcher` workflow then builds on a Mac and on Linux, runs the self-test, takes screenshots, and publishes release `desktop-v<version>` with:
+
+- `BytehawkStudioLauncher-<v>-macOS-arm64.dmg` / `-x64.dmg` (plus `.zip` copies used for self-update)
+- `BytehawkStudioLauncher-<v>-linux-x64.AppImage` and `.tar.gz`
+
+These releases are never marked "latest", so the Windows launcher's updates aren't affected. Installed macOS/Linux launchers update themselves from them.
+
+The Mac app is signed "ad hoc" because there's no Apple Developer ID yet. The first time someone opens it, macOS asks them to allow it in **System Settings → Privacy & Security → Open Anyway**. Apps the launcher downloads itself aren't affected.
+
+Data lives in `~/Library/Application Support/BytehawkStudio/Launcher` on macOS and `~/.config/BytehawkStudio/Launcher` on Linux. Run `BytehawkStudioLauncher --print-data-dir` to see the exact folder.
+
+Build locally: `packaging/desktop/build-mac.sh 1.0.0 osx-arm64` (on a Mac) or `packaging/desktop/build-linux.sh 1.0.0 linux-x64`.
+
+---
+
 ## Where data is stored
 
 Everything is under **`%APPDATA%\BytehawkStudio\Launcher\`** (Settings → About → **Open data folder**):

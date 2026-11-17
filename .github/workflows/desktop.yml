@@ -1,0 +1,209 @@
+name: macOS & Linux launcher
+
+# Builds, tests and releases the macOS/Linux launcher (src/BytehawkStudioLauncher.Desktop, Avalonia).
+# A new <Version> in its .csproj on main publishes release "desktop-v<version>". These releases are never
+# marked "latest", so the Windows launcher's self-update (which reads the latest release) is unaffected.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/BytehawkStudioLauncher.Desktop/**'
+      - 'src/BytehawkStudioLauncher/Models/**'
+      - 'src/BytehawkStudioLauncher/Services/Storage.cs'
+      - 'src/BytehawkStudioLauncher/Services/GitHubService.cs'
+      - 'src/BytehawkStudioLauncher/Services/Downloader.cs'
+      - 'src/BytehawkStudioLauncher/Services/WebAppTransfer.cs'
+      - 'catalog.json'
+      - 'assets/**'
+      - 'packaging/desktop/**'
+      - '.github/workflows/desktop.yml'
+  pull_request:
+    paths: ['src/BytehawkStudioLauncher.Desktop/**', 'packaging/desktop/**', '.github/workflows/desktop.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      release: ${{ steps.v.outputs.release }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: v
+        run: |
+          v=$(grep -oP '(?<=<Version>)[^<]+' src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj | head -1)
+          release=false
+          if [ "$GITHUB_EVENT_NAME" = "push" ] && [ "$GITHUB_REF" = "refs/heads/main" ] && ! git rev-parse -q --verify "refs/tags/desktop-v$v" >/dev/null; then release=true; fi
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "release=$release" >> "$GITHUB_OUTPUT"
+          echo "Version $v, release: $release"
+
+  macos:
+    needs: version
+    runs-on: macos-14   # Apple Silicon
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build (Apple Silicon + Intel)
+        run: |
+          set -o pipefail
+          mkdir -p logs
+          V=${{ needs.version.outputs.version }}
+          packaging/desktop/build-mac.sh "$V" osx-arm64 2>&1 | tee logs/build-mac-arm64.log
+          packaging/desktop/build-mac.sh "$V" osx-x64 2>&1 | tee logs/build-mac-x64.log
+      - name: Self-test (real installs into ~/Applications)
+        run: |
+          APP="dist-desktop/osx-arm64/Bytehawk Studio Launcher.app/Contents/MacOS/BytehawkStudioLauncher"
+          "$APP" --self-test "$PWD/logs/selftest-macos.txt" || code=$?
+          cat logs/selftest-macos.txt || true
+          exit ${code:-0}
+      - name: UI smoke test (both themes, screenshots)
+        run: |
+          APPB="$PWD/dist-desktop/osx-arm64/Bytehawk Studio Launcher.app"
+          DATA=$("$APPB/Contents/MacOS/BytehawkStudioLauncher" --print-data-dir)
+          echo "Data folder: $DATA"; mkdir -p "$DATA" logs/screenshots
+          for theme in Dark Light; do
+            printf '{"theme":"%s","checkUpdatesOnStartup":true,"autoUpdateApps":false,"remoteCatalogUrl":"","settingsVersion":2}' "$theme" > "$DATA/settings.json"
+            open -n "$APPB"
+            sleep 20
+            if ! pgrep -f "Bytehawk Studio Launcher.app/Contents/MacOS" >/dev/null; then echo "Launcher exited during startup ($theme)"; cat "$DATA/launcher.log" || true; exit 1; fi
+            screencapture -x "logs/screenshots/macos-$theme.png" || true
+            pkill -f "Bytehawk Studio Launcher.app/Contents/MacOS" || true
+            sleep 2
+            grep -q "\"theme\": \"$theme\"" "$DATA/settings.json" || { echo "Theme $theme not persisted"; cat "$DATA/settings.json"; exit 1; }
+          done
+          cp "$DATA/launcher.log" logs/launcher-macos.log || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: |
+            dist-desktop/*.zip
+            dist-desktop/*.dmg
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: logs-macos
+          path: logs/
+
+  linux:
+    needs: version
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build (AppImage + tar.gz)
+        run: |
+          set -o pipefail
+          mkdir -p logs
+          packaging/desktop/build-linux.sh ${{ needs.version.outputs.version }} linux-x64 2>&1 | tee logs/build-linux.log
+      - name: Self-test
+        run: |
+          dist-desktop/publish-linux-x64/BytehawkStudioLauncher --self-test "$PWD/logs/selftest-linux.txt" || code=$?
+          cat logs/selftest-linux.txt || true
+          exit ${code:-0}
+      - name: UI smoke test (both themes, screenshots)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb imagemagick libice6 libsm6 libfontconfig1 >/dev/null
+          EXE="$PWD/dist-desktop/publish-linux-x64/BytehawkStudioLauncher"
+          DATA=$("$EXE" --print-data-dir); echo "Data folder: $DATA"; mkdir -p "$DATA" logs/screenshots
+          Xvfb :99 -screen 0 1440x900x24 & sleep 2
+          export DISPLAY=:99
+          for theme in Dark Light; do
+            printf '{"theme":"%s","checkUpdatesOnStartup":true,"autoUpdateApps":false,"remoteCatalogUrl":"","settingsVersion":2}' "$theme" > "$DATA/settings.json"
+            "$EXE" & pid=$!
+            sleep 20
+            if ! kill -0 $pid 2>/dev/null; then echo "Launcher exited during startup ($theme)"; cat "$DATA/launcher.log" || true; exit 1; fi
+            import -window root "logs/screenshots/linux-$theme.png" || true
+            kill $pid || true; sleep 2
+            grep -q "\"theme\": \"$theme\"" "$DATA/settings.json" || { echo "Theme $theme not persisted"; cat "$DATA/settings.json"; exit 1; }
+          done
+          cp "$DATA/launcher.log" logs/launcher-linux.log || true
+      - name: AppImage starts
+        run: |
+          export DISPLAY=:99
+          (Xvfb :99 -screen 0 1280x800x24 &) ; sleep 2
+          f=$(ls dist-desktop/*.AppImage | head -1); chmod +x "$f"
+          "$f" --appimage-extract-and-run --print-data-dir
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            dist-desktop/*.AppImage
+            dist-desktop/*.tar.gz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: logs-linux
+          path: logs/
+
+  release:
+    needs: [version, macos, linux]
+    if: needs.version.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: desktop-v${{ needs.version.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: Bytehawk Studio Launcher ${{ needs.version.outputs.version }} for macOS & Linux
+          make_latest: false
+          body: |
+            Bytehawk Studio Launcher ${{ needs.version.outputs.version }} for **macOS** and **Linux**. (The Windows launcher has its own releases.)
+
+            **macOS** (macOS 11 or later)
+            - **BytehawkStudioLauncher-${{ needs.version.outputs.version }}-macOS-arm64.dmg**: Apple Silicon Macs (M1 and later).
+            - **BytehawkStudioLauncher-${{ needs.version.outputs.version }}-macOS-x64.dmg**: Intel Macs.
+            - Open the .dmg and drag Bytehawk Studio Launcher into Applications. It isn't notarized by Apple yet, so the first time you open it, go to System Settings → Privacy & Security and click **Open Anyway** (on older macOS: right-click the app and choose Open). You only need to do this once.
+            - The .zip files are the same app, used by the launcher to update itself.
+
+            **Linux** (x64)
+            - **BytehawkStudioLauncher-${{ needs.version.outputs.version }}-linux-x64.AppImage**: make it executable (`chmod +x`) and run it. Works on most distributions.
+            - **BytehawkStudioLauncher-${{ needs.version.outputs.version }}-linux-x64.tar.gz**: unpack anywhere and run `BytehawkStudioLauncher`.
+
+            Bytehawk apps that don't have a version for your system yet are shown as "Coming soon".
+
+            © Bytehawk Studio
+          files: |
+            out/macos/*.dmg
+            out/macos/*.zip
+            out/linux/*.AppImage
+            out/linux/*.tar.gz
+
+  # Latest logs + screenshots on the ci-logs-desktop branch (readable with plain git).
+  logs:
+    needs: [version, macos, linux]
+    if: always() && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: logs-*
+          path: ci
+      - run: |
+          cd ci
+          {
+            echo "commit=${{ github.sha }}"
+            echo "version=${{ needs.version.outputs.version }}"
+            echo "release=${{ needs.version.outputs.release }}"
+            echo "macos=${{ needs.macos.result }}"
+            echo "linux=${{ needs.linux.result }}"
+            echo "run=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } > status.txt
+          git init -q -b ci-logs-desktop
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -q -m "Desktop CI logs for ${{ github.sha }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-logs-desktop

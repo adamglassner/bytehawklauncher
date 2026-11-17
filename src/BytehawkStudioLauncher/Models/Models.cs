@@ -55,6 +55,10 @@ public sealed class CatalogEntry
     public bool ComingSoon { get; set; }
     /// <summary>Optional server that goes with the app (e.g. WillowWallet Server for syncing): shown as "Get server" on the card.</summary>
     public ServerDownload? Server { get; set; }
+    /// <summary>The macOS build, if there is one (used by the macOS launcher; the Windows launcher ignores it).</summary>
+    public PlatformBuild? Macos { get; set; }
+    /// <summary>The Linux build, if there is one (used by the Linux launcher; the Windows launcher ignores it).</summary>
+    public PlatformBuild? Linux { get; set; }
 
     [JsonIgnore]
     public string Key => (!string.IsNullOrWhiteSpace(Id) ? Id! : !string.IsNullOrWhiteSpace(Repo) ? Repo : Name).Trim().ToLowerInvariant();
@@ -65,6 +69,23 @@ public sealed class CatalogEntry
     /// <summary>Set at runtime for entries that came from the remote catalog URL.</summary>
     [JsonIgnore]
     public bool FromRemote { get; set; }
+}
+
+/// <summary>
+/// Where to find an app's macOS or Linux build. Apps without one show as "Coming soon" in that launcher.
+/// </summary>
+public sealed class PlatformBuild
+{
+    /// <summary>Set when this platform's builds have their own releases, e.g. "macos-v". Empty = the app's latest release.</summary>
+    public string? TagPrefix { get; set; }
+    /// <summary>Release asset pattern; "{arch}" becomes "arm64" or "x64". E.g. "ShoreDrop-*-macOS-{arch}.zip", "*.AppImage", "app_*_amd64.deb".</summary>
+    public string AssetPattern { get; set; } = "";
+    /// <summary>macOS: the app bundle inside the .zip/.dmg, e.g. "ShoreDrop.app" (found automatically when omitted).</summary>
+    public string? App { get; set; }
+    /// <summary>Linux: the program to run, relative to the extracted folder, or an absolute path for .deb/.rpm installs (e.g. "/opt/larksong/bin/Larksong").</summary>
+    public string? Exe { get; set; }
+    /// <summary>Linux .deb/.rpm: the package name, used to uninstall (e.g. "larksong").</summary>
+    public string? Package { get; set; }
 }
 
 /// <summary>A self-hosted server for an app, released in the same repo under its own tag prefix.</summary>
@@ -87,6 +108,14 @@ public sealed class ServerDownload
     public string? WindowsUninstallKey { get; set; }
     /// <summary>Where the Windows install keeps its data (environment variables allowed).</summary>
     public string? WindowsDataFolder { get; set; }
+    /// <summary>Linux package in the same release ("{arch}" becomes "x64" or "arm64"); it contains install.sh / uninstall.sh.</summary>
+    public string? LinuxAsset { get; set; }
+    /// <summary>Where the Linux install.sh puts the server (used to detect it and find uninstall.sh), e.g. "/opt/guardrail-server".</summary>
+    public string? LinuxInstallDir { get; set; }
+    /// <summary>The systemd service name, e.g. "guardrail-server".</summary>
+    public string? LinuxService { get; set; }
+    /// <summary>Container name for "docker run" (macOS/Linux launchers), e.g. "guardrail-server". The image keeps its data in /data.</summary>
+    public string? DockerName { get; set; }
 }
 
 /// <summary>installed.json — what the launcher installed for each catalog entry (keyed by entry Key).</summary>

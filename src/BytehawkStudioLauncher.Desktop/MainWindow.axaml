@@ -1,0 +1,489 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="using:Bytehawk.Launcher.Desktop"
+        x:Class="Bytehawk.Launcher.Desktop.MainWindow"
+        Title="Bytehawk Studio Launcher"
+        Width="1200" Height="800" MinWidth="920" MinHeight="580"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBg}"
+        Foreground="{DynamicResource TextPrimary}"
+        FontSize="13">
+
+  <Window.Resources>
+    <!-- ===== Bytehawk app card ===== -->
+    <DataTemplate x:Key="AppCard" x:DataType="d:AppVM">
+      <Border Classes="card" Width="330" MinHeight="236">
+        <DockPanel LastChildFill="False">
+          <DockPanel DockPanel.Dock="Top">
+            <Border DockPanel.Dock="Left" Width="44" Height="44" CornerRadius="10" Background="{DynamicResource AccentSoft}" VerticalAlignment="Top" ClipToBounds="True">
+              <Panel>
+                <Image Source="{Binding Icon}" Width="38" Height="38" IsVisible="{Binding HasIcon}" />
+                <Viewbox Width="22" Height="22" IsVisible="{Binding NoIcon}">
+                  <Path Classes="ico" Data="{StaticResource IcoApps}" Stroke="{DynamicResource Accent}" />
+                </Viewbox>
+              </Panel>
+            </Border>
+            <StackPanel Margin="12,0,0,0">
+              <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" />
+              <WrapPanel Margin="0,4,0,0">
+                <Border Classes="badge soon" IsVisible="{Binding IsComingSoon}">
+                  <TextBlock Text="{Binding ComingSoonText}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource WarningText}" />
+                </Border>
+                <Border Classes="badge" IsVisible="{Binding HasUpdate}">
+                  <TextBlock Text="Update available" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource Accent}" />
+                </Border>
+                <Border Classes="badge" IsVisible="{Binding HasServer}">
+                  <TextBlock Text="Has a server" FontSize="11" Foreground="{DynamicResource TextSecondary}" />
+                </Border>
+              </WrapPanel>
+            </StackPanel>
+          </DockPanel>
+          <TextBlock DockPanel.Dock="Top" Text="{Binding Description}" Classes="subtle" Margin="0,12,0,0" MaxHeight="58" TextTrimming="CharacterEllipsis" />
+          <TextBlock DockPanel.Dock="Top" Text="{Binding VersionLine}" FontSize="12" Margin="0,10,0,0" Foreground="{DynamicResource TextSecondary}" />
+          <TextBlock DockPanel.Dock="Top" Text="{Binding Note}" IsVisible="{Binding HasNote}" FontSize="12" Margin="0,6,0,0"
+                     Foreground="{DynamicResource WarningText}" TextWrapping="Wrap" />
+
+          <DockPanel DockPanel.Dock="Bottom" Margin="0,14,0,0">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+              <Button Classes="icon" Tag="app-release" ToolTip.Tip="Open release page on GitHub" IsVisible="{Binding HasRepo}">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoExternal}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="app-shortcut" ToolTip.Tip="Create desktop shortcut" IsVisible="{Binding CanShortcut}">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoDesktop}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="app-uninstall" ToolTip.Tip="Uninstall" IsVisible="{Binding CanUninstall}">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoTrash}" /></Viewbox>
+              </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <Button Classes="accent" Tag="app-primary" Content="{Binding PrimaryText}" MinWidth="96" HorizontalContentAlignment="Center" IsVisible="{Binding ShowPrimary}" />
+              <Button Tag="app-launch" Content="Launch" IsVisible="{Binding ShowSecondaryLaunch}" />
+              <Button Tag="app-cancel" Content="Cancel" IsVisible="{Binding IsDownloading}" />
+              <TextBlock Text="{Binding BusyText}" IsVisible="{Binding ShowBusy}" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}" />
+            </StackPanel>
+          </DockPanel>
+          <StackPanel DockPanel.Dock="Bottom" Margin="0,12,0,0" IsVisible="{Binding IsDownloading}">
+            <ProgressBar Maximum="100" Value="{Binding Download.Percent}" IsIndeterminate="{Binding Download.Indeterminate}" />
+            <TextBlock Text="{Binding Download.Detail}" FontSize="11" Margin="0,6,0,0" Foreground="{DynamicResource TextSecondary}" />
+          </StackPanel>
+        </DockPanel>
+      </Border>
+    </DataTemplate>
+
+    <!-- ===== Server card ===== -->
+    <DataTemplate x:Key="ServerCard" x:DataType="d:ServerVM">
+      <Border Classes="card" Width="400">
+        <StackPanel>
+          <DockPanel>
+            <Border DockPanel.Dock="Left" Width="44" Height="44" CornerRadius="10" Background="{DynamicResource AccentSoft}" VerticalAlignment="Top" ClipToBounds="True">
+              <Panel>
+                <Image Source="{Binding Icon}" Width="38" Height="38" IsVisible="{Binding HasIcon}" />
+                <Viewbox Width="22" Height="22" IsVisible="{Binding NoIcon}">
+                  <Path Classes="ico" Data="{StaticResource IcoServer}" Stroke="{DynamicResource Accent}" />
+                </Viewbox>
+              </Panel>
+            </Border>
+            <StackPanel Margin="12,0,0,0">
+              <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" />
+              <WrapPanel Margin="0,4,0,0">
+                <Border Classes="badge soon" IsVisible="{Binding IsComingSoon}">
+                  <TextBlock Text="{Binding ComingSoonText}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource WarningText}" />
+                </Border>
+                <TextBlock Text="{Binding ForApp}" FontSize="11" Foreground="{DynamicResource TextSecondary}" VerticalAlignment="Center" />
+              </WrapPanel>
+            </StackPanel>
+          </DockPanel>
+          <TextBlock Text="{Binding Description}" Classes="subtle" Margin="0,12,0,0" />
+          <TextBlock Text="{Binding StatusLine}" FontSize="12" FontWeight="SemiBold" Margin="0,10,0,0" Foreground="{DynamicResource TextSecondary}" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding Note}" IsVisible="{Binding HasNote}" FontSize="12" Margin="0,6,0,0" Foreground="{DynamicResource WarningText}" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding BusyText}" IsVisible="{Binding Busy}" FontSize="12" Margin="0,6,0,0" Foreground="{DynamicResource Accent}" />
+          <WrapPanel Margin="0,14,0,0" IsVisible="{Binding !IsComingSoon}">
+            <Button Classes="accent" Tag="srv-install" Content="{Binding InstallNativeText}" IsVisible="{Binding CanInstallNative}" Margin="0,0,8,8" />
+            <Button Tag="srv-panel" Content="Open web panel" IsVisible="{Binding CanOpenPanel}" Margin="0,0,8,8" />
+            <Button Tag="srv-docker-run" Content="{Binding RunDockerText}" IsVisible="{Binding CanRunDocker}" Margin="0,0,8,8" />
+            <Button Tag="srv-docker-stop" Content="Stop Docker container" IsVisible="{Binding CanStopDocker}" Margin="0,0,8,8" />
+            <Button Tag="srv-docker-cmd" Content="Docker command" IsVisible="{Binding HasDocker}" Margin="0,0,8,8" />
+            <Button Tag="srv-uninstall" Content="Uninstall" IsVisible="{Binding CanUninstallNative}" Margin="0,0,8,8" />
+            <Button Tag="srv-guide" Content="Setup guide" IsVisible="{Binding HasGuide}" Margin="0,0,8,8" />
+          </WrapPanel>
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <!-- ===== My Software card ===== -->
+    <DataTemplate x:Key="SoftwareCard" x:DataType="d:SoftwareVM">
+      <Border Classes="card" Width="330">
+        <StackPanel>
+          <DockPanel>
+            <Border DockPanel.Dock="Left" Width="44" Height="44" CornerRadius="10" Background="{DynamicResource HoverBg}" VerticalAlignment="Top" ClipToBounds="True">
+              <Panel>
+                <Image Source="{Binding Icon}" Width="36" Height="36" IsVisible="{Binding HasIcon}" />
+                <Viewbox Width="22" Height="22" IsVisible="{Binding NoIcon}">
+                  <Path Classes="ico" Data="{StaticResource IcoSoftware}" Stroke="{DynamicResource TextSecondary}" />
+                </Viewbox>
+              </Panel>
+            </Border>
+            <StackPanel Margin="12,0,0,0">
+              <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+              <TextBlock Text="{Binding DetailLine}" FontSize="11" Margin="0,3,0,0" Foreground="{DynamicResource TextSecondary}" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+          </DockPanel>
+          <TextBlock Text="{Binding Description}" IsVisible="{Binding HasDescription}" Classes="subtle" Margin="0,12,0,0" MaxHeight="54" TextTrimming="CharacterEllipsis" />
+          <TextBlock Text="{Binding Location}" ToolTip.Tip="{Binding Location}" Classes="subtle" FontSize="12" Margin="0,12,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+          <TextBlock Text="Not found — it may have been moved or deleted. Use Edit to point to it again." IsVisible="{Binding IsMissing}"
+                     FontSize="12" Margin="0,6,0,0" Foreground="{DynamicResource WarningText}" TextWrapping="Wrap" />
+          <DockPanel Margin="0,14,0,0">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+              <Button Classes="icon" Tag="sw-website" ToolTip.Tip="{Binding Website}" IsVisible="{Binding HasWebsite}">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoGlobe}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="sw-shortcut" ToolTip.Tip="Create desktop shortcut" IsVisible="{Binding CanShortcut}">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoDesktop}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="sw-reveal" ToolTip.Tip="Show in folder">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoFolder}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="sw-edit" ToolTip.Tip="Edit">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoEdit}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="sw-remove" ToolTip.Tip="Remove from launcher (the program is not deleted)">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoTrash}" /></Viewbox>
+              </Button>
+            </StackPanel>
+            <Button Classes="accent" Tag="sw-launch" Content="Launch" MinWidth="96" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
+          </DockPanel>
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <!-- ===== Web app card ===== -->
+    <DataTemplate x:Key="WebCard" x:DataType="d:WebAppVM">
+      <Border Classes="card" Width="330">
+        <StackPanel>
+          <DockPanel>
+            <Border DockPanel.Dock="Left" Width="44" Height="44" CornerRadius="10" Background="{DynamicResource AccentSoft}" VerticalAlignment="Top" ClipToBounds="True">
+              <Panel>
+                <Image Source="{Binding Icon}" Width="32" Height="32" IsVisible="{Binding HasIcon}" />
+                <Viewbox Width="22" Height="22" IsVisible="{Binding NoIcon}">
+                  <Path Classes="ico" Data="{StaticResource IcoGlobe}" Stroke="{DynamicResource Accent}" />
+                </Viewbox>
+              </Panel>
+            </Border>
+            <StackPanel Margin="12,0,0,0">
+              <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+              <TextBlock Text="{Binding Host}" FontSize="11" Margin="0,3,0,0" Foreground="{DynamicResource TextSecondary}" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+          </DockPanel>
+          <TextBlock Text="{Binding Description}" IsVisible="{Binding HasDescription}" Classes="subtle" Margin="0,12,0,0" MaxHeight="54" TextTrimming="CharacterEllipsis" />
+          <TextBlock Text="{Binding Url}" Classes="subtle" FontSize="12" Margin="0,12,0,0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+          <DockPanel Margin="0,14,0,0">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+              <Button Classes="icon" Tag="web-icon" ToolTip.Tip="Refresh icon from the website">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoRefresh}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="web-shortcut" ToolTip.Tip="Create desktop shortcut" IsVisible="{Binding CanShortcut}">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoDesktop}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="web-edit" ToolTip.Tip="Edit">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoEdit}" /></Viewbox>
+              </Button>
+              <Button Classes="icon" Tag="web-remove" ToolTip.Tip="Remove">
+                <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoTrash}" /></Viewbox>
+              </Button>
+            </StackPanel>
+            <Button Classes="accent" Tag="web-launch" Content="Launch" MinWidth="96" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
+          </DockPanel>
+        </StackPanel>
+      </Border>
+    </DataTemplate>
+
+    <!-- ===== Download row ===== -->
+    <DataTemplate x:Key="DownloadRow" x:DataType="d:DownloadVM">
+      <Border Classes="card" Margin="0,0,0,12" Padding="16,14">
+        <DockPanel>
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+            <Button Tag="dl-cancel" Content="Cancel" IsVisible="{Binding IsActive}" />
+            <Button Classes="icon" Tag="dl-reveal" ToolTip.Tip="Show in folder" IsVisible="{Binding IsFinished}">
+              <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoFolder}" /></Viewbox>
+            </Button>
+          </StackPanel>
+          <StackPanel>
+            <DockPanel>
+              <TextBlock DockPanel.Dock="Right" Text="{Binding Status}" FontSize="12" Foreground="{DynamicResource TextSecondary}" />
+              <TextBlock FontWeight="SemiBold" TextTrimming="CharacterEllipsis">
+                <Run Text="{Binding Title}" />
+                <Run Text="  " />
+                <Run Text="{Binding FileName}" FontWeight="Normal" Foreground="{DynamicResource TextSecondary}" />
+              </TextBlock>
+            </DockPanel>
+            <ProgressBar Margin="0,10,0,0" Maximum="100" Value="{Binding Percent}" IsIndeterminate="{Binding Indeterminate}" IsVisible="{Binding IsActive}" />
+            <TextBlock Text="{Binding Detail}" FontSize="12" Margin="0,6,0,0" Foreground="{DynamicResource TextSecondary}" TextWrapping="Wrap" />
+          </StackPanel>
+        </DockPanel>
+      </Border>
+    </DataTemplate>
+
+    <ItemsPanelTemplate x:Key="Wrap">
+      <WrapPanel />
+    </ItemsPanelTemplate>
+  </Window.Resources>
+
+  <Grid ColumnDefinitions="236,*">
+    <!-- ================= Sidebar ================= -->
+    <Border Background="{DynamicResource SidebarBg}" BorderBrush="{DynamicResource Stroke}" BorderThickness="0,0,1,0">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="20,22,12,26">
+          <Image x:Name="SidebarLogo" Width="44" Height="44" />
+          <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+            <TextBlock Text="Bytehawk Studio" FontWeight="SemiBold" FontSize="15" />
+            <TextBlock Text="Launcher" Foreground="{DynamicResource TextSecondary}" FontSize="12" />
+          </StackPanel>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" Margin="22,0,12,18">
+          <TextBlock x:Name="SidebarVersion" Foreground="{DynamicResource TextSecondary}" FontSize="11" />
+          <TextBlock Text="© Bytehawk Studio" Foreground="{DynamicResource TextSecondary}" FontSize="11" Margin="0,2,0,0" />
+        </StackPanel>
+        <StackPanel>
+          <Button x:Name="NavApps" Classes="nav selected" Tag="nav-apps">
+            <StackPanel Orientation="Horizontal" Spacing="12"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoApps}" /></Viewbox><TextBlock Text="Bytehawk Apps" /></StackPanel>
+          </Button>
+          <Button x:Name="NavServers" Classes="nav" Tag="nav-servers">
+            <StackPanel Orientation="Horizontal" Spacing="12"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoServer}" /></Viewbox><TextBlock Text="Bytehawk Servers" /></StackPanel>
+          </Button>
+          <Button x:Name="NavSoftware" Classes="nav" Tag="nav-software">
+            <StackPanel Orientation="Horizontal" Spacing="12"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoSoftware}" /></Viewbox><TextBlock Text="My Software" /></StackPanel>
+          </Button>
+          <Button x:Name="NavWeb" Classes="nav" Tag="nav-web">
+            <StackPanel Orientation="Horizontal" Spacing="12"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoGlobe}" /></Viewbox><TextBlock Text="Web Apps" /></StackPanel>
+          </Button>
+          <Button x:Name="NavDownloads" Classes="nav" Tag="nav-downloads">
+            <StackPanel Orientation="Horizontal" Spacing="12"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoDownload}" /></Viewbox><TextBlock Text="Downloads" /></StackPanel>
+          </Button>
+          <Button x:Name="NavSettings" Classes="nav" Tag="nav-settings">
+            <StackPanel Orientation="Horizontal" Spacing="12"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoSettings}" /></Viewbox><TextBlock Text="Settings" /></StackPanel>
+          </Button>
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <!-- ================= Main ================= -->
+    <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*">
+      <!-- top bar -->
+      <Border BorderBrush="{DynamicResource Stroke}" BorderThickness="0,0,0,1" Padding="28,14">
+        <DockPanel>
+          <Border DockPanel.Dock="Right" Background="{DynamicResource CardBg}" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" CornerRadius="8">
+            <StackPanel Orientation="Horizontal">
+              <Button x:Name="ThemeLight" Classes="seg" Tag="theme-Light" ToolTip.Tip="Light mode">
+                <StackPanel Orientation="Horizontal" Spacing="6"><Viewbox Width="13" Height="13"><Path Classes="ico" Data="{StaticResource IcoSun}" /></Viewbox><TextBlock Text="Light" /></StackPanel>
+              </Button>
+              <Button x:Name="ThemeDark" Classes="seg" Tag="theme-Dark" ToolTip.Tip="Dark mode">
+                <StackPanel Orientation="Horizontal" Spacing="6"><Viewbox Width="13" Height="13"><Path Classes="ico" Data="{StaticResource IcoMoon}" /></Viewbox><TextBlock Text="Dark" /></StackPanel>
+              </Button>
+              <Button x:Name="ThemeSystem" Classes="seg" Tag="theme-System" ToolTip.Tip="Follow the system setting">
+                <StackPanel Orientation="Horizontal" Spacing="6"><Viewbox Width="13" Height="13"><Path Classes="ico" Data="{StaticResource IcoDesktop}" /></Viewbox><TextBlock Text="System" /></StackPanel>
+              </Button>
+            </StackPanel>
+          </Border>
+          <Grid Width="400" HorizontalAlignment="Left">
+            <TextBox x:Name="SearchBox" Watermark="Search apps, servers, software and web apps" Padding="34,8,10,8" />
+            <Viewbox Width="15" Height="15" HorizontalAlignment="Left" Margin="12,0,0,0" IsHitTestVisible="False">
+              <Path Classes="ico" Data="{StaticResource IcoSearch}" Stroke="{DynamicResource TextSecondary}" />
+            </Viewbox>
+          </Grid>
+        </DockPanel>
+      </Border>
+
+      <!-- launcher update banner -->
+      <Border x:Name="UpdateBanner" Grid.Row="1" Background="{DynamicResource AccentSoft}" Padding="28,10" IsVisible="False"
+              BorderBrush="{DynamicResource Stroke}" BorderThickness="0,0,0,1">
+        <DockPanel>
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8">
+            <Button x:Name="UpdateNowButton" Classes="accent" Tag="launcher-update" Content="Update now" Padding="12,5" />
+            <Button Tag="launcher-notes" Content="What's new" Padding="12,5" />
+            <Button Classes="icon" Tag="launcher-dismiss" ToolTip.Tip="Hide until next start">
+              <Viewbox Width="11" Height="11"><Path Classes="ico" Data="{StaticResource IcoClose}" /></Viewbox>
+            </Button>
+          </StackPanel>
+          <TextBlock x:Name="UpdateText" VerticalAlignment="Center" TextWrapping="Wrap" />
+        </DockPanel>
+      </Border>
+
+      <Panel Grid.Row="2">
+        <!-- ===== Bytehawk Apps ===== -->
+        <Grid x:Name="PageApps" RowDefinitions="Auto,Auto,*">
+          <DockPanel Margin="28,24,28,12">
+            <Button DockPanel.Dock="Right" x:Name="CheckUpdatesButton" Tag="apps-check" VerticalAlignment="Top">
+              <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoRefresh}" /></Viewbox><TextBlock x:Name="CheckUpdatesText" Text="Check for updates" /></StackPanel>
+            </Button>
+            <StackPanel>
+              <TextBlock Text="Bytehawk Apps" Classes="title" />
+              <TextBlock x:Name="AppsSubtitle" Classes="subtle" Margin="0,4,0,0" />
+            </StackPanel>
+          </DockPanel>
+          <Border x:Name="AppsBanner" Grid.Row="1" Margin="28,0,28,12" Padding="14,10" CornerRadius="8" Background="{DynamicResource WarningSoft}" IsVisible="False">
+            <TextBlock x:Name="AppsBannerText" Foreground="{DynamicResource WarningText}" TextWrapping="Wrap" />
+          </Border>
+          <ScrollViewer Grid.Row="2" Padding="28,4,12,12">
+            <StackPanel>
+              <ItemsControl x:Name="AppsList" ItemTemplate="{StaticResource AppCard}" ItemsPanel="{StaticResource Wrap}" />
+              <TextBlock x:Name="AppsEmpty" Classes="subtle" IsVisible="False" Text="No Bytehawk apps match your search." />
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+
+        <!-- ===== Bytehawk Servers ===== -->
+        <Grid x:Name="PageServers" RowDefinitions="Auto,*" IsVisible="False">
+          <DockPanel Margin="28,24,28,16">
+            <Button DockPanel.Dock="Right" Tag="servers-refresh" VerticalAlignment="Top">
+              <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoRefresh}" /></Viewbox><TextBlock Text="Refresh status" /></StackPanel>
+            </Button>
+            <StackPanel>
+              <TextBlock Text="Bytehawk Servers" Classes="title" />
+              <TextBlock x:Name="ServersSubtitle" Classes="subtle" Margin="0,4,0,0" />
+            </StackPanel>
+          </DockPanel>
+          <ScrollViewer Grid.Row="1" Padding="28,4,12,12">
+            <StackPanel>
+              <ItemsControl x:Name="ServersList" ItemTemplate="{StaticResource ServerCard}" ItemsPanel="{StaticResource Wrap}" />
+              <TextBlock x:Name="ServersEmpty" Classes="subtle" IsVisible="False" Text="No servers match your search." />
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+
+        <!-- ===== My Software ===== -->
+        <Grid x:Name="PageSoftware" RowDefinitions="Auto,*" IsVisible="False">
+          <DockPanel Margin="28,24,28,16">
+            <Button DockPanel.Dock="Right" Classes="accent" Tag="sw-add" VerticalAlignment="Top">
+              <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoPlus}" /></Viewbox><TextBlock Text="Add software" /></StackPanel>
+            </Button>
+            <StackPanel>
+              <TextBlock Text="My Software" Classes="title" />
+              <TextBlock x:Name="SoftwareSubtitle" Classes="subtle" Margin="0,4,0,0" />
+            </StackPanel>
+          </DockPanel>
+          <ScrollViewer Grid.Row="1" Padding="28,4,12,12">
+            <StackPanel>
+              <ItemsControl x:Name="SoftwareList" ItemTemplate="{StaticResource SoftwareCard}" ItemsPanel="{StaticResource Wrap}" />
+              <TextBlock x:Name="SoftwareEmpty" Classes="subtle" IsVisible="False" />
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+
+        <!-- ===== Web Apps ===== -->
+        <Grid x:Name="PageWeb" RowDefinitions="Auto,*" IsVisible="False">
+          <DockPanel Margin="28,24,28,16">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top">
+              <Button Tag="web-import" ToolTip.Tip="Add web apps from a Bytehawk export or a browser bookmarks file (.html)">
+                <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoDownload}" /></Viewbox><TextBlock Text="Import" /></StackPanel>
+              </Button>
+              <Button Tag="web-export" ToolTip.Tip="Save your web apps to a file">
+                <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoUpload}" /></Viewbox><TextBlock Text="Export" /></StackPanel>
+              </Button>
+              <Button Classes="accent" Tag="web-add">
+                <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoPlus}" /></Viewbox><TextBlock Text="Add web app" /></StackPanel>
+              </Button>
+            </StackPanel>
+            <StackPanel>
+              <TextBlock Text="Web Apps" Classes="title" />
+              <TextBlock Classes="subtle" Margin="0,4,0,0" Text="Bookmarks that open in your default browser." />
+            </StackPanel>
+          </DockPanel>
+          <ScrollViewer Grid.Row="1" Padding="28,4,12,12">
+            <StackPanel>
+              <ItemsControl x:Name="WebList" ItemTemplate="{StaticResource WebCard}" ItemsPanel="{StaticResource Wrap}" />
+              <TextBlock x:Name="WebEmpty" Classes="subtle" IsVisible="False" />
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+
+        <!-- ===== Downloads ===== -->
+        <Grid x:Name="PageDownloads" RowDefinitions="Auto,*" IsVisible="False">
+          <DockPanel Margin="28,24,28,16">
+            <Button DockPanel.Dock="Right" Tag="dl-folder" VerticalAlignment="Top">
+              <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoFolder}" /></Viewbox><TextBlock Text="Open downloads folder" /></StackPanel>
+            </Button>
+            <StackPanel>
+              <TextBlock Text="Downloads" Classes="title" />
+              <TextBlock x:Name="DownloadsFolderText" Classes="subtle" Margin="0,4,0,0" />
+            </StackPanel>
+          </DockPanel>
+          <ScrollViewer Grid.Row="1" Padding="28,4,28,12">
+            <StackPanel>
+              <ItemsControl x:Name="DownloadsList" ItemTemplate="{StaticResource DownloadRow}" />
+              <TextBlock x:Name="DownloadsEmpty" Classes="subtle" Text="No downloads in this session. Downloads from Bytehawk Apps and Servers appear here." />
+            </StackPanel>
+          </ScrollViewer>
+        </Grid>
+
+        <!-- ===== Settings ===== -->
+        <ScrollViewer x:Name="PageSettings" IsVisible="False">
+          <StackPanel Margin="28,24,28,28" MaxWidth="760" HorizontalAlignment="Left">
+            <TextBlock Text="Settings" Classes="title" Margin="0,0,0,18" />
+
+            <Border Classes="card" Margin="0,0,0,16">
+              <StackPanel>
+                <TextBlock Text="Appearance" Classes="section" />
+                <TextBlock Classes="subtle" Text="Theme is saved and restored the next time the launcher starts." Margin="0,0,0,12" />
+                <Border Background="{DynamicResource WindowBg}" BorderBrush="{DynamicResource Stroke}" BorderThickness="1" CornerRadius="8" HorizontalAlignment="Left">
+                  <StackPanel Orientation="Horizontal">
+                    <Button x:Name="SetThemeDark" Classes="seg" Tag="theme-Dark" Content="Dark" />
+                    <Button x:Name="SetThemeLight" Classes="seg" Tag="theme-Light" Content="Light" />
+                    <Button x:Name="SetThemeSystem" Classes="seg" Tag="theme-System" Content="Follow System" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Border>
+
+            <Border Classes="card" Margin="0,0,0,16">
+              <StackPanel>
+                <TextBlock Text="Downloads" Classes="section" />
+                <TextBlock Text="Download folder" Classes="label" Margin="0,0,0,5" />
+                <Grid ColumnDefinitions="*,Auto,Auto">
+                  <TextBox x:Name="DownloadFolderBox" IsReadOnly="True" />
+                  <Button Grid.Column="1" Content="Change…" Tag="set-folder" Margin="8,0,0,0" />
+                  <Button Grid.Column="2" Content="Reset" Tag="set-folder-reset" Margin="8,0,0,0" />
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <Border Classes="card" Margin="0,0,0,16">
+              <StackPanel Spacing="10">
+                <TextBlock Text="Updates &amp; catalog" Classes="section" />
+                <CheckBox x:Name="CheckOnStartupBox" Content="Check for updates on startup" />
+                <CheckBox x:Name="AutoUpdateBox" Content="Install app updates automatically (apps that don't need your password)" />
+                <TextBlock Text="Remote catalog URL" Classes="label" Margin="0,6,0,0" />
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBox x:Name="RemoteCatalogBox" />
+                  <Button Grid.Column="1" Content="Save &amp; load" Tag="set-catalog" Margin="8,0,0,0" />
+                </Grid>
+                <TextBlock x:Name="RemoteCatalogStatus" Classes="subtle" FontSize="12"
+                           Text="The Bytehawk Apps list comes from this catalog. If it can't be reached, the last downloaded copy (or the built-in list) is used." />
+              </StackPanel>
+            </Border>
+
+            <Border Classes="card" Margin="0,0,0,16">
+              <StackPanel>
+                <TextBlock Text="About" Classes="section" />
+                <StackPanel Orientation="Horizontal">
+                  <Image x:Name="AboutLogo" Width="64" Height="64" />
+                  <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="Bytehawk Studio Launcher" FontSize="16" FontWeight="SemiBold" />
+                    <TextBlock x:Name="AboutVersion" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0" />
+                    <TextBlock Text="© Bytehawk Studio" Foreground="{DynamicResource TextSecondary}" Margin="0,2,0,0" />
+                  </StackPanel>
+                </StackPanel>
+                <TextBlock x:Name="DataFolderText" Classes="subtle" FontSize="12" Margin="0,14,0,0" />
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,10,0,0">
+                  <Button Content="Open data folder" Tag="set-datafolder" />
+                  <Button x:Name="CheckLauncherButton" Content="Check for launcher updates" Tag="launcher-check" />
+                </StackPanel>
+                <TextBlock x:Name="LauncherUpdateStatus" Classes="subtle" FontSize="12" Margin="0,8,0,0"
+                           Text="Launcher updates come from GitHub Releases (adamglassner/bytehawklauncher)." />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+      </Panel>
+    </Grid>
+  </Grid>
+</Window>

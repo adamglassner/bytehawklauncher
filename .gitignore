@@ -4,3 +4,4 @@ dist/publish/
 .vs/
 *.user
 dist/
+dist-desktop/

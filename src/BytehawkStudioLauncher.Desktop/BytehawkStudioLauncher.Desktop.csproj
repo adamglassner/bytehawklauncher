@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Bytehawk Studio Launcher for macOS and Linux (Avalonia). The Windows launcher is the WPF project next door. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>BytehawkStudioLauncher</AssemblyName>
+    <RootNamespace>Bytehawk.Launcher</RootNamespace>
+    <ApplicationIcon>..\..\assets\bytehawk.ico</ApplicationIcon>
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <Product>Bytehawk Studio Launcher</Product>
+    <Company>Bytehawk Studio</Company>
+    <Copyright>© Bytehawk Studio</Copyright>
+
+    <SelfContained>true</SelfContained>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <DebugType>embedded</DebugType>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+  </ItemGroup>
+
+  <!-- Shared with the Windows launcher: plain .NET code only -->
+  <ItemGroup>
+    <Compile Include="..\BytehawkStudioLauncher\Models\Models.cs" Link="Shared\Models.cs" />
+    <Compile Include="..\BytehawkStudioLauncher\Services\Storage.cs" Link="Shared\Storage.cs" />
+    <Compile Include="..\BytehawkStudioLauncher\Services\GitHubService.cs" Link="Shared\GitHubService.cs" />
+    <Compile Include="..\BytehawkStudioLauncher\Services\Downloader.cs" Link="Shared\Downloader.cs" />
+    <Compile Include="..\BytehawkStudioLauncher\Services\WebAppTransfer.cs" Link="Shared\WebAppTransfer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="..\..\assets\bytehawk-appicon-256.png" Link="Assets\bytehawk-appicon-256.png" />
+    <AvaloniaResource Include="..\..\assets\logo-mark-ondark-128.png" Link="Assets\logo-mark-ondark-128.png" />
+    <AvaloniaResource Include="..\..\assets\logo-mark-onlight-128.png" Link="Assets\logo-mark-onlight-128.png" />
+    <!-- The catalog bundled at build time: used when the online catalog can't be reached -->
+    <EmbeddedResource Include="..\..\catalog.json" Link="Assets\catalog.json" LogicalName="catalog.json" />
+  </ItemGroup>
+</Project>

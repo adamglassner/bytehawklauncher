@@ -19,7 +19,11 @@
         "port": 5080,
         "guideUrl": "https://github.com/adamglassner/guardrailehs/blob/main/server/README.md",
         "windowsUninstallKey": "{8E1D4C72-3B5A-4F09-9C6E-2A7B1D0F5E93}_is1",
-        "windowsDataFolder": "%ProgramData%\\Guardrail Server"
+        "windowsDataFolder": "%ProgramData%\\Guardrail Server",
+        "linuxAsset": "GuardrailServer-*-linux-{arch}.tar.gz",
+        "linuxInstallDir": "/opt/guardrail-server",
+        "linuxService": "guardrail-server",
+        "dockerName": "guardrail-server"
       }
     },
     {
@@ -38,7 +42,11 @@
       "repo": "adamglassner/shoredrop",
       "assetPattern": "ShoreDrop-*-win-x64.zip",
       "exe": "ShoreDrop.exe",
-      "icon": "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/shoredrop-256.png"
+      "icon": "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/shoredrop-256.png",
+      "macos": {
+        "assetPattern": "ShoreDrop-*-macOS-{arch}.zip",
+        "app": "ShoreDrop.app"
+      }
     },
     {
       "id": "discshelf",
@@ -94,7 +102,11 @@
         "port": 8484,
         "guideUrl": "https://github.com/adamglassner/coinpilot/blob/main/server/README.md",
         "windowsUninstallKey": "{6C4E2B1A-7F3D-4E85-9A2C-1D8B5F0E7A44}_is1",
-        "windowsDataFolder": "%ProgramData%\\WillowWallet Server"
+        "windowsDataFolder": "%ProgramData%\\WillowWallet Server",
+        "linuxAsset": "WillowWalletServer-*-linux-{arch}.tar.gz",
+        "linuxInstallDir": "/opt/willowwallet-server",
+        "linuxService": "willowwallet-server",
+        "dockerName": "willowwallet"
       }
     },
     {
@@ -131,7 +143,18 @@
       "repo": "adamglassner/larksong",
       "assetPattern": "Larksong-*-win-x64.zip",
       "exe": "Larksong.exe",
-      "icon": "https://raw.githubusercontent.com/adamglassner/larksong/main/desktop/icons/larksong.png"
+      "icon": "https://raw.githubusercontent.com/adamglassner/larksong/main/desktop/icons/larksong.png",
+      "macos": {
+        "tagPrefix": "macos-v",
+        "assetPattern": "Larksong-*-{arch}.dmg",
+        "app": "Larksong.app"
+      },
+      "linux": {
+        "tagPrefix": "linux-v",
+        "assetPattern": "larksong_*_amd64.deb;larksong-*.x86_64.rpm",
+        "exe": "/opt/larksong/bin/Larksong",
+        "package": "larksong"
+      }
     },
     {
       "id": "larksong-classic",
