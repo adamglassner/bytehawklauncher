@@ -24,18 +24,18 @@
       <Setter Property="Foreground" Value="{DynamicResource TextPrimary}" />
     </Style>
 
-    <Style Selector="Button.accent">
+    <Style Selector="Button.primary">
       <Setter Property="Background" Value="{DynamicResource Accent}" />
       <Setter Property="BorderBrush" Value="{DynamicResource Accent}" />
       <Setter Property="Foreground" Value="{DynamicResource OnAccent}" />
       <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
-    <Style Selector="Button.accent:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource AccentHover}" />
       <Setter Property="BorderBrush" Value="{DynamicResource AccentHover}" />
       <Setter Property="Foreground" Value="{DynamicResource OnAccent}" />
     </Style>
-    <Style Selector="Button.accent:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Style Selector="Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
       <Setter Property="Background" Value="{DynamicResource AccentHover}" />
       <Setter Property="Foreground" Value="{DynamicResource OnAccent}" />
     </Style>
@@ -156,7 +156,7 @@
       <Setter Property="StrokeThickness" Value="2" />
       <Setter Property="StrokeLineCap" Value="Round" />
       <Setter Property="StrokeJoin" Value="Round" />
-      <Setter Property="Stroke" Value="{Binding $parent[ContentPresenter].Foreground}" />
+      <Setter Property="Stroke" Value="{Binding $parent[TemplatedControl].Foreground}" />
     </Style>
     <Style Selector="Viewbox.ico">
       <Setter Property="Width" Value="16" />

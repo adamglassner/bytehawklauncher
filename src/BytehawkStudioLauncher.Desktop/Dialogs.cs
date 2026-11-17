@@ -42,7 +42,7 @@ public static class Dialogs
     private static Button Btn(string text, bool accent = false)
     {
         var b = new Button { Content = text, MinWidth = 96, HorizontalContentAlignment = HorizontalAlignment.Center };
-        if (accent) b.Classes.Add("accent");
+        if (accent) b.Classes.Add("primary");
         return b;
     }
 

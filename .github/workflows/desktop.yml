@@ -46,6 +46,7 @@ jobs:
   macos:
     needs: version
     runs-on: macos-14   # Apple Silicon
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4

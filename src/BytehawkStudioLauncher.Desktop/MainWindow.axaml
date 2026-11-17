@@ -56,7 +56,7 @@
               </Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Spacing="8">
-              <Button Classes="accent" Tag="app-primary" Content="{Binding PrimaryText}" MinWidth="96" HorizontalContentAlignment="Center" IsVisible="{Binding ShowPrimary}" />
+              <Button Classes="primary" Tag="app-primary" Content="{Binding PrimaryText}" MinWidth="96" HorizontalContentAlignment="Center" IsVisible="{Binding ShowPrimary}" />
               <Button Tag="app-launch" Content="Launch" IsVisible="{Binding ShowSecondaryLaunch}" />
               <Button Tag="app-cancel" Content="Cancel" IsVisible="{Binding IsDownloading}" />
               <TextBlock Text="{Binding BusyText}" IsVisible="{Binding ShowBusy}" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondary}" />
@@ -98,7 +98,7 @@
           <TextBlock Text="{Binding Note}" IsVisible="{Binding HasNote}" FontSize="12" Margin="0,6,0,0" Foreground="{DynamicResource WarningText}" TextWrapping="Wrap" />
           <TextBlock Text="{Binding BusyText}" IsVisible="{Binding Busy}" FontSize="12" Margin="0,6,0,0" Foreground="{DynamicResource Accent}" />
           <WrapPanel Margin="0,14,0,0" IsVisible="{Binding !IsComingSoon}">
-            <Button Classes="accent" Tag="srv-install" Content="{Binding InstallNativeText}" IsVisible="{Binding CanInstallNative}" Margin="0,0,8,8" />
+            <Button Classes="primary" Tag="srv-install" Content="{Binding InstallNativeText}" IsVisible="{Binding CanInstallNative}" Margin="0,0,8,8" />
             <Button Tag="srv-panel" Content="Open web panel" IsVisible="{Binding CanOpenPanel}" Margin="0,0,8,8" />
             <Button Tag="srv-docker-run" Content="{Binding RunDockerText}" IsVisible="{Binding CanRunDocker}" Margin="0,0,8,8" />
             <Button Tag="srv-docker-stop" Content="Stop Docker container" IsVisible="{Binding CanStopDocker}" Margin="0,0,8,8" />
@@ -150,7 +150,7 @@
                 <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoTrash}" /></Viewbox>
               </Button>
             </StackPanel>
-            <Button Classes="accent" Tag="sw-launch" Content="Launch" MinWidth="96" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
+            <Button Classes="primary" Tag="sw-launch" Content="Launch" MinWidth="96" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
           </DockPanel>
         </StackPanel>
       </Border>
@@ -191,7 +191,7 @@
                 <Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoTrash}" /></Viewbox>
               </Button>
             </StackPanel>
-            <Button Classes="accent" Tag="web-launch" Content="Launch" MinWidth="96" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
+            <Button Classes="primary" Tag="web-launch" Content="Launch" MinWidth="96" HorizontalAlignment="Left" HorizontalContentAlignment="Center" />
           </DockPanel>
         </StackPanel>
       </Border>
@@ -298,7 +298,7 @@
               BorderBrush="{DynamicResource Stroke}" BorderThickness="0,0,0,1">
         <DockPanel>
           <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8">
-            <Button x:Name="UpdateNowButton" Classes="accent" Tag="launcher-update" Content="Update now" Padding="12,5" />
+            <Button x:Name="UpdateNowButton" Classes="primary" Tag="launcher-update" Content="Update now" Padding="12,5" />
             <Button Tag="launcher-notes" Content="What's new" Padding="12,5" />
             <Button Classes="icon" Tag="launcher-dismiss" ToolTip.Tip="Hide until next start">
               <Viewbox Width="11" Height="11"><Path Classes="ico" Data="{StaticResource IcoClose}" /></Viewbox>
@@ -353,7 +353,7 @@
         <!-- ===== My Software ===== -->
         <Grid x:Name="PageSoftware" RowDefinitions="Auto,*" IsVisible="False">
           <DockPanel Margin="28,24,28,16">
-            <Button DockPanel.Dock="Right" Classes="accent" Tag="sw-add" VerticalAlignment="Top">
+            <Button DockPanel.Dock="Right" Classes="primary" Tag="sw-add" VerticalAlignment="Top">
               <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoPlus}" /></Viewbox><TextBlock Text="Add software" /></StackPanel>
             </Button>
             <StackPanel>
@@ -379,7 +379,7 @@
               <Button Tag="web-export" ToolTip.Tip="Save your web apps to a file">
                 <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoUpload}" /></Viewbox><TextBlock Text="Export" /></StackPanel>
               </Button>
-              <Button Classes="accent" Tag="web-add">
+              <Button Classes="primary" Tag="web-add">
                 <StackPanel Orientation="Horizontal" Spacing="8"><Viewbox Classes="ico"><Path Classes="ico" Data="{StaticResource IcoPlus}" /></Viewbox><TextBlock Text="Add web app" /></StackPanel>
               </Button>
             </StackPanel>
