@@ -287,7 +287,7 @@ public partial class MainWindow : Window
     };
 
     private const string BoardwalkDescription =
-        "Kanban boards for your projects: as many boards as you like, statuses like New, In progress, On hold and Complete, and cards with labels, priority, due dates, checklists and links that you drag between them. Light or Dark mode. Sync between devices is coming soon.";
+        "Kanban boards for your projects: as many boards as you like, statuses like New, In progress, On hold and Complete, and cards you drag between them. Quick add, undo, My week, due-date reminders, sub-tasks, blocked-by, repeating cards, screenshots, swimlanes, stats, changelogs from your cards and GitHub issue import. Light or Dark mode. Sync between devices is coming soon.";
 
     /// <summary>Larksong — alarm clock (added in 1.3.11). Installed from its portable Windows zip.</summary>
     private static CatalogEntry Larksong() => new()
