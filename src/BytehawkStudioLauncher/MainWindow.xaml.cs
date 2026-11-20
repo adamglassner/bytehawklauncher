@@ -183,6 +183,7 @@ public partial class MainWindow : Window
             Larksong(),
             LarksongClassic(),
             Fleetwatch(),
+            Waylo(),
         },
     };
 
@@ -388,6 +389,17 @@ public partial class MainWindow : Window
         Exe = "Fleetwatch.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/Fleetwatch/main/assets/fleetwatch-256.png",
     };
+
+    /// <summary>Waylo — video calls, voice calls and chat. Coming soon (no repo yet).</summary>
+    private static CatalogEntry Waylo()
+    {
+        var e = ComingSoon(
+            "waylo",
+            "Waylo",
+            "Video calls, voice calls and chat with your family and friends: one-on-one and group calls, screen sharing, file sharing and end-to-end encryption.");
+        e.Icon = "https://raw.githubusercontent.com/adamglassner/bytehawklauncher/main/assets/waylo-256.png";
+        return e;
+    }
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
     private static bool IsOldSample(CatalogEntry e) =>

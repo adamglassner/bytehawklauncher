@@ -173,6 +173,14 @@
       "assetPattern": "Fleetwatch-*-win-x64.zip",
       "exe": "Fleetwatch.exe",
       "icon": "https://raw.githubusercontent.com/adamglassner/Fleetwatch/main/assets/fleetwatch-256.png"
+    },
+    {
+      "id": "waylo",
+      "name": "Waylo",
+      "description": "Video calls, voice calls and chat with your family and friends: one-on-one and group calls, screen sharing, file sharing and end-to-end encryption.",
+      "repo": "",
+      "comingSoon": true,
+      "icon": "https://raw.githubusercontent.com/adamglassner/bytehawklauncher/main/assets/waylo-256.png"
     }
   ]
 }
