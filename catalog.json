@@ -173,6 +173,158 @@
       "assetPattern": "Fleetwatch-*-win-x64.zip",
       "exe": "Fleetwatch.exe",
       "icon": "https://raw.githubusercontent.com/adamglassner/Fleetwatch/main/assets/fleetwatch-256.png"
+    },
+    {
+      "id": "writehawk",
+      "name": "WriteHawk",
+      "description": "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "gridhawk",
+      "name": "GridHawk",
+      "description": "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "slidehawk",
+      "name": "SlideHawk",
+      "description": "Presentation app for slide decks with themes, transitions, animations and presenter view, with .pptx support. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "datahawk",
+      "name": "DataHawk",
+      "description": "Desktop database app for building tables, forms, queries and reports. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "inboxhawk",
+      "name": "InboxHawk",
+      "description": "Email, calendar and contacts in one app. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "notehawk",
+      "name": "NoteHawk",
+      "description": "Digital notebook for typed and handwritten notes, organized into notebooks, sections and pages. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "crafthawk",
+      "name": "CraftHawk",
+      "description": "Visual website builder for designing and publishing web pages without writing code. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "printhawk",
+      "name": "PrintHawk",
+      "description": "Desktop publishing for flyers, newsletters, cards and brochures. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "planhawk",
+      "name": "PlanHawk",
+      "description": "Project planning with tasks, timelines, Gantt charts and resources. Part of the Bytehawk office suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "pixelhawk",
+      "name": "PixelHawk",
+      "description": "Photo editor with layers, masks, adjustments and retouching tools. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "vectorhawk",
+      "name": "VectorHawk",
+      "description": "Vector illustration app for logos, icons and artwork. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "pagehawk",
+      "name": "PageHawk",
+      "description": "Page layout app for books, magazines and print documents. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "paperhawk",
+      "name": "PaperHawk",
+      "description": "PDF app for viewing, editing, signing, filling in forms and converting PDFs. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "cliphawk",
+      "name": "ClipHawk",
+      "description": "Video editor with a multi-track timeline, titles, transitions and color tools. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "flowhawk",
+      "name": "FlowHawk",
+      "description": "Motion graphics and visual effects for video. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "wavehawk",
+      "name": "WaveHawk",
+      "description": "Audio editor for recording, cleaning up and mixing audio. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "lenshawk",
+      "name": "LensHawk",
+      "description": "Photo library and RAW photo editor for organizing and developing your pictures. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "framehawk",
+      "name": "FrameHawk",
+      "description": "2D animation app for animated graphics and cartoons. Part of the Bytehawk creative suite.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
+    },
+    {
+      "id": "waylo",
+      "name": "Waylo",
+      "description": "Video calls, voice calls and chat with friends and family.",
+      "repo": "",
+      "assetPattern": "*.exe",
+      "comingSoon": true
     }
   ]
 }

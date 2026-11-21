@@ -80,7 +80,8 @@ public sealed class AppVM : Observable
 
     /// <summary>No build for this OS (or the catalog marks it coming soon).</summary>
     public bool IsComingSoon => Entry.ComingSoon || Build == null || string.IsNullOrWhiteSpace(Build.AssetPattern) || !Entry.HasRepo;
-    public string ComingSoonText => $"Coming soon to {Platform.Name}";
+    /// <summary>"Coming soon" for apps not released anywhere yet; "Coming soon to macOS/Linux" for apps that only lack a build for this system.</summary>
+    public string ComingSoonText => Entry.ComingSoon && !Entry.HasRepo ? "Coming soon" : $"Coming soon to {Platform.Name}";
 
     /// <summary>There's a build for this OS but not for this Mac/PC's processor (e.g. Apple Silicon only).</summary>
     public bool WrongArch => !IsComingSoon && Release is { NoRelease: false } && Asset == null && !Installed_;
@@ -98,7 +99,7 @@ public sealed class AppVM : Observable
     {
         get
         {
-            if (IsComingSoon) return $"Not available for {Platform.Name} yet";
+            if (IsComingSoon) return Entry.ComingSoon && !Entry.HasRepo ? "Not released yet" : $"Not available for {Platform.Name} yet";
             var latest = Release == null ? "checking…" : Release.NoRelease ? "no release yet" : LatestVersion;
             return IsInstalled ? $"Installed {InstalledVersion} · Latest {latest}" : $"Not installed · Latest {latest}";
         }
