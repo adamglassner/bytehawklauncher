@@ -183,7 +183,8 @@ public partial class MainWindow : Window
             Larksong(),
             LarksongClassic(),
             Fleetwatch(),
-            // Coming soon: the Bytehawk office & creative suite, and Waylo
+            Waylo(),
+            // Coming soon: the Bytehawk office & creative suite
             ComingSoon("writehawk", "WriteHawk", "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite."),
             ComingSoon("gridhawk", "GridHawk", "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite."),
             ComingSoon("slidehawk", "SlideHawk", "Presentation app for slide decks with themes, transitions, animations and presenter view, with .pptx support. Part of the Bytehawk office suite."),
@@ -202,7 +203,6 @@ public partial class MainWindow : Window
             ComingSoon("wavehawk", "WaveHawk", "Audio editor for recording, cleaning up and mixing audio. Part of the Bytehawk creative suite."),
             ComingSoon("lenshawk", "LensHawk", "Photo library and RAW photo editor for organizing and developing your pictures. Part of the Bytehawk creative suite."),
             ComingSoon("framehawk", "FrameHawk", "2D animation app for animated graphics and cartoons. Part of the Bytehawk creative suite."),
-            ComingSoon("waylo", "Waylo", "Video calls, voice calls and chat with friends and family."),
         },
     };
 
@@ -407,6 +407,18 @@ public partial class MainWindow : Window
         AssetPattern = "Fleetwatch-*-win-x64.zip",
         Exe = "Fleetwatch.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/Fleetwatch/main/assets/fleetwatch-256.png",
+    };
+
+    /// <summary>Waylo — video calls, voice calls and chat (early preview shell; was "Coming soon" before).</summary>
+    private static CatalogEntry Waylo() => new()
+    {
+        Id = "waylo",
+        Name = "Waylo",
+        Description = "Video calls, voice calls and chat with your family and friends. Early preview: the Chats page shows sample conversations, and calling, chatting, contacts, meetings and voicemail are coming soon.",
+        Repo = "adamglassner/waylo",
+        AssetPattern = "Waylo-*-win-x64.zip;Waylo-*-Setup.exe",
+        Exe = "Waylo.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/waylo-256.png",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>

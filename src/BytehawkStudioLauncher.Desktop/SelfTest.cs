@@ -51,8 +51,8 @@ public static class SelfTest
             Info($"Coming soon to {Platform.Name}: {string.Join(", ", soon)}");
             Check("Draftly shows as Coming soon (no build for this OS)", vms.Any(v => v.Key == "draftly" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             Check("Larksong is available", vms.Any(v => v.Key == "larksong" && !v.IsComingSoon));
-            Check("Unreleased apps (WriteHawk, Waylo) show as Coming soon", vms.Any(v => v.Key == "writehawk" && v.IsComingSoon && v.ComingSoonText == "Coming soon")
-                  && vms.Any(v => v.Key == "waylo" && v.IsComingSoon));
+            Check("Unreleased apps (WriteHawk) show as Coming soon", vms.Any(v => v.Key == "writehawk" && v.IsComingSoon && v.ComingSoonText == "Coming soon"));
+            Check("Waylo (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "waylo" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             if (Platform.IsMac) Check("ShoreDrop is available on macOS", vms.Any(v => v.Key == "shoredrop" && !v.IsComingSoon));
             if (Platform.IsLinux) Check("ShoreDrop is Coming soon on Linux", vms.Any(v => v.Key == "shoredrop" && v.IsComingSoon));
             var servers = catalog.Where(e => e.Server != null).Select(e => new ServerVM(e)).ToList();
