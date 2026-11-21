@@ -1,0 +1,913 @@
+  Determining projects to restore...
+  Restored /home/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj (in 5.54 sec).
+/home/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/Platform.cs(183,23): warning CA1416: This call site is reachable on all platforms. 'File.GetUnixFileMode(string)' is unsupported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/home/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj]
+/home/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/Platform.cs(175,13): warning CA1416: This call site is reachable on all platforms. 'File.SetUnixFileMode(string, UnixFileMode)' is unsupported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/home/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj]
+/home/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/Platform.cs(174,24): warning CA1416: This call site is reachable on all platforms. 'File.GetUnixFileMode(string)' is unsupported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/home/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj]
+  BytehawkStudioLauncher.Desktop -> /home/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/bin/Release/net8.0/linux-x64/BytehawkStudioLauncher.dll
+  BytehawkStudioLauncher.Desktop -> /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/publish-linux-x64/
+appimagetool, continuous build (git version 11d54c9), build 370 built on 2026-11-06 00:47:16 UTC
+::warning::appstreamcli command is missing, please install it if you want to use AppStream metadata
+
+Using architecture x86_64
+/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64 should be packaged as /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/BytehawkStudioLauncher-1.0.1-linux-x64.AppImage
+Creating .DirIcon symlink based on information from desktop file
+::warning::AppStream upstream metadata is missing, please consider creating it in usr/share/metainfo/bytehawk-studio-launcher.appdata.xml.Please see https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html#sect-Quickstart-DesktopAppsfor more information or use the generator athttps://docs.appimage.org/packaging-guide/optional/appstream.html#using-the-appstream-generator
+Generating squashfs...
+Downloading runtime file from https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-x86_64
+Downloaded runtime binary of size 944632
+Parallel mksquashfs: Using 4 processors
+Creating 4.0 filesystem on /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/BytehawkStudioLauncher-1.0.1-linux-x64.AppImage, block size 131072.
+[===============================================================-] 871/871 100%
+
+Exportable Squashfs 4.0 filesystem, zstd compressed, data block size 131072
+	compressed data, compressed metadata, compressed fragments,
+	compressed xattrs, compressed ids
+	duplicates are removed
+Filesystem size 36682.54 Kbytes (35.82 Mbytes)
+	39.37% of uncompressed filesystem size (93172.59 Kbytes)
+Inode table size 4000 bytes (3.91 Kbytes)
+	40.13% of uncompressed inode table size (9968 bytes)
+Directory table size 2823 bytes (2.76 Kbytes)
+	36.83% of uncompressed directory table size (7665 bytes)
+Number of duplicate files found 0
+Number of inodes 220
+Number of files 216
+Number of fragments 56
+Number of symbolic links 1
+Number of device nodes 0
+Number of fifo nodes 0
+Number of socket nodes 0
+Number of directories 3
+Number of hard-links 0
+Number of ids (unique uids + gids) 1
+Number of uids 1
+	root (0)
+Number of gids 1
+	root (0)
+Embedding ELF...
+Marking the AppImage as executable...
+Embedding MD5 digest
+Success
+
+Please consider submitting your AppImage to appimage.github.io, the crowd-sourced
+central directory of available AppImages, by opening a pull request
+at https://github.com/AppImage/appimage.github.io
+
+################################################################################
+#  appimagetool: 209 WARNINGS ABOUT YOUR APPDIR - PLEASE FIX THEM
+################################################################################
+If these are not fixed, this AppImage would very likely FAIL the automated tests
+at https://appimage.github.io, and may crash with 'Permission
+denied' or similar errors for users other than you.
+appimagetool exits with code 0 because of warnings only. THIS MAY CHANGE IN A
+FUTURE VERSION, when these warnings may become errors that stop the build.
+
+::warning::Problem 1/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ServiceProcess.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ServiceProcess.dll'
+
+::warning::Problem 2/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.Globalization.Native.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.Globalization.Native.so'
+
+::warning::Problem 3/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Http.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Http.dll'
+
+::warning::Problem 4/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Configuration.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Configuration.dll'
+
+::warning::Problem 5/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Globalization.Extensions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Globalization.Extensions.dll'
+
+::warning::Problem 6/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.Serialization.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.Serialization.dll'
+
+::warning::Problem 7/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libmscordaccore.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libmscordaccore.so'
+
+::warning::Problem 8/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Memory.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Memory.dll'
+
+::warning::Problem 9/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.dll'
+
+::warning::Problem 10/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Transactions.Local.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Transactions.Local.dll'
+
+::warning::Problem 11/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.OpenSsl.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.OpenSsl.dll'
+
+::warning::Problem 12/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Emit.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Emit.dll'
+
+::warning::Problem 13/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.Specialized.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.Specialized.dll'
+
+::warning::Problem 14/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Transactions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Transactions.dll'
+
+::warning::Problem 15/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Linq.Parallel.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Linq.Parallel.dll'
+
+::warning::Problem 16/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ValueTuple.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ValueTuple.dll'
+
+::warning::Problem 17/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.IO.Compression.Native.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.IO.Compression.Native.so'
+
+::warning::Problem 18/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.Native.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.Native.so'
+
+::warning::Problem 19/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Tools.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Tools.dll'
+
+::warning::Problem 20/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.X11.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.X11.dll'
+
+::warning::Problem 21/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.AccessControl.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.AccessControl.dll'
+
+::warning::Problem 22/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.OpenGL.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.OpenGL.dll'
+
+::warning::Problem 23/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ServiceModel.Web.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ServiceModel.Web.dll'
+
+::warning::Problem 24/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.Win32.Primitives.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.Win32.Primitives.dll'
+
+::warning::Problem 25/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Compression.Brotli.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Compression.Brotli.dll'
+
+::warning::Problem 26/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSkiaSharp.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSkiaSharp.so'
+
+::warning::Problem 27/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.Annotations.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.Annotations.dll'
+
+::warning::Problem 28/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.InteropServices.JavaScript.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.InteropServices.JavaScript.dll'
+
+::warning::Problem 29/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.SecureString.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.SecureString.dll'
+
+::warning::Problem 30/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Win32.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Win32.dll'
+
+::warning::Problem 31/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Primitives.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Primitives.dll'
+
+::warning::Problem 32/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Pipes.AccessControl.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Pipes.AccessControl.dll'
+
+::warning::Problem 33/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Globalization.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Globalization.dll'
+
+::warning::Problem 34/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/SkiaSharp.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/SkiaSharp.dll'
+
+::warning::Problem 35/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.dll'
+
+::warning::Problem 36/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/HarfBuzzSharp.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/HarfBuzzSharp.dll'
+
+::warning::Problem 37/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libHarfBuzzSharp.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libHarfBuzzSharp.so'
+
+::warning::Problem 38/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Csp.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Csp.dll'
+
+::warning::Problem 39/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.CoreLib.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.CoreLib.dll'
+
+::warning::Problem 40/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.VisualBasic.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.VisualBasic.dll'
+
+::warning::Problem 41/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.Primitives.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.Primitives.dll'
+
+::warning::Problem 42/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Compression.ZipFile.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Compression.ZipFile.dll'
+
+::warning::Problem 43/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Tasks.Extensions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Tasks.Extensions.dll'
+
+::warning::Problem 44/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XDocument.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XDocument.dll'
+
+::warning::Problem 45/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Remote.Protocol.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Remote.Protocol.dll'
+
+::warning::Problem 46/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.X509Certificates.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.X509Certificates.dll'
+
+::warning::Problem 47/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Linq.Expressions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Linq.Expressions.dll'
+
+::warning::Problem 48/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Compression.FileSystem.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Compression.FileSystem.dll'
+
+::warning::Problem 49/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Compression.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Compression.dll'
+
+::warning::Problem 50/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libcoreclrtraceptprovider.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libcoreclrtraceptprovider.so'
+
+::warning::Problem 51/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Ping.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Ping.dll'
+
+::warning::Problem 52/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.dll'
+
+::warning::Problem 53/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.Linq.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.Linq.dll'
+
+::warning::Problem 54/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Primitives.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Primitives.dll'
+
+::warning::Problem 55/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Data.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Data.dll'
+
+::warning::Problem 56/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/createdump
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/createdump'
+
+::warning::Problem 57/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Pipelines.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Pipelines.dll'
+
+::warning::Problem 58/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Fonts.Inter.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Fonts.Inter.dll'
+
+::warning::Problem 59/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Formats.Asn1.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Formats.Asn1.dll'
+
+::warning::Problem 60/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Tracing.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Tracing.dll'
+
+::warning::Problem 61/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.dll'
+
+::warning::Problem 62/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.Primitives.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.Primitives.dll'
+
+::warning::Problem 63/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Contracts.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Contracts.dll'
+
+::warning::Problem 64/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Principal.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Principal.dll'
+
+::warning::Problem 65/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Data.Common.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Data.Common.dll'
+
+::warning::Problem 66/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.StackTrace.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.StackTrace.dll'
+
+::warning::Problem 67/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Linq.Queryable.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Linq.Queryable.dll'
+
+::warning::Problem 68/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Numerics.Vectors.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Numerics.Vectors.dll'
+
+::warning::Problem 69/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.dll'
+
+::warning::Problem 70/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Pipes.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.Pipes.dll'
+
+::warning::Problem 71/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.TypeConverter.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.TypeConverter.dll'
+
+::warning::Problem 72/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Web.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Web.dll'
+
+::warning::Problem 73/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.Primitives.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.Primitives.dll'
+
+::warning::Problem 74/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.dll'
+
+::warning::Problem 75/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Native.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Native.dll'
+
+::warning::Problem 76/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/WindowsBase.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/WindowsBase.dll'
+
+::warning::Problem 77/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebHeaderCollection.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebHeaderCollection.dll'
+
+::warning::Problem 78/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Globalization.Calendars.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Globalization.Calendars.dll'
+
+::warning::Problem 79/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.FileVersionInfo.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.FileVersionInfo.dll'
+
+::warning::Problem 80/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ObjectModel.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ObjectModel.dll'
+
+::warning::Problem 81/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.RegularExpressions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.RegularExpressions.dll'
+
+::warning::Problem 82/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.DataAnnotations.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.DataAnnotations.dll'
+
+::warning::Problem 83/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.Uri.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.Uri.dll'
+
+::warning::Problem 84/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Dynamic.Runtime.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Dynamic.Runtime.dll'
+
+::warning::Problem 85/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libmscordbi.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libmscordbi.so'
+
+::warning::Problem 86/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.dll'
+
+::warning::Problem 87/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.TextWriterTraceListener.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.TextWriterTraceListener.dll'
+
+::warning::Problem 88/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.MicroCom.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.MicroCom.dll'
+
+::warning::Problem 89/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Mail.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Mail.dll'
+
+::warning::Problem 90/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XPath.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XPath.dll'
+
+::warning::Problem 91/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.Security.Cryptography.Native.OpenSsl.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.Security.Cryptography.Native.OpenSsl.so'
+
+::warning::Problem 92/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Core.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Core.dll'
+
+::warning::Problem 93/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Tasks.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Tasks.dll'
+
+::warning::Problem 94/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Skia.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Skia.dll'
+
+::warning::Problem 95/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libhostpolicy.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libhostpolicy.so'
+
+::warning::Problem 96/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Handles.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Handles.dll'
+
+::warning::Problem 97/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XmlSerializer.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XmlSerializer.dll'
+
+::warning::Problem 98/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.TraceSource.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.TraceSource.dll'
+
+::warning::Problem 99/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Quic.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Quic.dll'
+
+::warning::Problem 100/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XPath.XDocument.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XPath.XDocument.dll'
+
+::warning::Problem 101/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.CompilerServices.VisualC.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.CompilerServices.VisualC.dll'
+
+::warning::Problem 102/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.ThreadPool.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.ThreadPool.dll'
+
+::warning::Problem 103/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Base.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Base.dll'
+
+::warning::Problem 104/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Encoding.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Encoding.dll'
+
+::warning::Problem 105/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Data.DataSetExtensions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Data.DataSetExtensions.dll'
+
+::warning::Problem 106/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.EventBasedAsync.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.ComponentModel.EventBasedAsync.dll'
+
+::warning::Problem 107/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.DriveInfo.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.DriveInfo.dll'
+
+::warning::Problem 108/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Themes.Fluent.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Themes.Fluent.dll'
+
+::warning::Problem 109/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.HttpListener.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.HttpListener.dll'
+
+::warning::Problem 110/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.UnmanagedMemoryStream.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.UnmanagedMemoryStream.dll'
+
+::warning::Problem 111/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Emit.ILGeneration.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Emit.ILGeneration.dll'
+
+::warning::Problem 112/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.Net.Security.Native.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libSystem.Net.Security.Native.so'
+
+::warning::Problem 113/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libclrgc.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libclrgc.so'
+
+::warning::Problem 114/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Algorithms.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Algorithms.dll'
+
+::warning::Problem 115/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Formats.Tar.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Formats.Tar.dll'
+
+::warning::Problem 116/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Markup.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Markup.dll'
+
+::warning::Problem 117/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Encoding.CodePages.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Encoding.CodePages.dll'
+
+::warning::Problem 118/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Resources.Writer.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Resources.Writer.dll'
+
+::warning::Problem 119/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libcoreclr.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libcoreclr.so'
+
+::warning::Problem 120/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Controls.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Controls.dll'
+
+::warning::Problem 121/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.Watcher.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.Watcher.dll'
+
+::warning::Problem 122/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Encoding.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Encoding.dll'
+
+::warning::Problem 123/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/mscorlib.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/mscorlib.dll'
+
+::warning::Problem 124/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebSockets.Client.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebSockets.Client.dll'
+
+::warning::Problem 125/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.dll'
+
+::warning::Problem 126/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.dll'
+
+::warning::Problem 127/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.IsolatedStorage.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.IsolatedStorage.dll'
+
+::warning::Problem 128/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Primitives.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Primitives.dll'
+
+::warning::Problem 129/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Intrinsics.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Intrinsics.dll'
+
+::warning::Problem 130/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Metadata.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Metadata.dll'
+
+::warning::Problem 131/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.dll'
+
+::warning::Problem 132/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libhostfxr.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libhostfxr.so'
+
+::warning::Problem 133/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.DataContractSerialization.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.DataContractSerialization.dll'
+
+::warning::Problem 134/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.AppContext.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.AppContext.dll'
+
+::warning::Problem 135/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Claims.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Claims.dll'
+
+::warning::Problem 136/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Overlapped.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Overlapped.dll'
+
+::warning::Problem 137/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.DispatchProxy.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.DispatchProxy.dll'
+
+::warning::Problem 138/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Desktop.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Desktop.dll'
+
+::warning::Problem 139/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.FreeDesktop.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.FreeDesktop.dll'
+
+::warning::Problem 140/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Process.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Process.dll'
+
+::warning::Problem 141/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebClient.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebClient.dll'
+
+::warning::Problem 142/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.DiagnosticSource.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.DiagnosticSource.dll'
+
+::warning::Problem 143/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Encodings.Web.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Encodings.Web.dll'
+
+::warning::Problem 144/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Channels.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Channels.dll'
+
+::warning::Problem 145/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Resources.Reader.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Resources.Reader.dll'
+
+::warning::Problem 146/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Tasks.Dataflow.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Tasks.Dataflow.dll'
+
+::warning::Problem 147/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.VisualBasic.Core.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.VisualBasic.Core.dll'
+
+::warning::Problem 148/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Extensions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Extensions.dll'
+
+::warning::Problem 149/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Dialogs.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Dialogs.dll'
+
+::warning::Problem 150/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Numerics.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Numerics.dll'
+
+::warning::Problem 151/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Web.HttpUtility.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Web.HttpUtility.dll'
+
+::warning::Problem 152/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.dll'
+
+::warning::Problem 153/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.dll'
+
+::warning::Problem 154/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.Immutable.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.Immutable.dll'
+
+::warning::Problem 155/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Numerics.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Numerics.dll'
+
+::warning::Problem 156/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.Concurrent.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.Concurrent.dll'
+
+::warning::Problem 157/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.MemoryMappedFiles.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.MemoryMappedFiles.dll'
+
+::warning::Problem 158/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.dll'
+
+::warning::Problem 159/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.CSharp.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.CSharp.dll'
+
+::warning::Problem 160/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.dll'
+
+::warning::Problem 161/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Markup.Xaml.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Markup.Xaml.dll'
+
+::warning::Problem 162/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.InteropServices.RuntimeInformation.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.InteropServices.RuntimeInformation.dll'
+
+::warning::Problem 163/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Linq.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Linq.dll'
+
+::warning::Problem 164/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.NonGeneric.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Collections.NonGeneric.dll'
+
+::warning::Problem 165/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Windows.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Windows.dll'
+
+::warning::Problem 166/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Buffers.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Buffers.dll'
+
+::warning::Problem 167/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Loader.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Loader.dll'
+
+::warning::Problem 168/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Console.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Console.dll'
+
+::warning::Problem 169/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.DesignerSupport.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.DesignerSupport.dll'
+
+::warning::Problem 170/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Tasks.Parallel.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Tasks.Parallel.dll'
+
+::warning::Problem 171/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Extensions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Extensions.dll'
+
+::warning::Problem 172/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Principal.Windows.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Principal.Windows.dll'
+
+::warning::Problem 173/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Tmds.DBus.Protocol.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Tmds.DBus.Protocol.dll'
+
+::warning::Problem 174/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/netstandard.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/netstandard.dll'
+
+::warning::Problem 175/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Timer.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Timer.dll'
+
+::warning::Problem 176/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.InteropServices.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.InteropServices.dll'
+
+::warning::Problem 177/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.Json.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.Json.dll'
+
+::warning::Problem 178/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Http.Json.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Http.Json.dll'
+
+::warning::Problem 179/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.NameResolution.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.NameResolution.dll'
+
+::warning::Problem 180/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.Xml.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.Xml.dll'
+
+::warning::Problem 181/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Json.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Json.dll'
+
+::warning::Problem 182/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Encoding.Extensions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Text.Encoding.Extensions.dll'
+
+::warning::Problem 183/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.Win32.Registry.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Microsoft.Win32.Registry.dll'
+
+::warning::Problem 184/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebSockets.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebSockets.dll'
+
+::warning::Problem 185/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Requests.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Requests.dll'
+
+::warning::Problem 186/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libclrjit.so
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/libclrjit.so'
+
+::warning::Problem 187/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Vulkan.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Vulkan.dll'
+
+::warning::Problem 188/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Drawing.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Drawing.dll'
+
+::warning::Problem 189/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Cng.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Security.Cryptography.Cng.dll'
+
+::warning::Problem 190/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.ServicePoint.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.ServicePoint.dll'
+
+::warning::Problem 191/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Security.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Security.dll'
+
+::warning::Problem 192/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Drawing.Primitives.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Drawing.Primitives.dll'
+
+::warning::Problem 193/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.TypeExtensions.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.TypeExtensions.dll'
+
+::warning::Problem 194/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Debug.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Diagnostics.Debug.dll'
+
+::warning::Problem 195/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Thread.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Threading.Thread.dll'
+
+::warning::Problem 196/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.Formatters.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.Serialization.Formatters.dll'
+
+::warning::Problem 197/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Metal.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/Avalonia.Metal.dll'
+
+::warning::Problem 198/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.AccessControl.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.IO.FileSystem.AccessControl.dll'
+
+::warning::Problem 199/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.Xml.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.Xml.dll'
+
+::warning::Problem 200/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.NetworkInformation.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.NetworkInformation.dll'
+
+::warning::Problem 201/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Emit.Lightweight.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Reflection.Emit.Lightweight.dll'
+
+::warning::Problem 202/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.ReaderWriter.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.ReaderWriter.dll'
+
+::warning::Problem 203/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.Xml.Linq.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Private.Xml.Linq.dll'
+
+::warning::Problem 204/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Resources.ResourceManager.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Resources.ResourceManager.dll'
+
+::warning::Problem 205/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Sockets.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.Sockets.dll'
+
+::warning::Problem 206/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/MicroCom.Runtime.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/MicroCom.Runtime.dll'
+
+::warning::Problem 207/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebProxy.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Net.WebProxy.dll'
+
+::warning::Problem 208/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XmlDocument.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Xml.XmlDocument.dll'
+
+::warning::Problem 209/209: /home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.CompilerServices.Unsafe.dll
+       Problem: this program/script has mode 0744 (rwxr--r--), so some users (group and/or others) cannot execute it. AppImages are run by users other than the one who packaged them, who would get 'Permission denied'. It needs at least mode 0755 (rwxr-xr-x)
+       Fix:     chmod a+x '/home/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/AppDir-linux-x64/usr/bin/System.Runtime.CompilerServices.Unsafe.dll'
+
+To fix all read/execute permission warnings at once, run 'chmod -R a+rX' on the
+AppDir and package again (it does not fix setuid/setgid warnings).
+
+(Reminder: 209 warnings above, the AppImage was created anyway.)
+total 92588
+drwxr-xr-x  5 runner runner     4096 Nov 21 08:17 .
+drwxr-xr-x 10 runner runner     4096 Nov 21 08:16 ..
+drwxr-xr-x  3 runner runner     4096 Nov 21 08:17 AppDir-linux-x64
+-rwxr-xr-x  1 runner runner 38509048 Nov 21 08:17 BytehawkStudioLauncher-1.0.1-linux-x64.AppImage
+-rw-r--r--  1 runner runner 41134467 Nov 21 08:17 BytehawkStudioLauncher-1.0.1-linux-x64.tar.gz
+-rwxr-xr-x  1 runner runner 15133176 Nov 21 08:17 appimagetool
+drwxr-xr-x  2 runner runner    12288 Nov 21 08:16 publish-linux-x64
+drwxr-xr-x  3 runner runner     4096 Nov 21 08:17 tar-linux-x64
