@@ -60,6 +60,8 @@ jobs:
           packaging/desktop/build-mac.sh "$V" osx-arm64 2>&1 | tee logs/build-mac-arm64.log
           packaging/desktop/build-mac.sh "$V" osx-x64 2>&1 | tee logs/build-mac-x64.log
       - name: Self-test (real installs into ~/Applications)
+        env:
+          BYTEHAWK_GITHUB_TOKEN: ${{ github.token }}
         run: |
           APP="dist-desktop/osx-arm64/Bytehawk Studio Launcher.app/Contents/MacOS/BytehawkStudioLauncher"
           "$APP" --self-test "$PWD/logs/selftest-macos.txt" || code=$?
@@ -107,6 +109,8 @@ jobs:
           mkdir -p logs
           packaging/desktop/build-linux.sh ${{ needs.version.outputs.version }} linux-x64 2>&1 | tee logs/build-linux.log
       - name: Self-test
+        env:
+          BYTEHAWK_GITHUB_TOKEN: ${{ github.token }}
         run: |
           dist-desktop/publish-linux-x64/BytehawkStudioLauncher --self-test "$PWD/logs/selftest-linux.txt" || code=$?
           cat logs/selftest-linux.txt || true

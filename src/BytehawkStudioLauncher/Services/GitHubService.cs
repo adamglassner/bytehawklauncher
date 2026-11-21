@@ -35,6 +35,10 @@ public static class GitHubService
         c.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
         c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
         c.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
+        // CI only: build machines share IP addresses and hit the anonymous limit, so the self-test can pass a token.
+        // Never set on users' computers, where the launcher stays anonymous.
+        if (Environment.GetEnvironmentVariable("BYTEHAWK_GITHUB_TOKEN") is { Length: > 0 } token)
+            c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         return c;
     }
 

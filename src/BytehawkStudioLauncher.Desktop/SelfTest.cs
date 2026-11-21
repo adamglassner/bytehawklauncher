@@ -151,7 +151,8 @@ public static class SelfTest
 
             // ---- launcher self-update source ----
             var self = await GitHubService.GetLatestReleaseWithPrefixAsync(SelfUpdater.Repo, SelfUpdater.TagPrefix);
-            Check("Launcher update repo reachable", self.Status is GitHubStatus.Ok or GitHubStatus.NoRelease, self.Value?.Tag ?? "no desktop release yet");
+            if (self.Status == GitHubStatus.RateLimited) Warn("Launcher update repo reachable", false, "GitHub rate limit on this build machine");
+            else Check("Launcher update repo reachable", self.Status is GitHubStatus.Ok or GitHubStatus.NoRelease, self.Value?.Tag ?? self.Message ?? "");
             if (self.Value is { NoRelease: false } rel)
                 Warn("Launcher release has a download for this system", SelfUpdater.Asset(rel) != null, SelfUpdater.AssetPattern);
         }
