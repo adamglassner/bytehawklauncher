@@ -321,10 +321,11 @@
     {
       "id": "waylo",
       "name": "Waylo",
-      "description": "Video calls, voice calls and chat with friends and family.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "Video calls, voice calls and chat with your family and friends. Early preview: the Chats page shows sample conversations, and calling, chatting, contacts, meetings and voicemail are coming soon.",
+      "repo": "adamglassner/waylo",
+      "assetPattern": "Waylo-*-win-x64.zip;Waylo-*-Setup.exe",
+      "exe": "Waylo.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/waylo-256.png"
     }
   ]
 }
