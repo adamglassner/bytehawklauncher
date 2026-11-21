@@ -1,0 +1,20 @@
+2026-11-21 08:17:27 [INFO] Running C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-3101a752\GuardrailEHS-0.13.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /NOICONS /DIR="C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-3101a752\apps\guardrail-ehs\app"
+2026-11-21 08:17:39 [INFO] Running C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-3101a752\GuardrailEHS-0.13.0-Setup.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /NOICONS /DIR="C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-3101a752\apps\guardrail-ehs\app"
+2026-11-21 08:17:53 [INFO] Icon for https://github.com from https://github.com/fluidicon.png (128px)
+2026-11-21 08:17:53 [INFO] Icon for https://www.wikipedia.org from https://www.wikipedia.org/static/apple-touch/wikipedia.png (128px)
+2026-11-21 08:17:53 [INFO] Icon page fetch failed for https://bytehawk-launcher-test.invalid: No such host is known. (bytehawk-launcher-test.invalid:443)
+2026-11-21 08:17:53 [INFO] Icon candidate https://bytehawk-launcher-test.invalid/apple-touch-icon.png failed: No such host is known. (bytehawk-launcher-test.invalid:443)
+2026-11-21 08:17:53 [INFO] Icon candidate https://bytehawk-launcher-test.invalid/favicon.ico failed: No such host is known. (bytehawk-launcher-test.invalid:443)
+2026-11-21 08:17:53 [INFO] Shortcut C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-3101a752\Test App.lnk -> C:\Windows\system32\notepad.exe /A
+2026-11-21 08:17:53 [INFO] Shortcut C:\Users\runneradmin\AppData\Local\Temp\bytehawk-selftest-3101a752\Example.url -> https://example.com/
+2026-11-21 08:17:56 [INFO] Starting Bytehawk Studio Launcher 1.7.1
+2026-11-21 08:18:19 [INFO] Starting Bytehawk Studio Launcher 1.7.1
+2026-11-21 08:18:36 [INFO] Starting Bytehawk Studio Launcher 1.7.1
+2026-11-21 08:18:54 [INFO] Starting Bytehawk Studio Launcher 1.7.1
+2026-11-21 08:19:13 [INFO] Starting Bytehawk Studio Launcher 1.7.1
+2026-11-21 08:19:26 [INFO] Starting Bytehawk Studio Launcher 1.7.1
+2026-11-21 08:19:40 [INFO] Ran C:\Program Files\WillowWallet Server\unins000.exe /SILENT /SUPPRESSMSGBOXES /NORESTART /DELETEDATA=1 (exit 0)
+2026-11-21 08:19:51 [INFO] Starting Bytehawk Studio Launcher 1.7.1
+2026-11-21 08:20:03 [INFO] Starting Bytehawk Studio Launcher 1.7.1
+2026-11-21 08:20:17 [INFO] Ran C:\Program Files\Guardrail Server\unins000.exe /SILENT /SUPPRESSMSGBOXES /NORESTART /DELETEDATA=1 (exit 0)
+2026-11-21 08:20:32 [INFO] Ran C:\Windows\system32\cmd.exe /c rmdir /s /q "C:\ProgramData\Guardrail Server" (exit 0)
