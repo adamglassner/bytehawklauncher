@@ -69,6 +69,8 @@
                       Visibility="{Binding HasRepo, Converter={StaticResource BoolToVis}}" Click="BhReleasePage_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE7F4;" ToolTip="Create desktop shortcut" Click="BhDesktop_Click"
                       Visibility="{Binding CanCreateShortcut, Converter={StaticResource BoolToVis}}" />
+              <Button Style="{StaticResource IconButton}" Content="&#xE838;" ToolTip="Open the extension's folder" Click="BhShowFolder_Click"
+                      Visibility="{Binding CanShowFolder, Converter={StaticResource BoolToVis}}" />
               <Button Style="{StaticResource IconButton}" Content="&#xE8E5;" ToolTip="Choose launch file"
                       Visibility="{Binding CanChangeLaunchFile, Converter={StaticResource BoolToVis}}" Click="BhChooseLaunch_Click" />
               <Button Style="{StaticResource IconButton}" Content="&#xE74D;" ToolTip="Uninstall"
@@ -79,7 +81,7 @@
             <StackPanel Orientation="Horizontal">
               <Button Style="{StaticResource AccentButton}" Content="{Binding PrimaryText}" MinWidth="96"
                       Visibility="{Binding ShowPrimary, Converter={StaticResource BoolToVis}}" Click="BhPrimary_Click" />
-              <Button Content="Launch" Margin="8,0,0,0"
+              <Button Content="{Binding SecondaryText}" Margin="8,0,0,0"
                       Visibility="{Binding ShowSecondaryLaunch, Converter={StaticResource BoolToVis}}" Click="BhLaunch_Click" />
               <Button Content="Cancel" Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}" Click="BhCancel_Click" />
             </StackPanel>
@@ -298,6 +300,7 @@
         <StackPanel>
           <RadioButton x:Name="NavBytehawk" Style="{StaticResource NavItem}" Tag="&#xE71D;" Content="Bytehawk Apps" IsChecked="True" Checked="Nav_Checked" />
           <RadioButton x:Name="NavServers" Style="{StaticResource NavItem}" Tag="&#xE753;" Content="Bytehawk Servers" Checked="Nav_Checked" />
+          <RadioButton x:Name="NavExtensions" Style="{StaticResource NavItem}" Tag="&#xEA86;" Content="Browser Extensions" Checked="Nav_Checked" />
           <RadioButton x:Name="NavSoftware" Style="{StaticResource NavItem}" Tag="&#xE8F1;" Content="My Software" Checked="Nav_Checked" />
           <RadioButton x:Name="NavWeb" Style="{StaticResource NavItem}" Tag="&#xE774;" Content="Web Apps" Checked="Nav_Checked" />
           <RadioButton x:Name="NavDownloads" Style="{StaticResource NavItem}" Tag="&#xE896;" Content="Downloads" Checked="Nav_Checked" />
@@ -419,6 +422,34 @@
             <ItemsControl x:Name="ServersList" ItemTemplate="{StaticResource ServerCard}" ItemsPanel="{StaticResource CardPanel}" />
             <TextBlock x:Name="ServersEmpty" Style="{StaticResource Subtle}" Margin="0,8,0,0" Visibility="Collapsed"
                        Text="No Bytehawk servers match your search." />
+          </StackPanel>
+        </ScrollViewer>
+      </Grid>
+
+      <!-- ===== Browser Extensions page ===== -->
+      <Grid x:Name="PageExtensions" Grid.Row="2" Visibility="Collapsed">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <DockPanel Margin="28,24,28,12">
+          <Button x:Name="ExtensionsRefreshButton" DockPanel.Dock="Right" VerticalAlignment="Top" Click="CheckUpdates_Click">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="&#xE72C;" FontFamily="{StaticResource IconFont}" Margin="0,1,8,0" VerticalAlignment="Center" />
+              <TextBlock Text="Check for updates" />
+            </StackPanel>
+          </Button>
+          <StackPanel>
+            <TextBlock Text="Browser Extensions" Style="{StaticResource PageTitle}" />
+            <TextBlock Style="{StaticResource Subtle}" Margin="0,4,0,0" TextWrapping="Wrap"
+                       Text="Bytehawk Studio extensions for Google Chrome and Microsoft Edge. Download one, then use “Add to browser”. Updates go into the same folder, so your browser picks them up by itself." />
+          </StackPanel>
+        </DockPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="28,4,12,12">
+          <StackPanel>
+            <ItemsControl x:Name="ExtensionsList" ItemTemplate="{StaticResource BytehawkCard}" ItemsPanel="{StaticResource CardPanel}" />
+            <TextBlock x:Name="ExtensionsEmpty" Style="{StaticResource Subtle}" Margin="0,8,0,0" Visibility="Collapsed"
+                       Text="No browser extensions match your search." />
           </StackPanel>
         </ScrollViewer>
       </Grid>

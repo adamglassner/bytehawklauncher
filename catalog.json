@@ -326,6 +326,15 @@
       "assetPattern": "Waylo-*-win-x64.zip;Waylo-*-Setup.exe",
       "exe": "Waylo.exe",
       "icon": "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/waylo-256.png"
+    },
+    {
+      "id": "albumgrab",
+      "name": "AlbumGrab",
+      "description": "Chrome and Edge extension that saves photos and whole albums from Facebook, Instagram, Reddit and other sites, at full size, straight into a folder you choose.",
+      "repo": "adamglassner/AlbumGrab",
+      "assetPattern": "AlbumGrab-*.zip",
+      "icon": "https://raw.githubusercontent.com/adamglassner/AlbumGrab/main/icons/icon128.png",
+      "kind": "extension"
     }
   ]
 }

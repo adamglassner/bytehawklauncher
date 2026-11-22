@@ -85,6 +85,10 @@ public sealed class BytehawkAppVM : ObservableObject
     public bool IsComingSoon => Entry.ComingSoon;
     public bool HasRepo => Entry.HasRepo;
     public bool HasServer => Entry.Server != null && !Entry.ComingSoon;
+    /// <summary>A browser extension (Browser Extensions page): "Add to browser" instead of Launch.</summary>
+    public bool IsExtension => Entry.IsExtension;
+    /// <summary>The unpacked extension folder to pick in Chrome/Edge "Load unpacked".</summary>
+    public string? ExtensionFolder => IsExtension ? Installed?.InstallFolder : null;
     public string RepoText => Entry.HasRepo ? Entry.Repo : "Bytehawk Studio";
     public string ReleasePageUrl => Release?.HtmlUrl ?? $"https://github.com/{Entry.Repo}/releases";
 
@@ -105,10 +109,12 @@ public sealed class BytehawkAppVM : ObservableObject
     public bool HasUpdate => IsInstalled && Release != null && !Release.NoRelease &&
                              GitHubService.CompareVersions(Release.Tag, Installed!.Version) > 0;
 
-    /// <summary>A launch file was recorded but is gone from disk.</summary>
-    public bool IsMissing => IsInstalled && !string.IsNullOrEmpty(Installed!.LaunchPath) && !File.Exists(Installed.LaunchPath);
+    /// <summary>A launch file was recorded but is gone from disk (for an extension: its folder or manifest is gone).</summary>
+    public bool IsMissing => IsInstalled && (IsExtension
+        ? !AppInstaller.ExtensionPresent(Installed!)
+        : !string.IsNullOrEmpty(Installed!.LaunchPath) && !File.Exists(Installed.LaunchPath));
 
-    public bool NeedsLaunchChoice => IsInstalled && string.IsNullOrEmpty(Installed!.LaunchPath);
+    public bool NeedsLaunchChoice => IsInstalled && !IsExtension && string.IsNullOrEmpty(Installed!.LaunchPath);
 
     public DownloadItemVM? Download
     {
@@ -127,16 +133,22 @@ public sealed class BytehawkAppVM : ObservableObject
         !IsInstalled ? "Download" :
         IsMissing ? "Not found — reinstall" :
         HasUpdate ? "Update" :
-        NeedsLaunchChoice ? "Choose launch file" : "Launch";
+        NeedsLaunchChoice ? "Choose launch file" :
+        IsExtension ? "Add to browser" : "Launch";
+
+    /// <summary>Text of the second button shown next to Update.</summary>
+    public string SecondaryText => IsExtension ? "Add to browser" : "Launch";
 
     public bool ShowPrimary => !IsComingSoon && !IsDownloading && !Busy;
 
     /// <summary>When an update is available we still offer Launch next to Update.</summary>
     public bool ShowSecondaryLaunch => ShowPrimary && HasUpdate && !IsMissing && !NeedsLaunchChoice;
 
-    public bool CanChangeLaunchFile => IsInstalled && !IsDownloading;
+    public bool CanChangeLaunchFile => IsInstalled && !IsExtension && !IsDownloading;
     /// <summary>Installed and its launch file exists, so a desktop shortcut can point at it.</summary>
-    public bool CanCreateShortcut => IsInstalled && !NeedsLaunchChoice && !IsMissing && !IsDownloading;
+    public bool CanCreateShortcut => IsInstalled && !IsExtension && !NeedsLaunchChoice && !IsMissing && !IsDownloading;
+    /// <summary>Extensions: open the unpacked folder (folder button on the card).</summary>
+    public bool CanShowFolder => IsExtension && IsInstalled && !IsMissing && !IsDownloading;
 
     /// <summary>Apps the launcher installed itself can be uninstalled from the card.</summary>
     public bool CanUninstall => IsInstalled && AppInstaller.IsManagedKind(Installed!.Kind) && !IsDownloading && !Busy;
@@ -149,7 +161,7 @@ public sealed class BytehawkAppVM : ObservableObject
     {
         get
         {
-            var source = Installed?.LaunchPath is { } lp && File.Exists(lp) ? lp
+            var source = !IsExtension && Installed?.LaunchPath is { } lp && File.Exists(lp) ? lp
                        : Uri.TryCreate(Entry.Icon, UriKind.Absolute, out var u) && u.Scheme == Uri.UriSchemeHttps ? u.AbsoluteUri
                        : null;
             if (source == _iconSource) return _icon;

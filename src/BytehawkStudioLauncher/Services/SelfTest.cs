@@ -64,6 +64,53 @@ public static class SelfTest
             var back = JsonStore.Load(jsonPath, () => new List<LibraryEntry>());
             Check("JSON save/load", back.Count == 1 && back[0].Name == "Test" && back[0].RunAsAdmin);
 
+            // ---- browser extensions: unpacked into the same folder on every update (Chrome/Edge "Load unpacked") ----
+            {
+                var extBase = Path.Combine(temp, "apps", "albumgrab");
+                string MakeExtensionZip(string version)
+                {
+                    var zp = Path.Combine(temp, $"AlbumGrab-{version}.zip");
+                    using (var z = System.IO.Compression.ZipFile.Open(zp, System.IO.Compression.ZipArchiveMode.Create))
+                    {
+                        using (var w = new StreamWriter(z.CreateEntry("albumgrab/manifest.json").Open()))
+                            w.Write($"{{\"manifest_version\":3,\"name\":\"AlbumGrab\",\"version\":\"{version}\"}}");
+                        using (var w = new StreamWriter(z.CreateEntry("albumgrab/content.js").Open()))
+                            w.Write("// " + version);
+                    }
+                    return zp;
+                }
+                var x1 = AppInstaller.InstallExtensionZip(MakeExtensionZip("2.2.0"), extBase, "v2.2.0");
+                var x2 = AppInstaller.InstallExtensionZip(MakeExtensionZip("2.3.0"), extBase, "v2.3.0");
+                Check("Extension unpacked with its manifest.json", AppInstaller.ExtensionPresent(x2), x2.InstallFolder ?? "");
+                Check("Extension keeps the same folder on update",
+                      x1.InstallFolder == x2.InstallFolder && Path.GetFileName(x2.InstallFolder ?? "") == AppInstaller.ExtensionFolderName, x2.InstallFolder ?? "");
+                Check("Extension update replaced its files",
+                      File.ReadAllText(Path.Combine(x2.InstallFolder!, "manifest.json")).Contains("2.3.0") && x2.Version == "v2.3.0" && x2.LaunchPath == null && x2.Kind == "zip");
+                Check("Only the extension folder is kept", Directory.GetDirectories(extBase).Length == 1);
+                var entry = new CatalogEntry { Id = "albumgrab", Kind = "extension" };
+                Check("Catalog kind \"extension\" is recognized", entry.IsExtension && !new CatalogEntry { Id = "x" }.IsExtension);
+                await AppInstaller.UninstallAsync(x2, extBase);
+                Check("Extension uninstall", !Directory.Exists(extBase));
+            }
+
+            // ---- the real AlbumGrab release (reported only: it's a different repo) ----
+            try
+            {
+                var ag = await GitHubService.GetLatestReleaseAsync("adamglassner/AlbumGrab", null);
+                var agZip = ag.Value is { NoRelease: false } agr ? GitHubService.MatchAsset(agr.Assets, "AlbumGrab-*.zip") : null;
+                Info("AlbumGrab release has AlbumGrab-*.zip", agZip != null, agZip?.Name ?? ag.Message ?? "no release yet");
+                if (agZip != null)
+                {
+                    var agDest = Path.Combine(temp, agZip.Name);
+                    await Downloader.DownloadAsync(agZip.DownloadUrl, agDest, new SyncProgress<DownloadProgress>(_ => { }), CancellationToken.None);
+                    Info("AlbumGrab download verified", await AppInstaller.VerifyDownloadAsync(agDest, agZip) == null);
+                    var agBase = Path.Combine(temp, "apps", "albumgrab-real");
+                    var agRec = AppInstaller.InstallExtensionZip(agDest, agBase, ag.Value!.Tag);
+                    Info("AlbumGrab unpacks with manifest.json at the top", AppInstaller.ExtensionPresent(agRec), agRec.InstallFolder ?? "");
+                }
+            }
+            catch (Exception ex) { Info("AlbumGrab release", false, ex.Message); }
+
             // ---- GitHub: the first Bytehawk app, Guardrail EHS ----
             var (tag, answered) = await GitHubService.GetLatestTagAsync(AppRepo);
             Check("Latest tag from github.com (no API)", answered && !string.IsNullOrEmpty(tag), tag ?? "no answer");
@@ -256,6 +303,7 @@ public static class SelfTest
                 Check("Online catalog.json parses", n > 0, $"{n} apps, {cat?.Apps?.Count(a => a.ComingSoon)} coming soon");
                 Info("Guardrail EHS is the first app", cat?.Apps?.FirstOrDefault()?.Repo == AppRepo, cat?.Apps?.FirstOrDefault()?.Name ?? "");
                 Info("No sample entries left", cat?.Apps?.Any(a => a.Sample || (a.Id ?? "").StartsWith("sample-")) == false);
+                Info("Online catalog lists AlbumGrab as a browser extension", cat?.Apps?.Any(a => a.Key == "albumgrab" && a.IsExtension) == true);
             }
             catch (Exception ex) { Check("Online catalog.json parses", false, ex.Message); }
 

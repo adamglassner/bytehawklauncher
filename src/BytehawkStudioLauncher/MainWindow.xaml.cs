@@ -37,6 +37,8 @@ public partial class MainWindow : Window
     private readonly ObservableCollection<SoftwareVM> _software = new();
     private readonly ObservableCollection<WebAppVM> _web = new();
     private readonly ObservableCollection<DownloadItemVM> _downloads = new();
+    /// <summary>Browser extensions: the same cards as Bytehawk Apps, shown on their own page.</summary>
+    private ListCollectionView? _extensionsView;
 
     private bool _syncingTheme;
     private bool _refreshing;
@@ -64,7 +66,9 @@ public partial class MainWindow : Window
         _downloads.CollectionChanged += (_, _) =>
             DownloadsEmpty.Visibility = _downloads.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
-        CollectionViewSource.GetDefaultView(_apps).Filter = o => MatchesSearch(((BytehawkAppVM)o).Name);
+        CollectionViewSource.GetDefaultView(_apps).Filter = o => o is BytehawkAppVM v && !v.IsExtension && MatchesSearch(v.Name);
+        _extensionsView = new ListCollectionView(_apps) { Filter = o => o is BytehawkAppVM v && v.IsExtension && MatchesSearch(v.Name) };
+        ExtensionsList.ItemsSource = _extensionsView;
         CollectionViewSource.GetDefaultView(_software).Filter = o => o is SoftwareVM v &&
             MatchesCategory(_softwareCategory, v.CategoryDisplay) && (MatchesSearch(v.Name) || MatchesSearch(v.Category));
         CollectionViewSource.GetDefaultView(_web).Filter = o => o is WebAppVM v &&
@@ -184,6 +188,7 @@ public partial class MainWindow : Window
             LarksongClassic(),
             Fleetwatch(),
             Waylo(),
+            AlbumGrab(),
             // Coming soon: the Bytehawk office & creative suite
             ComingSoon("writehawk", "WriteHawk", "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite."),
             ComingSoon("gridhawk", "GridHawk", "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite."),
@@ -419,6 +424,18 @@ public partial class MainWindow : Window
         AssetPattern = "Waylo-*-win-x64.zip;Waylo-*-Setup.exe",
         Exe = "Waylo.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/waylo-256.png",
+    };
+
+    /// <summary>AlbumGrab (1.8.0) — browser extension for Chrome and Edge, on the Browser Extensions page.</summary>
+    private static CatalogEntry AlbumGrab() => new()
+    {
+        Id = "albumgrab",
+        Name = "AlbumGrab",
+        Description = "Chrome and Edge extension that saves photos and whole albums from Facebook, Instagram, Reddit and other sites, at full size, straight into a folder you choose.",
+        Repo = "adamglassner/AlbumGrab",
+        AssetPattern = "AlbumGrab-*.zip",
+        Icon = "https://raw.githubusercontent.com/adamglassner/AlbumGrab/main/icons/icon128.png",
+        Kind = "extension",
     };
 
     /// <summary>The two Notepad++ "Sample — replace me" entries that 1.0.x shipped.</summary>
@@ -803,6 +820,9 @@ public partial class MainWindow : Window
         var updated = dlg.Result;
         // keep the same key so install state stays attached
         if (string.IsNullOrWhiteSpace(updated.Id)) updated.Id = vm.Entry.Key;
+        // the dialog doesn't edit these: keep them (a browser extension stays on the Browser Extensions page)
+        updated.Kind ??= vm.Entry.Kind;
+        updated.Icon ??= vm.Entry.Icon;
         if (idx >= 0) _localCatalog.Apps[idx] = updated; else _localCatalog.Apps.Add(updated);
         TrySave(AppPaths.Catalog, _localCatalog);
         if (dlg.FetchedRelease != null)
@@ -1073,9 +1093,27 @@ public partial class MainWindow : Window
     {
         var vm = Ctx<BytehawkAppVM>(sender);
         if (vm == null) return;
-        if (!vm.IsInstalled || vm.IsMissing || vm.HasUpdate) await InstallAsync(vm);
+        if (!vm.IsInstalled || vm.IsMissing || vm.HasUpdate)
+        {
+            var firstInstall = !vm.IsInstalled || vm.IsMissing;
+            // A browser extension can't be added to the browser automatically: show how, right after the first download.
+            if (await InstallAsync(vm) && vm.IsExtension && firstInstall) ShowAddToBrowser(vm, justInstalled: true);
+        }
         else if (vm.NeedsLaunchChoice) ChooseLaunchFile(vm);
         else LaunchApp(vm);
+    }
+
+    private void BhShowFolder_Click(object sender, RoutedEventArgs e)
+    {
+        if (Ctx<BytehawkAppVM>(sender)?.ExtensionFolder is { } folder && Directory.Exists(folder)) ShellHelper.OpenFolder(folder);
+    }
+
+    /// <summary>Browser extensions: the "Add to browser" steps (Load unpacked in Chrome or Edge).</summary>
+    private void ShowAddToBrowser(BytehawkAppVM vm, bool justInstalled = false)
+    {
+        var folder = vm.ExtensionFolder;
+        if (string.IsNullOrEmpty(folder) || !Directory.Exists(folder)) { RefreshCard(vm); return; } // card offers to reinstall
+        new ExtensionDialog(vm.Name, folder, justInstalled) { Owner = this }.ShowDialog();
     }
 
     private void BhLaunch_Click(object sender, RoutedEventArgs e)
@@ -1094,6 +1132,7 @@ public partial class MainWindow : Window
 
     private void LaunchApp(BytehawkAppVM vm)
     {
+        if (vm.IsExtension) { ShowAddToBrowser(vm); return; }
         var path = vm.Installed?.LaunchPath;
         if (string.IsNullOrEmpty(path)) { ChooseLaunchFile(vm); return; }
         if (!File.Exists(path)) { RefreshCard(vm); return; } // card switches to "Not found — reinstall"
@@ -1246,12 +1285,22 @@ public partial class MainWindow : Window
             var baseFolder = AppInstaller.AppFolder(vm.Entry.Key);
             InstalledApp record;
 
+            if (vm.IsExtension && ext != ".zip")
+            {
+                item.Status = "Failed";
+                item.Detail = $"{asset.Name} isn't a .zip, so it can't be unpacked as a browser extension.";
+                vm.Note = "This release has no extension .zip to install.";
+                return false;
+            }
+
             if (ext == ".zip" || setupKind != null)
             {
                 // Managed install: silent, into the launcher's own apps folder.
                 try
                 {
-                    record = ext == ".zip"
+                    record = vm.IsExtension
+                        ? await Task.Run(() => AppInstaller.InstallExtensionZip(dest, baseFolder, release.Tag))
+                        : ext == ".zip"
                         ? await Task.Run(() => AppInstaller.InstallZip(dest, baseFolder, release.Tag, vm.Entry.Exe))
                         : await AppInstaller.InstallSetupAsync(dest, setupKind!, baseFolder, release.Tag, vm.Entry.Exe);
                 }
@@ -1267,10 +1316,12 @@ public partial class MainWindow : Window
                 }
                 record.AssetName = asset.Name;
                 record.DownloadedFile = dest;
-                if (record.LaunchPath == null && !automatic)
+                if (record.LaunchPath == null && !automatic && !vm.IsExtension)
                     record.LaunchPath = PickExe($"Choose the main program for {vm.Name}", record.InstallFolder);
                 item.Status = "Installed";
-                item.Detail = $"{vm.Name} {GitHubService.DisplayVersion(release.Tag)} is installed in {record.InstallFolder}";
+                item.Detail = vm.IsExtension && previous != null
+                    ? $"{vm.Name} {GitHubService.DisplayVersion(release.Tag)} is in {record.InstallFolder}. Your browser loads it the next time it starts."
+                    : $"{vm.Name} {GitHubService.DisplayVersion(release.Tag)} is installed in {record.InstallFolder}";
 
                 // The setup file for the previous version isn't needed any more.
                 if (previous?.DownloadedFile is { } old && !old.Equals(dest, StringComparison.OrdinalIgnoreCase))
@@ -1347,8 +1398,10 @@ public partial class MainWindow : Window
             MessageBox.Show(this, $"Close {vm.Name} first, then uninstall it.", AppTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
-        if (MessageBox.Show(this, $"Uninstall {vm.Name}?\n\nThe program is removed. Your own files and settings for {vm.Name} are kept.",
-                AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
+        var question = vm.IsExtension
+            ? $"Uninstall {vm.Name}?\n\nIts folder is deleted. Also click Remove on {vm.Name} in your browser's Extensions page (chrome://extensions or edge://extensions)."
+            : $"Uninstall {vm.Name}?\n\nThe program is removed. Your own files and settings for {vm.Name} are kept.";
+        if (MessageBox.Show(this, question, AppTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
 
         vm.Busy = true;
         try
@@ -1653,6 +1706,7 @@ public partial class MainWindow : Window
         if (PageBytehawk == null) return; // during InitializeComponent
         PageBytehawk.Visibility = NavBytehawk.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
         PageServers.Visibility = NavServers.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        PageExtensions.Visibility = NavExtensions.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
         if (NavServers.IsChecked == true)
         {
             foreach (var c in _servers) c.Refresh();
@@ -1678,6 +1732,7 @@ public partial class MainWindow : Window
         SearchPlaceholder.Visibility = has ? Visibility.Collapsed : Visibility.Visible;
         ClearSearch.Visibility = has ? Visibility.Visible : Visibility.Collapsed;
         CollectionViewSource.GetDefaultView(_apps).Refresh();
+        _extensionsView?.Refresh();
         CollectionViewSource.GetDefaultView(_servers).Refresh();
         CollectionViewSource.GetDefaultView(_software).Refresh();
         CollectionViewSource.GetDefaultView(_web).Refresh();
@@ -1698,6 +1753,8 @@ public partial class MainWindow : Window
         WebEmpty.Visibility = CollectionViewSource.GetDefaultView(_web).IsEmpty ? Visibility.Visible : Visibility.Collapsed;
         if (ServersEmpty != null)
             ServersEmpty.Visibility = CollectionViewSource.GetDefaultView(_servers).IsEmpty ? Visibility.Visible : Visibility.Collapsed;
+        if (ExtensionsEmpty != null && _extensionsView != null)
+            ExtensionsEmpty.Visibility = _extensionsView.IsEmpty ? Visibility.Visible : Visibility.Collapsed;
         var searching = !string.IsNullOrEmpty(SearchBox.Text);
         SoftwareEmpty.Text = searching ? "No software matches your search." : "Nothing here yet. Use “Add software” to add any program from your PC.";
         WebEmpty.Text = searching ? "No web apps match your search." : "No web apps yet. Use “Add web app” to bookmark a site.";

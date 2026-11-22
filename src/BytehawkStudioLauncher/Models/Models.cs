@@ -59,6 +59,12 @@ public sealed class CatalogEntry
     public PlatformBuild? Macos { get; set; }
     /// <summary>The Linux build, if there is one (used by the Linux launcher; the Windows launcher ignores it).</summary>
     public PlatformBuild? Linux { get; set; }
+    /// <summary>"extension" for a browser extension (shown on the Browser Extensions page; its zip is unpacked into a
+    /// folder that keeps the same path across updates, for Chrome/Edge "Load unpacked"). Empty = a normal app.</summary>
+    public string? Kind { get; set; }
+
+    [JsonIgnore]
+    public bool IsExtension => string.Equals(Kind?.Trim(), "extension", StringComparison.OrdinalIgnoreCase);
 
     [JsonIgnore]
     public string Key => (!string.IsNullOrWhiteSpace(Id) ? Id! : !string.IsNullOrWhiteSpace(Repo) ? Repo : Name).Trim().ToLowerInvariant();

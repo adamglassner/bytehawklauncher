@@ -6,6 +6,7 @@ A Windows 10/11 launcher and downloader for Bytehawk Studio software, with room 
 |---|---|
 | **Bytehawk Apps** | Software released by Bytehawk Studio. Downloads the latest release from GitHub Releases, installs it silently, keeps it up to date automatically, launches and uninstalls it. The first app is **Guardrail EHS** ([adamglassner/guardrailehs](https://github.com/adamglassner/guardrailehs)). |
 | **Bytehawk Servers** | Servers you run yourself for Bytehawk apps: **Guardrail Server** (team sync for Guardrail EHS, from one PC up to a cluster; since 1.7.0) and **WillowWallet Server** (sync for WillowWallet on your PC and phone). Install it on this PC as a Windows service, open its web panel, update and uninstall it (keeping or deleting its data), or copy the Docker command and get the Linux builds. |
+| **Browser Extensions** | Bytehawk Studio extensions for Google Chrome and Microsoft Edge, starting with **AlbumGrab** ([adamglassner/AlbumGrab](https://github.com/adamglassner/AlbumGrab)), which saves photos and albums from Facebook, Instagram, Reddit and other sites. **Download** unpacks it into a folder that keeps the same path, and **Add to browser** opens Chrome's or Edge's Extensions page with the folder copied, plus the steps for *Load unpacked*. Updates are installed into the same folder automatically, so the browser picks them up. |
 | **My Software** | Any program on your PC (.exe, .msi or .lnk shortcut) or any **Microsoft Store app** (**Add Store app** lists what's installed), even if it has nothing to do with Bytehawk Studio. Each entry has an optional description, version (filled in automatically, editable) and category. Works fully offline. |
 | **Web Apps** | Bookmarks that open in your default browser, with an optional description and category. Each card shows the site's own icon (downloaded once and cached in `cache\icons\`; use the refresh button on the card to fetch it again). Nothing is downloaded or installed. |
 | **Downloads** | Progress, speed, cancel and "show in folder" for this session's downloads. |
@@ -72,6 +73,19 @@ Anonymous GitHub API calls are limited to 60 per hour. To stay under that, the l
 * stops calling GitHub until the reset time once the limit is hit, and says so in the UI.
 
 If GitHub can't be reached, the page shows *"Couldn't reach GitHub — showing last known versions"* and uses the cached data. **My Software** and **Web Apps** never need the network.
+
+---
+
+## Browser extensions
+
+Chrome and Edge only install extensions from their own stores by themselves, so a Bytehawk extension is added to the browser once by hand. The launcher makes that quick:
+
+1. **Download** on the extension's card downloads its release `.zip` (for AlbumGrab, `AlbumGrab-<version>.zip`) and unpacks it into `%APPDATA%\BytehawkStudio\Launcher\apps\<id>\extension`.
+2. **Add to browser** opens a dialog with that folder and **Open Chrome** / **Open Edge** buttons. They open `chrome://extensions` or `edge://extensions` and copy the folder path, so you only have to turn on **Developer mode**, click **Load unpacked** and paste the folder.
+3. **Updates** (automatic or with **Update**) unpack the new version into the **same folder**. The browser loads it the next time it starts, or right away with the reload arrow on its Extensions page.
+4. **Uninstall** deletes the folder. Also click **Remove** on the extension in the browser.
+
+In `catalog.json` an extension is a normal entry with `"kind": "extension"` and a `.zip` asset pattern; it appears on the Browser Extensions page instead of Bytehawk Apps. The macOS and Linux launchers list it as *Coming soon* for now.
 
 ---
 

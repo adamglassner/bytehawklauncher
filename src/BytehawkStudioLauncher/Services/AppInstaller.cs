@@ -134,6 +134,27 @@ public static class AppInstaller
         };
     }
 
+    // ------------------------------------------------------------------ browser extensions
+
+    /// <summary>Name of the folder a browser extension is unpacked into (apps\&lt;id&gt;\extension).</summary>
+    public const string ExtensionFolderName = "extension";
+
+    /// <summary>
+    /// Unpacks a browser extension's zip into apps\&lt;id&gt;\extension. The folder keeps the same path on every update,
+    /// so Chrome or Edge (which remember an unpacked extension by its folder) pick up the new version by themselves.
+    /// </summary>
+    public static InstalledApp InstallExtensionZip(string zipPath, string baseFolder, string version)
+    {
+        var record = InstallZip(zipPath, baseFolder, ExtensionFolderName, exeName: null);
+        record.Version = version;
+        record.LaunchPath = null;
+        return record;
+    }
+
+    /// <summary>True when the unpacked extension folder still has its manifest.json.</summary>
+    public static bool ExtensionPresent(InstalledApp record) =>
+        record.InstallFolder is { } dir && File.Exists(Path.Combine(dir, "manifest.json"));
+
     // ------------------------------------------------------------------ setup programs
 
     public static async Task<InstalledApp> InstallSetupAsync(string setupPath, string kind, string baseFolder, string version, string? exeName)
