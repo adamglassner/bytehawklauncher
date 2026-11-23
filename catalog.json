@@ -112,7 +112,7 @@
     {
       "id": "shutterbox",
       "name": "Shutterbox",
-      "description": "Photo and video organizer for the pictures and videos already on your PC: a timeline by day, month or year, a separate Videos section, albums, favorites, tags, search, a viewer with slideshows, import from cameras and phones, and an encrypted Locked album you open with a PIN, password or Windows Hello. Your files stay where they are.",
+      "description": "Photo and video organizer for the pictures and videos already on your PC: a timeline by day, month or year, a separate Videos section, albums, favorites, tags, search, a viewer with slideshows, import from cameras and phones, and an encrypted Locked album you open with a PIN, password or Windows Hello. Your files stay where they are. Also on Android (APK on GitHub), where it opens the same Locked album.",
       "repo": "adamglassner/Shutterbox",
       "assetPattern": "Shutterbox-*-win-x64.zip;Shutterbox-*-Setup.exe",
       "exe": "Shutterbox.exe",
