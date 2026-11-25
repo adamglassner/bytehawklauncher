@@ -217,10 +217,11 @@
     {
       "id": "notehawk",
       "name": "NoteHawk",
-      "description": "Digital notebook for typed and handwritten notes, organized into notebooks, sections and pages. Part of the Bytehawk office suite.",
+      "description": "Notes app that works like Evernote and OneNote together: notebooks with section tabs and pages, a note list, a Home dashboard with recent notes, scratch pad and tasks, tags, templates and search, in Bytehawk's Hawkline look. Part of the Bytehawk office suite.",
       "repo": "",
       "assetPattern": "*.exe",
-      "comingSoon": true
+      "comingSoon": true,
+      "icon": "https://raw.githubusercontent.com/adamglassner/bytehawklauncher/main/assets/apps/notehawk-256.png"
     },
     {
       "id": "crafthawk",

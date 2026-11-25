@@ -195,7 +195,8 @@ public partial class MainWindow : Window
             ComingSoon("slidehawk", "SlideHawk", "Presentation app for slide decks with themes, transitions, animations and presenter view, with .pptx support. Part of the Bytehawk office suite."),
             ComingSoon("datahawk", "DataHawk", "Desktop database app for building tables, forms, queries and reports. Part of the Bytehawk office suite."),
             ComingSoon("inboxhawk", "InboxHawk", "Email, calendar and contacts in one app. Part of the Bytehawk office suite."),
-            ComingSoon("notehawk", "NoteHawk", "Digital notebook for typed and handwritten notes, organized into notebooks, sections and pages. Part of the Bytehawk office suite."),
+            ComingSoon("notehawk", "NoteHawk", "Notes app that works like Evernote and OneNote together: notebooks with section tabs and pages, a note list, a Home dashboard with recent notes, scratch pad and tasks, tags, templates and search, in Bytehawk's Hawkline look. Part of the Bytehawk office suite.",
+                "https://raw.githubusercontent.com/adamglassner/bytehawklauncher/main/assets/apps/notehawk-256.png"),
             ComingSoon("crafthawk", "CraftHawk", "Visual website builder for designing and publishing web pages without writing code. Part of the Bytehawk office suite."),
             ComingSoon("printhawk", "PrintHawk", "Desktop publishing for flyers, newsletters, cards and brochures. Part of the Bytehawk office suite."),
             ComingSoon("planhawk", "PlanHawk", "Project planning with tasks, timelines, Gantt charts and resources. Part of the Bytehawk office suite."),
@@ -442,7 +443,7 @@ public partial class MainWindow : Window
     private static bool IsOldSample(CatalogEntry e) =>
         e.Sample || e.Key is "sample-installer-exe" or "sample-portable-zip";
 
-    private static CatalogEntry ComingSoon(string id, string name, string description) => new()
+    private static CatalogEntry ComingSoon(string id, string name, string description, string? icon = null) => new()
     {
         Id = id,
         Name = name,
@@ -450,6 +451,7 @@ public partial class MainWindow : Window
         Repo = "",
         AssetPattern = "*.exe",
         ComingSoon = true,
+        Icon = icon,
     };
 
     /// <summary>Like the Ironite Launcher: look for new releases every 30 minutes while the launcher is open.</summary>
