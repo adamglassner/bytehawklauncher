@@ -189,14 +189,13 @@ public partial class MainWindow : Window
             Fleetwatch(),
             Waylo(),
             AlbumGrab(),
+            NoteHawk(),
             // Coming soon: the Bytehawk office & creative suite
             ComingSoon("writehawk", "WriteHawk", "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite."),
             ComingSoon("gridhawk", "GridHawk", "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite."),
             ComingSoon("slidehawk", "SlideHawk", "Presentation app for slide decks with themes, transitions, animations and presenter view, with .pptx support. Part of the Bytehawk office suite."),
             ComingSoon("datahawk", "DataHawk", "Desktop database app for building tables, forms, queries and reports. Part of the Bytehawk office suite."),
             ComingSoon("inboxhawk", "InboxHawk", "Email, calendar and contacts in one app. Part of the Bytehawk office suite."),
-            ComingSoon("notehawk", "NoteHawk", "Notes app that works like Evernote and OneNote together: notebooks with section tabs and pages, a note list, a Home dashboard with recent notes, scratch pad and tasks, tags, templates and search, in Bytehawk's Hawkline look. Part of the Bytehawk office suite.",
-                "https://raw.githubusercontent.com/adamglassner/bytehawklauncher/main/assets/apps/notehawk-256.png"),
             ComingSoon("crafthawk", "CraftHawk", "Visual website builder for designing and publishing web pages without writing code. Part of the Bytehawk office suite."),
             ComingSoon("printhawk", "PrintHawk", "Desktop publishing for flyers, newsletters, cards and brochures. Part of the Bytehawk office suite."),
             ComingSoon("planhawk", "PlanHawk", "Project planning with tasks, timelines, Gantt charts and resources. Part of the Bytehawk office suite."),
@@ -425,6 +424,18 @@ public partial class MainWindow : Window
         AssetPattern = "Waylo-*-win-x64.zip;Waylo-*-Setup.exe",
         Exe = "Waylo.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/waylo-256.png",
+    };
+
+    /// <summary>NoteHawk (1.8.1): notes app in the Hawk office suite (early preview shell; was "Coming soon" before).</summary>
+    private static CatalogEntry NoteHawk() => new()
+    {
+        Id = "notehawk",
+        Name = "NoteHawk",
+        Description = "Notes app that works like Evernote and OneNote together: notebooks with section tabs and pages, a note list and a Home dashboard. Early preview: browse three sample notebooks; editing, saving, search and sync are coming soon.",
+        Repo = "adamglassner/notehawk",
+        AssetPattern = "NoteHawk-*-win-x64.zip;NoteHawk-*-Setup.exe",
+        Exe = "NoteHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/notehawk/main/assets/notehawk-256.png",
     };
 
     /// <summary>AlbumGrab (1.8.0) — browser extension for Chrome and Edge, on the Browser Extensions page.</summary>
