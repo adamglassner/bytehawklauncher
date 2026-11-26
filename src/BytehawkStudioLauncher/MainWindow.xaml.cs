@@ -192,11 +192,11 @@ public partial class MainWindow : Window
             NoteHawk(),
             PlanHawk(),
             PaperHawk(),
+            DataHawk(),
             // Coming soon: the Bytehawk office & creative suite
             ComingSoon("writehawk", "WriteHawk", "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite."),
             ComingSoon("gridhawk", "GridHawk", "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite."),
             ComingSoon("slidehawk", "SlideHawk", "Presentation app for slide decks with themes, transitions, animations and presenter view, with .pptx support. Part of the Bytehawk office suite."),
-            ComingSoon("datahawk", "DataHawk", "Desktop database app for building tables, forms, queries and reports. Part of the Bytehawk office suite."),
             ComingSoon("inboxhawk", "InboxHawk", "Email, calendar and contacts in one app. Part of the Bytehawk office suite."),
             ComingSoon("crafthawk", "CraftHawk", "Visual website builder for designing and publishing web pages without writing code. Part of the Bytehawk office suite."),
             ComingSoon("printhawk", "PrintHawk", "Desktop publishing for flyers, newsletters, cards and brochures. Part of the Bytehawk office suite."),
@@ -460,6 +460,18 @@ public partial class MainWindow : Window
         AssetPattern = "PaperHawk-*-win-x64.zip;PaperHawk-*-Setup.exe",
         Exe = "PaperHawk.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/PaperHawk/main/assets/paperhawk-256.png",
+    };
+
+    /// <summary>DataHawk (1.8.4): Microsoft Access replacement in the Hawk office suite (early preview shell; was "Coming soon" before).</summary>
+    private static CatalogEntry DataHawk() => new()
+    {
+        Id = "datahawk",
+        Name = "DataHawk",
+        Description = "Database app that does the job of Microsoft Access: tables in Datasheet and Design view with the Navigation Pane, sorting, searching and a relationships diagram. Early preview: browse four sample databases; creating databases, editing records, queries, forms and reports are coming soon.",
+        Repo = "adamglassner/DataHawk",
+        AssetPattern = "DataHawk-*-win-x64.zip;DataHawk-*-Setup.exe",
+        Exe = "DataHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/DataHawk/main/assets/datahawk-256.png",
     };
 
     /// <summary>AlbumGrab (1.8.0) — browser extension for Chrome and Edge, on the Browser Extensions page.</summary>

@@ -201,10 +201,11 @@
     {
       "id": "datahawk",
       "name": "DataHawk",
-      "description": "Desktop database app for building tables, forms, queries and reports. Part of the Bytehawk office suite.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "Database app that does the job of Microsoft Access: tables in Datasheet and Design view with the Navigation Pane, sorting, searching and a relationships diagram. Early preview: browse four sample databases; creating databases, editing records, queries, forms and reports are coming soon.",
+      "repo": "adamglassner/DataHawk",
+      "assetPattern": "DataHawk-*-win-x64.zip;DataHawk-*-Setup.exe",
+      "exe": "DataHawk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/DataHawk/main/assets/datahawk-256.png"
     },
     {
       "id": "inboxhawk",
