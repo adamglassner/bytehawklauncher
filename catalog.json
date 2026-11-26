@@ -321,12 +321,12 @@
     },
     {
       "id": "waylo",
-      "name": "Waylo",
+      "name": "RingHawk",
       "description": "Video calls, voice calls and chat with your family and friends. Early preview: the Chats page shows sample conversations, and calling, chatting, contacts, meetings and voicemail are coming soon.",
       "repo": "adamglassner/waylo",
-      "assetPattern": "Waylo-*-win-x64.zip;Waylo-*-Setup.exe",
-      "exe": "Waylo.exe",
-      "icon": "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/waylo-256.png"
+      "assetPattern": "RingHawk-*-win-x64.zip;RingHawk-*-Setup.exe",
+      "exe": "RingHawk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/ringhawk-256.png"
     },
     {
       "id": "albumgrab",

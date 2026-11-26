@@ -52,7 +52,7 @@ public static class SelfTest
             Check("Draftly shows as Coming soon (no build for this OS)", vms.Any(v => v.Key == "draftly" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             Check("Larksong is available", vms.Any(v => v.Key == "larksong" && !v.IsComingSoon));
             Check("Unreleased apps (WriteHawk) show as Coming soon", vms.Any(v => v.Key == "writehawk" && v.IsComingSoon && v.ComingSoonText == "Coming soon"));
-            Check("Waylo (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "waylo" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
+            Check("RingHawk (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "waylo" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             Check("NoteHawk (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "notehawk" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             if (Platform.IsMac) Check("ShoreDrop is available on macOS", vms.Any(v => v.Key == "shoredrop" && !v.IsComingSoon));
             if (Platform.IsLinux) Check("ShoreDrop is Coming soon on Linux", vms.Any(v => v.Key == "shoredrop" && v.IsComingSoon));
