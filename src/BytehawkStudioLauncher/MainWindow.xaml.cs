@@ -190,6 +190,7 @@ public partial class MainWindow : Window
             RingHawk(),
             AlbumGrab(),
             NoteHawk(),
+            PlanHawk(),
             // Coming soon: the Bytehawk office & creative suite
             ComingSoon("writehawk", "WriteHawk", "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite."),
             ComingSoon("gridhawk", "GridHawk", "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite."),
@@ -198,7 +199,6 @@ public partial class MainWindow : Window
             ComingSoon("inboxhawk", "InboxHawk", "Email, calendar and contacts in one app. Part of the Bytehawk office suite."),
             ComingSoon("crafthawk", "CraftHawk", "Visual website builder for designing and publishing web pages without writing code. Part of the Bytehawk office suite."),
             ComingSoon("printhawk", "PrintHawk", "Desktop publishing for flyers, newsletters, cards and brochures. Part of the Bytehawk office suite."),
-            ComingSoon("planhawk", "PlanHawk", "Project planning with tasks, timelines, Gantt charts and resources. Part of the Bytehawk office suite."),
             ComingSoon("pixelhawk", "PixelHawk", "Photo editor with layers, masks, adjustments and retouching tools. Part of the Bytehawk creative suite."),
             ComingSoon("vectorhawk", "VectorHawk", "Vector illustration app for logos, icons and artwork. Part of the Bytehawk creative suite."),
             ComingSoon("pagehawk", "PageHawk", "Page layout app for books, magazines and print documents. Part of the Bytehawk creative suite."),
@@ -436,6 +436,18 @@ public partial class MainWindow : Window
         AssetPattern = "NoteHawk-*-win-x64.zip;NoteHawk-*-Setup.exe",
         Exe = "NoteHawk.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/notehawk/main/assets/notehawk-256.png",
+    };
+
+    /// <summary>PlanHawk (1.8.2): Microsoft Project replacement in the Hawk office suite (early preview shell; was "Coming soon" before).</summary>
+    private static CatalogEntry PlanHawk() => new()
+    {
+        Id = "planhawk",
+        Name = "PlanHawk",
+        Description = "Project planner that does the job of Microsoft Project: a task sheet with a Gantt chart, dependencies between tasks, the critical path and a network diagram. Early preview: browse three sample projects; adding and editing tasks, saving and opening .mpp files are coming soon.",
+        Repo = "adamglassner/PlanHawk",
+        AssetPattern = "PlanHawk-*-win-x64.zip;PlanHawk-*-Setup.exe",
+        Exe = "PlanHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/PlanHawk/main/assets/planhawk-256.png",
     };
 
     /// <summary>AlbumGrab (1.8.0) — browser extension for Chrome and Edge, on the Browser Extensions page.</summary>

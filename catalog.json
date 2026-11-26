@@ -242,10 +242,11 @@
     {
       "id": "planhawk",
       "name": "PlanHawk",
-      "description": "Project planning with tasks, timelines, Gantt charts and resources. Part of the Bytehawk office suite.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "Project planner that does the job of Microsoft Project: a task sheet with a Gantt chart, dependencies between tasks, the critical path and a network diagram. Early preview: browse three sample projects; adding and editing tasks, saving and opening .mpp files are coming soon.",
+      "repo": "adamglassner/PlanHawk",
+      "assetPattern": "PlanHawk-*-win-x64.zip;PlanHawk-*-Setup.exe",
+      "exe": "PlanHawk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/PlanHawk/main/assets/planhawk-256.png"
     },
     {
       "id": "pixelhawk",
