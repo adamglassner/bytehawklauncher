@@ -187,7 +187,7 @@ public partial class MainWindow : Window
             Larksong(),
             LarksongClassic(),
             Fleetwatch(),
-            Waylo(),
+            RingHawk(),
             AlbumGrab(),
             NoteHawk(),
             // Coming soon: the Bytehawk office & creative suite
@@ -414,16 +414,16 @@ public partial class MainWindow : Window
         Icon = "https://raw.githubusercontent.com/adamglassner/Fleetwatch/main/assets/fleetwatch-256.png",
     };
 
-    /// <summary>Waylo — video calls, voice calls and chat (early preview shell; was "Coming soon" before).</summary>
-    private static CatalogEntry Waylo() => new()
+    /// <summary>RingHawk (called Waylo until 0.1.1; the id stays "waylo" so existing installs update in place) — video calls, voice calls and chat.</summary>
+    private static CatalogEntry RingHawk() => new()
     {
         Id = "waylo",
-        Name = "Waylo",
+        Name = "RingHawk",
         Description = "Video calls, voice calls and chat with your family and friends. Early preview: the Chats page shows sample conversations, and calling, chatting, contacts, meetings and voicemail are coming soon.",
         Repo = "adamglassner/waylo",
-        AssetPattern = "Waylo-*-win-x64.zip;Waylo-*-Setup.exe",
-        Exe = "Waylo.exe",
-        Icon = "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/waylo-256.png",
+        AssetPattern = "RingHawk-*-win-x64.zip;RingHawk-*-Setup.exe",
+        Exe = "RingHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/waylo/main/assets/ringhawk-256.png",
     };
 
     /// <summary>NoteHawk (1.8.1): notes app in the Hawk office suite (early preview shell; was "Coming soon" before).</summary>
