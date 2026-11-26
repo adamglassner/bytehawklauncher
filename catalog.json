@@ -227,10 +227,11 @@
     {
       "id": "crafthawk",
       "name": "CraftHawk",
-      "description": "Visual website builder for designing and publishing web pages without writing code. Part of the Bytehawk office suite.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "Website builder with a visual (WYSIWYG) designer and a code editor side by side, like FrontPage, Dreamweaver and VS Code together, with Bootstrap, Tailwind, Material Design and WordPress built in and publishing through ShoreDrop. Early preview: browse three sample sites; editing, saving and uploading are coming soon.",
+      "repo": "adamglassner/CraftHawk",
+      "assetPattern": "CraftHawk-*-win-x64.zip;CraftHawk-*-Setup.exe",
+      "exe": "CraftHawk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/CraftHawk/main/assets/crafthawk-256.png"
     },
     {
       "id": "printhawk",

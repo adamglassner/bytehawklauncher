@@ -193,12 +193,12 @@ public partial class MainWindow : Window
             PlanHawk(),
             PaperHawk(),
             DataHawk(),
+            CraftHawk(),
             // Coming soon: the Bytehawk office & creative suite
             ComingSoon("writehawk", "WriteHawk", "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite."),
             ComingSoon("gridhawk", "GridHawk", "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite."),
             ComingSoon("slidehawk", "SlideHawk", "Presentation app for slide decks with themes, transitions, animations and presenter view, with .pptx support. Part of the Bytehawk office suite."),
             ComingSoon("inboxhawk", "InboxHawk", "Email, calendar and contacts in one app. Part of the Bytehawk office suite."),
-            ComingSoon("crafthawk", "CraftHawk", "Visual website builder for designing and publishing web pages without writing code. Part of the Bytehawk office suite."),
             ComingSoon("printhawk", "PrintHawk", "Desktop publishing for flyers, newsletters, cards and brochures. Part of the Bytehawk office suite."),
             ComingSoon("pixelhawk", "PixelHawk", "Photo editor with layers, masks, adjustments and retouching tools. Part of the Bytehawk creative suite."),
             ComingSoon("vectorhawk", "VectorHawk", "Vector illustration app for logos, icons and artwork. Part of the Bytehawk creative suite."),
@@ -472,6 +472,18 @@ public partial class MainWindow : Window
         AssetPattern = "DataHawk-*-win-x64.zip;DataHawk-*-Setup.exe",
         Exe = "DataHawk.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/DataHawk/main/assets/datahawk-256.png",
+    };
+
+    /// <summary>CraftHawk (1.8.5): FrontPage/Dreamweaver-style website builder in the Hawk office suite (early preview shell; was "Coming soon" before).</summary>
+    private static CatalogEntry CraftHawk() => new()
+    {
+        Id = "crafthawk",
+        Name = "CraftHawk",
+        Description = "Website builder with a visual (WYSIWYG) designer and a code editor side by side, like FrontPage, Dreamweaver and VS Code together, with Bootstrap, Tailwind, Material Design and WordPress built in and publishing through ShoreDrop. Early preview: browse three sample sites; editing, saving and uploading are coming soon.",
+        Repo = "adamglassner/CraftHawk",
+        AssetPattern = "CraftHawk-*-win-x64.zip;CraftHawk-*-Setup.exe",
+        Exe = "CraftHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/CraftHawk/main/assets/crafthawk-256.png",
     };
 
     /// <summary>AlbumGrab (1.8.0) — browser extension for Chrome and Edge, on the Browser Extensions page.</summary>
