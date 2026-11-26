@@ -275,10 +275,11 @@
     {
       "id": "paperhawk",
       "name": "PaperHawk",
-      "description": "PDF app for viewing, editing, signing, filling in forms and converting PDFs. Part of the Bytehawk creative suite.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "PDF viewer and editor that does the job of Adobe Acrobat: read PDFs with page thumbnails, bookmarks, zoom, one or two pages side by side and comments. Early preview: browse six sample documents; opening your own PDFs, editing, Fill & Sign and the other tools are coming soon.",
+      "repo": "adamglassner/PaperHawk",
+      "assetPattern": "PaperHawk-*-win-x64.zip;PaperHawk-*-Setup.exe",
+      "exe": "PaperHawk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/PaperHawk/main/assets/paperhawk-256.png"
     },
     {
       "id": "cliphawk",

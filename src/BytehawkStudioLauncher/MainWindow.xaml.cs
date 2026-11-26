@@ -191,6 +191,7 @@ public partial class MainWindow : Window
             AlbumGrab(),
             NoteHawk(),
             PlanHawk(),
+            PaperHawk(),
             // Coming soon: the Bytehawk office & creative suite
             ComingSoon("writehawk", "WriteHawk", "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite."),
             ComingSoon("gridhawk", "GridHawk", "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite."),
@@ -202,7 +203,6 @@ public partial class MainWindow : Window
             ComingSoon("pixelhawk", "PixelHawk", "Photo editor with layers, masks, adjustments and retouching tools. Part of the Bytehawk creative suite."),
             ComingSoon("vectorhawk", "VectorHawk", "Vector illustration app for logos, icons and artwork. Part of the Bytehawk creative suite."),
             ComingSoon("pagehawk", "PageHawk", "Page layout app for books, magazines and print documents. Part of the Bytehawk creative suite."),
-            ComingSoon("paperhawk", "PaperHawk", "PDF app for viewing, editing, signing, filling in forms and converting PDFs. Part of the Bytehawk creative suite."),
             ComingSoon("cliphawk", "ClipHawk", "Video editor with a multi-track timeline, titles, transitions and color tools. Part of the Bytehawk creative suite."),
             ComingSoon("flowhawk", "FlowHawk", "Motion graphics and visual effects for video. Part of the Bytehawk creative suite."),
             ComingSoon("wavehawk", "WaveHawk", "Audio editor for recording, cleaning up and mixing audio. Part of the Bytehawk creative suite."),
@@ -448,6 +448,18 @@ public partial class MainWindow : Window
         AssetPattern = "PlanHawk-*-win-x64.zip;PlanHawk-*-Setup.exe",
         Exe = "PlanHawk.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/PlanHawk/main/assets/planhawk-256.png",
+    };
+
+    /// <summary>PaperHawk (1.8.3): Adobe Acrobat replacement in the Hawk suite (early preview shell; was "Coming soon" before).</summary>
+    private static CatalogEntry PaperHawk() => new()
+    {
+        Id = "paperhawk",
+        Name = "PaperHawk",
+        Description = "PDF viewer and editor that does the job of Adobe Acrobat: read PDFs with page thumbnails, bookmarks, zoom, one or two pages side by side and comments. Early preview: browse six sample documents; opening your own PDFs, editing, Fill & Sign and the other tools are coming soon.",
+        Repo = "adamglassner/PaperHawk",
+        AssetPattern = "PaperHawk-*-win-x64.zip;PaperHawk-*-Setup.exe",
+        Exe = "PaperHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/PaperHawk/main/assets/paperhawk-256.png",
     };
 
     /// <summary>AlbumGrab (1.8.0) — browser extension for Chrome and Edge, on the Browser Extensions page.</summary>
