@@ -251,15 +251,16 @@ public partial class MainWindow : Window
         Icon = "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/porthawk-256.png",
     };
 
-    /// <summary>Draftly — the Bytehawk Studio word processor (was listed as "Padcraft, coming soon" before 1.1.1).</summary>
+    /// <summary>DraftHawk — the Bytehawk Studio word processor (called Draftly until 1.4; listed as "Padcraft, coming soon" before 1.1.1).
+    /// The id stays "draftly" so existing installs carry on.</summary>
     private static CatalogEntry Draftly() => new()
     {
         Id = "draftly",
-        Name = "Draftly",
+        Name = "DraftHawk",
         Description = "Modern word processor for writing and formatting documents: rich text, pictures, tables and Light or Dark mode. Opens RTF, TXT and Word files.",
         Repo = "adamglassner/draftly",
-        AssetPattern = "Draftly-*-win-x64.zip;Draftly-*-Setup.exe",
-        Exe = "Draftly.exe",
+        AssetPattern = "DraftHawk-*-win-x64.zip;DraftHawk-*-Setup.exe",
+        Exe = "DraftHawk.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/draftly/main/assets/draftly-256.png",
     };
 
@@ -2148,7 +2149,7 @@ public partial class MainWindow : Window
     }
 
     /// <summary>
-    /// Apps like Draftly can update themselves. If an installed app's program is now a newer version
+    /// Apps like DraftHawk can update themselves. If an installed app's program is now a newer version
     /// than the launcher recorded, record that, so the launcher doesn't offer the same update again.
     /// </summary>
     private bool NoteSelfUpdates()

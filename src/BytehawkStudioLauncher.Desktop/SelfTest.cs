@@ -49,7 +49,7 @@ public static class SelfTest
             Check("Built-in catalog lists every app", vms.Count == catalog.Count && vms.Count > 5, $"{vms.Count} apps");
             Info($"Available on {Platform.Name}: {string.Join(", ", available)}");
             Info($"Coming soon to {Platform.Name}: {string.Join(", ", soon)}");
-            Check("Draftly shows as Coming soon (no build for this OS)", vms.Any(v => v.Key == "draftly" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
+            Check("DraftHawk shows as Coming soon (no build for this OS)", vms.Any(v => v.Key == "draftly" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             Check("Larksong is available", vms.Any(v => v.Key == "larksong" && !v.IsComingSoon));
             Check("Unreleased apps (WriteHawk) show as Coming soon", vms.Any(v => v.Key == "writehawk" && v.IsComingSoon && v.ComingSoonText == "Coming soon"));
             Check("RingHawk (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "waylo" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));

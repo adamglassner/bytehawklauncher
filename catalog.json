@@ -28,11 +28,11 @@
     },
     {
       "id": "draftly",
-      "name": "Draftly",
+      "name": "DraftHawk",
       "description": "Modern word processor with tabs, headings, links, line numbers, pictures, tables and Light or Dark mode. Opens RTF, TXT, Markdown and Word files.",
       "repo": "adamglassner/draftly",
-      "assetPattern": "Draftly-*-win-x64.zip;Draftly-*-Setup.exe",
-      "exe": "Draftly.exe",
+      "assetPattern": "DraftHawk-*-win-x64.zip;DraftHawk-*-Setup.exe",
+      "exe": "DraftHawk.exe",
       "icon": "https://raw.githubusercontent.com/adamglassner/draftly/main/assets/draftly-256.png"
     },
     {
