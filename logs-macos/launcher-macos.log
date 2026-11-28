@@ -1,0 +1,7 @@
+2026-11-28 02:46:40 [INFO] Starting Bytehawk Studio Launcher 1.0.1 for macOS (Apple Silicon)
+2026-11-28 02:46:42 [ERROR] Icon /Users/runner/Library/Application Support/BytehawkStudio/Launcher/cache/icons/app-wavehawk.img: System.ArgumentException: Unable to load bitmap from provided data
+   at Avalonia.Skia.ImmutableBitmap..ctor(Stream stream)
+   at Avalonia.Skia.PlatformRenderInterface.LoadBitmap(Stream stream)
+   at Avalonia.Media.Imaging.Bitmap..ctor(Stream stream)
+   at Bytehawk.Launcher.Desktop.IconCache.Load(String path) in /Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/IconCache.cs:line 32
+2026-11-28 02:47:02 [INFO] Starting Bytehawk Studio Launcher 1.0.1 for macOS (Apple Silicon)

@@ -1,0 +1,37 @@
+Bytehawk Studio Launcher 1.0.1 self-test on Linux x64, 2026-11-28 02:45:55Z
+PASS  Running on macOS or Linux  — Linux
+PASS  {arch} pattern
+PASS  Online catalog parses  — 34 apps
+PASS  Built-in catalog lists every app  — 34 apps
+INFO  Available on Linux: Larksong
+INFO  Coming soon to Linux: Guardrail EHS, DraftHawk, PortHawk, DiscHawk, SumHawk, Taskflare, Boardwalk, WillowWallet, Shutterbox, Sparecopy, Castaway, Larksong Classic, Fleetwatch, WriteHawk, GridHawk, SlideHawk, DataHawk, InboxHawk, NoteHawk, CraftHawk, PrintHawk, PlanHawk, PixelHawk, VectorHawk, PageHawk, PaperHawk, ClipHawk, FlowHawk, WaveHawk, LensHawk, FrameHawk, RingHawk, AlbumGrab
+PASS  DraftHawk shows as Coming soon (no build for this OS)
+PASS  Larksong is available
+PASS  Unreleased apps (WriteHawk) show as Coming soon
+PASS  RingHawk (Windows only so far) shows as Coming soon to this OS
+PASS  NoteHawk (Windows only so far) shows as Coming soon to this OS
+PASS  PlanHawk (Windows only so far) shows as Coming soon to this OS
+PASS  PaperHawk (Windows only so far) shows as Coming soon to this OS
+PASS  DataHawk (Windows only so far) shows as Coming soon to this OS
+PASS  CraftHawk (Windows only so far) shows as Coming soon to this OS
+PASS  WaveHawk (Windows only so far) shows as Coming soon to this OS
+PASS  PortHawk is Coming soon on Linux
+PASS  Servers available here (native or Docker)  — Guardrail Server: native docker, WillowWallet Server: native docker
+PASS  Docker command  — docker run -d --name guardrail-server --restart unless-stopped -p 5080:5080 -v guardrail-server-data:/data ghcr.io/adamglassner/guardrail-server:latest
+PASS  Larksong: Linux download for x64  — linux-v2.5.0 → larksong_2.5.0_amd64.deb
+PASS  Larksong: .deb package name matches the catalog  — larksong
+PASS  Larksong: .deb contains /opt/larksong/bin/Larksong  — /opt/larksong/bin/Larksong
+FAIL  Guardrail Server: Linux package in latest release
+PASS  WillowWallet Server: Linux package in latest release  — WillowWalletServer-1.7.1-linux-x64.tar.gz
+PASS  WillowWallet Server: package has install.sh and uninstall.sh
+PASS  WillowWallet Server: install.sh installs to /opt/willowwallet-server
+PASS  Find program in extracted folder
+PASS  chmod +x
+PASS  .desktop file
+PASS  .desktop file read back
+PASS  Web apps export/import
+PASS  URL rules
+PASS  Launch arguments split
+PASS  Launcher update repo reachable  — desktop-v1.0.1
+PASS  Launcher release has a download for this system  — BytehawkStudioLauncher-*-linux-x64.tar.gz
+1 FAILED

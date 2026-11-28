@@ -1,0 +1,19 @@
+  Determining projects to restore...
+  Restored /Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj (in 5.98 sec).
+/Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/Platform.cs(175,13): warning CA1416: This call site is reachable on all platforms. 'File.SetUnixFileMode(string, UnixFileMode)' is unsupported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj]
+/Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/Platform.cs(183,23): warning CA1416: This call site is reachable on all platforms. 'File.GetUnixFileMode(string)' is unsupported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj]
+/Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/Platform.cs(174,24): warning CA1416: This call site is reachable on all platforms. 'File.GetUnixFileMode(string)' is unsupported on: 'windows'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1416) [/Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/BytehawkStudioLauncher.Desktop.csproj]
+  BytehawkStudioLauncher.Desktop -> /Users/runner/work/bytehawklauncher/bytehawklauncher/src/BytehawkStudioLauncher.Desktop/bin/Release/net8.0/osx-arm64/BytehawkStudioLauncher.dll
+  BytehawkStudioLauncher.Desktop -> /Users/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/publish-osx-arm64/
+/Users/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/osx-arm64/Bytehawk Studio Launcher.app: replacing existing signature
+signature ok
+created: /Users/runner/work/bytehawklauncher/bytehawklauncher/dist-desktop/BytehawkStudioLauncher-1.0.1-macOS-arm64.dmg
+total 181744
+drwxr-xr-x    8 runner  staff       256 Nov 28 02:45 .
+drwxr-xr-x   15 runner  staff       480 Nov 28 02:45 ..
+drwxr-xr-x   12 runner  staff       384 Nov 28 02:45 AppIcon-osx-arm64.iconset
+-rw-r--r--@   1 runner  staff  49224334 Nov 28 02:46 BytehawkStudioLauncher-1.0.1-macOS-arm64.dmg
+-rw-r--r--    1 runner  staff  43175136 Nov 28 02:45 BytehawkStudioLauncher-1.0.1-macOS-arm64.zip
+drwxr-xr-x    4 runner  staff       128 Nov 28 02:45 dmg-osx-arm64
+drwxr-xr-x    3 runner  staff        96 Nov 28 02:45 osx-arm64
+drwxr-xr-x  216 runner  staff      6912 Nov 28 02:45 publish-osx-arm64

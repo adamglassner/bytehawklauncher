@@ -1,0 +1,38 @@
+Bytehawk Studio Launcher 1.0.1 self-test on macOS Apple Silicon, 2026-11-28 02:46:31Z
+PASS  Running on macOS or Linux  — macOS
+PASS  {arch} pattern
+PASS  Online catalog parses  — 34 apps
+PASS  Built-in catalog lists every app  — 34 apps
+INFO  Available on macOS: PortHawk, Larksong
+INFO  Coming soon to macOS: Guardrail EHS, DraftHawk, DiscHawk, SumHawk, Taskflare, Boardwalk, WillowWallet, Shutterbox, Sparecopy, Castaway, Larksong Classic, Fleetwatch, WriteHawk, GridHawk, SlideHawk, DataHawk, InboxHawk, NoteHawk, CraftHawk, PrintHawk, PlanHawk, PixelHawk, VectorHawk, PageHawk, PaperHawk, ClipHawk, FlowHawk, WaveHawk, LensHawk, FrameHawk, RingHawk, AlbumGrab
+PASS  DraftHawk shows as Coming soon (no build for this OS)
+PASS  Larksong is available
+PASS  Unreleased apps (WriteHawk) show as Coming soon
+PASS  RingHawk (Windows only so far) shows as Coming soon to this OS
+PASS  NoteHawk (Windows only so far) shows as Coming soon to this OS
+PASS  PlanHawk (Windows only so far) shows as Coming soon to this OS
+PASS  PaperHawk (Windows only so far) shows as Coming soon to this OS
+PASS  DataHawk (Windows only so far) shows as Coming soon to this OS
+PASS  CraftHawk (Windows only so far) shows as Coming soon to this OS
+PASS  WaveHawk (Windows only so far) shows as Coming soon to this OS
+PASS  PortHawk is available on macOS
+PASS  Servers available here (native or Docker)  — Guardrail Server:  docker, WillowWallet Server:  docker
+PASS  Docker command  — docker run -d --name guardrail-server --restart unless-stopped -p 5080:5080 -v guardrail-server-data:/data ghcr.io/adamglassner/guardrail-server:latest
+PASS  PortHawk: macOS download for Apple Silicon  — v1.1.0 → PortHawk-1.1.0-macOS-arm64.zip
+PASS  PortHawk: download  — 2602834 bytes
+PASS  PortHawk: installed to Applications  — /Users/runner/Applications/PortHawk.app
+PASS  PortHawk: app version readable  — 1.1.0
+PASS  PortHawk: code signature intact after install
+PASS  PortHawk: uninstalled
+PASS  Larksong: macOS download for Apple Silicon  — macos-v2.4.0 → Larksong-2.4.0-arm64.dmg
+PASS  Larksong: download  — 100719111 bytes
+PASS  Larksong: installed to Applications  — /Users/runner/Applications/Larksong.app
+PASS  Larksong: app version readable  — 2.4.0
+PASS  Larksong: code signature intact after install
+PASS  Larksong: uninstalled
+PASS  Web apps export/import
+PASS  URL rules
+PASS  Launch arguments split
+PASS  Launcher update repo reachable  — desktop-v1.0.1
+PASS  Launcher release has a download for this system  — BytehawkStudioLauncher-*-macOS-arm64.zip
+ALL PASSED

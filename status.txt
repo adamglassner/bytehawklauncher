@@ -1,0 +1,6 @@
+commit=6998c35348839b3feb82c205bff370bcc5d54dc4
+version=1.0.1
+release=false
+macos=success
+linux=failure
+run=https://github.com/adamglassner/bytehawklauncher/actions/runs/46099595157
