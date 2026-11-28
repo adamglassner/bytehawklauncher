@@ -59,12 +59,12 @@
     },
     {
       "id": "sumthing",
-      "name": "Sumthing",
+      "name": "SumHawk",
       "description": "Calculator with a TI-84 / TI-Nspire style graphing calculator, a scientific home screen, statistics and regressions, a paper tape, sums you type in words, a unit and currency converter and everyday tools. Light or Dark, with Modern or Classic (Windows 7) keys.",
       "repo": "adamglassner/sumthing",
-      "assetPattern": "Sumthing-*-win-x64.zip;Sumthing-*-Setup.exe",
-      "exe": "Sumthing.exe",
-      "icon": "https://raw.githubusercontent.com/adamglassner/sumthing/main/assets/sumthing-256.png"
+      "assetPattern": "SumHawk-*-win-x64.zip;SumHawk-*-Setup.exe",
+      "exe": "SumHawk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/sumthing/main/assets/sumhawk-256.png"
     },
     {
       "id": "taskflare",

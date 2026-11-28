@@ -136,10 +136,10 @@ public static class SelfTest
             {
                 var exeDir = Path.Combine(temp, "fake-app");
                 Directory.CreateDirectory(Path.Combine(exeDir, "lib"));
-                var exe = Path.Combine(exeDir, "Sumthing");
+                var exe = Path.Combine(exeDir, "SumHawk");
                 File.WriteAllText(exe, "#!/bin/sh\necho hi\n");
                 File.WriteAllText(Path.Combine(exeDir, "lib", "libx.so"), "");
-                Check("Find program in extracted folder", AppManager.FindLinuxProgram(exeDir, null, "Sumthing") == exe);
+                Check("Find program in extracted folder", AppManager.FindLinuxProgram(exeDir, null, "SumHawk") == exe);
                 Platform.MakeExecutable(exe);
                 Check("chmod +x", Platform.IsExecutable(exe));
                 var desktop = AppManager.DesktopFile("Test App", "A test", exe, null, "--flag");

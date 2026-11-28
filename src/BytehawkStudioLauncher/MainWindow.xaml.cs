@@ -177,7 +177,7 @@ public partial class MainWindow : Window
             Draftly(),
             PortHawk(),
             DiscHawk(),
-            Sumthing(),
+            SumHawk(),
             Taskflare(),
             Boardwalk(),
             CoinPilot(),
@@ -276,16 +276,16 @@ public partial class MainWindow : Window
         Icon = "https://raw.githubusercontent.com/adamglassner/discshelf/main/assets/discshelf-256.png",
     };
 
-    /// <summary>Sumthing — calculator (was "Coming soon" before 1.3.2).</summary>
-    private static CatalogEntry Sumthing() => new()
+    /// <summary>SumHawk (called Sumthing until 2.1.0; the id stays "sumthing" so existing installs update in place) — calculator.</summary>
+    private static CatalogEntry SumHawk() => new()
     {
         Id = "sumthing",
-        Name = "Sumthing",
+        Name = "SumHawk",
         Description = "Calculator with a TI-84 / TI-Nspire style graphing calculator, a scientific home screen, statistics and regressions, a paper tape, sums you type in words, a unit and currency converter and everyday tools. Light or Dark, with Modern or Classic (Windows 7) keys.",
         Repo = "adamglassner/sumthing",
-        AssetPattern = "Sumthing-*-win-x64.zip;Sumthing-*-Setup.exe",
-        Exe = "Sumthing.exe",
-        Icon = "https://raw.githubusercontent.com/adamglassner/sumthing/main/assets/sumthing-256.png",
+        AssetPattern = "SumHawk-*-win-x64.zip;SumHawk-*-Setup.exe",
+        Exe = "SumHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/sumthing/main/assets/sumhawk-256.png",
     };
 
     /// <summary>Taskflare — to-do list with a Muse AI connector (added in 1.3.3).</summary>
