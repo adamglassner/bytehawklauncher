@@ -1,0 +1,6 @@
+commit=6998c35348839b3feb82c205bff370bcc5d54dc4
+status=failure
+version=1.8.8
+release=true
+run=https://github.com/adamglassner/bytehawklauncher/actions/runs/46099595205
+time=2026-11-28T02:48:31.6270016+00:00
