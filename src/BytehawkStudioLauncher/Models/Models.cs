@@ -45,7 +45,7 @@ public sealed class CatalogEntry
     public string Repo { get; set; } = "";
     /// <summary>Which release asset to download, e.g. "*.exe", "*.msi", "*-win-x64.zip". Separate several with ';'. Prefix with '!' to exclude.</summary>
     public string AssetPattern { get; set; } = "*.exe";
-    /// <summary>Optional: the program to launch after installing (e.g. "Guardrail.exe"). Found automatically when omitted.</summary>
+    /// <summary>Optional: the program to launch after installing (e.g. "GuardHawk.exe"). Found automatically when omitted.</summary>
     public string? Exe { get; set; }
     /// <summary>Optional: URL of a square PNG icon shown on the card until the app is installed.</summary>
     public string? Icon { get; set; }

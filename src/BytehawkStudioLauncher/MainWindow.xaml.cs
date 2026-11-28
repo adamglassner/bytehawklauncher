@@ -111,6 +111,7 @@ public partial class MainWindow : Window
 
         _installed = new(JsonStore.Load(AppPaths.Installed, () => new Dictionary<string, InstalledApp>()), StringComparer.OrdinalIgnoreCase);
         if (NoteSelfUpdates()) TrySave(AppPaths.Installed, _installed);
+        RemoveRenamedShortcuts();
         _releases = new(JsonStore.Load(AppPaths.ReleaseCache, () => new Dictionary<string, CachedRelease>()), StringComparer.OrdinalIgnoreCase);
         _library = JsonStore.Load(AppPaths.Library, () => new List<LibraryEntry>());
         _webApps = JsonStore.Load(AppPaths.WebApps, () => new List<WebAppEntry>());
@@ -157,6 +158,17 @@ public partial class MainWindow : Window
             a.Description = d.Description;
             changed = true;
         }
+        // 1.9.0: apps renamed into the Hawk family keep their id and repo but get a new name, program and
+        // release files (Guardrail EHS → GuardHawk, Draftly → DraftHawk, Discshelf → DiscHawk, ShoreDrop → PortHawk,
+        // Sumthing → SumHawk). Refresh saved copies of those entries so updates find the new files.
+        foreach (var key in new[] { "guardrail-ehs", "draftly", "discshelf", "shoredrop", "sumthing" })
+        {
+            if (_localCatalog.Apps.FirstOrDefault(a => a.Key == key) is not { } saved ||
+                defaults.FirstOrDefault(x => x.Key == key) is not { } d || saved.Name == d.Name) continue;
+            saved.Name = d.Name; saved.Description = d.Description; saved.AssetPattern = d.AssetPattern;
+            saved.Exe = d.Exe; saved.Icon = d.Icon; saved.Server = d.Server; saved.Macos = d.Macos; saved.Linux = d.Linux;
+            changed = true;
+        }
         for (int i = 0; i < defaults.Count; i++)
         {
             var d = defaults[i];
@@ -173,7 +185,7 @@ public partial class MainWindow : Window
         Version = 1,
         Apps =
         {
-            GuardrailEhs(),
+            GuardHawk(),
             Draftly(),
             PortHawk(),
             DiscHawk(),
@@ -211,27 +223,28 @@ public partial class MainWindow : Window
         },
     };
 
-    /// <summary>Guardrail EHS — the first released Bytehawk Studio app.</summary>
-    private static CatalogEntry GuardrailEhs() => new()
+    /// <summary>GuardHawk (formerly Guardrail EHS) — the first released Bytehawk Studio app. The id stays "guardrail-ehs" so installs carry over.</summary>
+    private static CatalogEntry GuardHawk() => new()
     {
         Id = "guardrail-ehs",
-        Name = "Guardrail EHS",
-        Description = "Free, open-source environmental, health & safety and fleet safety software: incidents, actions, inspections, training, fleet, Crash Review AI and safety references, with your records kept on your own PC. Optional Guardrail Server puts a whole team on the same data.",
+        Name = "GuardHawk",
+        Description = "Free, open-source environmental, health & safety and fleet safety software: incidents, actions, inspections, training, fleet, Crash Review AI and safety references, with your records kept on your own PC. Optional GuardHawk Server puts a whole team on the same data. (Formerly Guardrail EHS.)",
         Repo = "adamglassner/guardrailehs",
-        AssetPattern = "GuardrailEHS-*-Setup.exe;*-win-x64.zip",
-        Exe = "Guardrail.exe",
+        // Older releases were named GuardrailEHS-*; GuardHawk.exe is found first, Guardrail.exe in releases before 0.15.0.
+        AssetPattern = "GuardHawk-*-Setup.exe;GuardrailEHS-*-Setup.exe;*-win-x64.zip",
+        Exe = "GuardHawk.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png",
-        Server = GuardrailServer(),
+        Server = GuardHawkServer(),
     };
 
-    /// <summary>Guardrail Server (1.7.0): self-hosted team sync for Guardrail EHS, from one PC up to a cluster.</summary>
-    private static ServerDownload GuardrailServer() => new()
+    /// <summary>GuardHawk Server (formerly Guardrail Server): self-hosted team sync for GuardHawk, from one PC up to a cluster.</summary>
+    private static ServerDownload GuardHawkServer() => new()
     {
-        Name = "Guardrail Server",
-        Description = "Run your own server so your whole team shares Guardrail EHS records, with accounts, roles and a web panel. Starts as one Windows service with everything on this PC, and scales up to many servers with PostgreSQL and S3 storage (Docker and Kubernetes setups included).",
+        Name = "GuardHawk Server",
+        Description = "Run your own server so your whole team shares GuardHawk records, with accounts, roles and a web panel. Starts as one Windows service with everything on this PC, and scales up to many servers with PostgreSQL and S3 storage (Docker and Kubernetes setups included).",
         Repo = "adamglassner/guardrailehs",
         TagPrefix = "server-v",
-        WindowsAsset = "GuardrailServer-*-Setup.exe",
+        WindowsAsset = "GuardHawkServer-*-Setup.exe;GuardrailServer-*-Setup.exe",
         DockerImage = "ghcr.io/adamglassner/guardrail-server",
         Port = 5080,
         GuideUrl = "https://github.com/adamglassner/guardrailehs/blob/main/server/README.md",
@@ -1430,6 +1443,7 @@ public partial class MainWindow : Window
 
             _installed[vm.Entry.Key] = record;
             await EnsureStartMenuAsync(vm.Name, vm.Entry.Description, record);
+            RemoveRenamedShortcuts();
             TrySave(AppPaths.Installed, _installed);
             Log.Info($"Recorded {vm.Entry.Key} {record.Version} kind={record.Kind} launch={record.LaunchPath}");
             return true;
@@ -1976,6 +1990,22 @@ public partial class MainWindow : Window
             record.StartMenuChecked = true;
         }
         catch (Exception ex) { Log.Error($"Start menu entry for {name}", ex); }
+    }
+
+    /// <summary>Start menu shortcuts left from apps' old names (Guardrail EHS → GuardHawk, Draftly → DraftHawk…) once their program is gone.</summary>
+    private static void RemoveRenamedShortcuts()
+    {
+        foreach (var old in new[] { "Guardrail EHS", "Draftly", "Discshelf", "ShoreDrop", "Sumthing" })
+        {
+            try
+            {
+                var lnk = Path.Combine(ShortcutService.StartMenuDir, ShortcutService.SafeName(old) + ".lnk");
+                if (!File.Exists(lnk)) continue;
+                var target = ShortcutService.ResolveLnkTarget(lnk);
+                if (target == null || !File.Exists(target)) { File.Delete(lnk); Log.Info($"Removed old shortcut {lnk}"); }
+            }
+            catch (Exception ex) { Log.Error($"Old shortcut {old}", ex); }
+        }
     }
 
     private async Task AddMissingStartMenuEntriesAsync()
