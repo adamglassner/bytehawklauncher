@@ -176,7 +176,7 @@ public partial class MainWindow : Window
             GuardrailEhs(),
             Draftly(),
             PortHawk(),
-            Discshelf(),
+            DiscHawk(),
             Sumthing(),
             Taskflare(),
             Boardwalk(),
@@ -263,15 +263,15 @@ public partial class MainWindow : Window
         Icon = "https://raw.githubusercontent.com/adamglassner/draftly/main/assets/draftly-256.png",
     };
 
-    /// <summary>Discshelf — music player (portable zip from its GitHub releases; was "Coming soon" before).</summary>
-    private static CatalogEntry Discshelf() => new()
+    /// <summary>DiscHawk (called Discshelf before 0.7.0) — music player (portable zip from its GitHub releases). Id stays "discshelf" so existing installs keep updating.</summary>
+    private static CatalogEntry DiscHawk() => new()
     {
         Id = "discshelf",
-        Name = "Discshelf",
+        Name = "DiscHawk",
         Description = "Music player for the music on your computer: Genre, Artist and Album browsing, album art, and Light, Dark or Classic (Songbird) themes. Plays MP3, AAC, FLAC, Ogg, Opus and WAV.",
         Repo = "adamglassner/discshelf",
-        AssetPattern = "Discshelf-*-win-x64.zip;Discshelf-*-Setup.exe",
-        Exe = "Discshelf.exe",
+        AssetPattern = "DiscHawk-*-win-x64.zip;DiscHawk-*-Setup.exe",
+        Exe = "DiscHawk.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/discshelf/main/assets/discshelf-256.png",
     };
 
