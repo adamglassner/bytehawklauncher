@@ -84,9 +84,9 @@ public sealed class PlatformBuild
 {
     /// <summary>Set when this platform's builds have their own releases, e.g. "macos-v". Empty = the app's latest release.</summary>
     public string? TagPrefix { get; set; }
-    /// <summary>Release asset pattern; "{arch}" becomes "arm64" or "x64". E.g. "ShoreDrop-*-macOS-{arch}.zip", "*.AppImage", "app_*_amd64.deb".</summary>
+    /// <summary>Release asset pattern; "{arch}" becomes "arm64" or "x64". E.g. "PortHawk-*-macOS-{arch}.zip", "*.AppImage", "app_*_amd64.deb".</summary>
     public string AssetPattern { get; set; } = "";
-    /// <summary>macOS: the app bundle inside the .zip/.dmg, e.g. "ShoreDrop.app" (found automatically when omitted).</summary>
+    /// <summary>macOS: the app bundle inside the .zip/.dmg, e.g. "PortHawk.app" (found automatically when omitted).</summary>
     public string? App { get; set; }
     /// <summary>Linux: the program to run, relative to the extracted folder, or an absolute path for .deb/.rpm installs (e.g. "/opt/larksong/bin/Larksong").</summary>
     public string? Exe { get; set; }

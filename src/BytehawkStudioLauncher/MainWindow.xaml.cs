@@ -175,7 +175,7 @@ public partial class MainWindow : Window
         {
             GuardrailEhs(),
             Draftly(),
-            ShoreDrop(),
+            PortHawk(),
             Discshelf(),
             Sumthing(),
             Taskflare(),
@@ -239,16 +239,16 @@ public partial class MainWindow : Window
         WindowsDataFolder = @"%ProgramData%\Guardrail Server",
     };
 
-    /// <summary>ShoreDrop — FTP, FTPS and SFTP client (portable zip from its GitHub releases).</summary>
-    private static CatalogEntry ShoreDrop() => new()
+    /// <summary>PortHawk (called ShoreDrop until 1.1.0; the id and repo stay "shoredrop" so existing installs update in place) — FTP, FTPS and SFTP client.</summary>
+    private static CatalogEntry PortHawk() => new()
     {
         Id = "shoredrop",
-        Name = "ShoreDrop",
-        Description = "FTP, FTPS and SFTP client for moving files to and from your servers, with a dual-pane browser, transfer queue, site manager and light and dark themes.",
+        Name = "PortHawk",
+        Description = "FTP, FTPS and SFTP client for moving files to and from your servers, with a dual-pane browser, transfer queue, site manager and light and dark themes. (Formerly ShoreDrop.)",
         Repo = "adamglassner/shoredrop",
-        AssetPattern = "ShoreDrop-*-win-x64.zip",
-        Exe = "ShoreDrop.exe",
-        Icon = "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/shoredrop-256.png",
+        AssetPattern = "PortHawk-*-win-x64.zip",
+        Exe = "PortHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/porthawk-256.png",
     };
 
     /// <summary>Draftly — the Bytehawk Studio word processor (was listed as "Padcraft, coming soon" before 1.1.1).</summary>
@@ -479,7 +479,7 @@ public partial class MainWindow : Window
     {
         Id = "crafthawk",
         Name = "CraftHawk",
-        Description = "Website builder with a visual (WYSIWYG) designer and a code editor side by side, like FrontPage, Dreamweaver and VS Code together, with Bootstrap, Tailwind, Material Design and WordPress built in and publishing through ShoreDrop. Early preview: browse three sample sites; editing, saving and uploading are coming soon.",
+        Description = "Website builder with a visual (WYSIWYG) designer and a code editor side by side, like FrontPage, Dreamweaver and VS Code together, with Bootstrap, Tailwind, Material Design and WordPress built in and publishing through PortHawk. Early preview: browse three sample sites; editing, saving and uploading are coming soon.",
         Repo = "adamglassner/CraftHawk",
         AssetPattern = "CraftHawk-*-win-x64.zip;CraftHawk-*-Setup.exe",
         Exe = "CraftHawk.exe",

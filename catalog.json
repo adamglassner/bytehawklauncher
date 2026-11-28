@@ -37,15 +37,15 @@
     },
     {
       "id": "shoredrop",
-      "name": "ShoreDrop",
-      "description": "FTP, FTPS and SFTP client for moving files to and from your servers, with a dual-pane browser, transfer queue, site manager and light and dark themes.",
+      "name": "PortHawk",
+      "description": "FTP, FTPS and SFTP client for moving files to and from your servers, with a dual-pane browser, transfer queue, site manager and light and dark themes. (Formerly ShoreDrop.)",
       "repo": "adamglassner/shoredrop",
-      "assetPattern": "ShoreDrop-*-win-x64.zip",
-      "exe": "ShoreDrop.exe",
-      "icon": "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/shoredrop-256.png",
+      "assetPattern": "PortHawk-*-win-x64.zip",
+      "exe": "PortHawk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/shoredrop/main/assets/porthawk-256.png",
       "macos": {
-        "assetPattern": "ShoreDrop-*-macOS-{arch}.zip",
-        "app": "ShoreDrop.app"
+        "assetPattern": "PortHawk-*-macOS-{arch}.zip",
+        "app": "PortHawk.app"
       }
     },
     {
@@ -227,7 +227,7 @@
     {
       "id": "crafthawk",
       "name": "CraftHawk",
-      "description": "Website builder with a visual (WYSIWYG) designer and a code editor side by side, like FrontPage, Dreamweaver and VS Code together, with Bootstrap, Tailwind, Material Design and WordPress built in and publishing through ShoreDrop. Early preview: browse three sample sites; editing, saving and uploading are coming soon.",
+      "description": "Website builder with a visual (WYSIWYG) designer and a code editor side by side, like FrontPage, Dreamweaver and VS Code together, with Bootstrap, Tailwind, Material Design and WordPress built in and publishing through PortHawk. Early preview: browse three sample sites; editing, saving and uploading are coming soon.",
       "repo": "adamglassner/CraftHawk",
       "assetPattern": "CraftHawk-*-win-x64.zip;CraftHawk-*-Setup.exe",
       "exe": "CraftHawk.exe",
