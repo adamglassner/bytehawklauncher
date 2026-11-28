@@ -302,10 +302,11 @@
     {
       "id": "wavehawk",
       "name": "WaveHawk",
-      "description": "Audio editor for recording, cleaning up and mixing audio. Part of the Bytehawk creative suite.",
-      "repo": "",
-      "assetPattern": "*.exe",
-      "comingSoon": true
+      "description": "Audio recording and editing studio like Adobe Audition and Audacity: multitrack sessions with a mixer, a waveform and spectral editor, and add-ons like FL Studio (Beat Studio), Guitar Pro (Tab Studio) and GarageBand (Loop Studio). Early preview: browse sample sessions and audio files; playback, recording and editing are coming soon.",
+      "repo": "adamglassner/WaveHawk",
+      "assetPattern": "WaveHawk-*-win-x64.zip;WaveHawk-*-Setup.exe",
+      "exe": "WaveHawk.exe",
+      "icon": "https://raw.githubusercontent.com/adamglassner/WaveHawk/main/assets/wavehawk-256.png"
     },
     {
       "id": "lenshawk",

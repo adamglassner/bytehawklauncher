@@ -58,6 +58,7 @@ public static class SelfTest
             Check("PaperHawk (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "paperhawk" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             Check("DataHawk (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "datahawk" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             Check("CraftHawk (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "crafthawk" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
+            Check("WaveHawk (Windows only so far) shows as Coming soon to this OS", vms.Any(v => v.Key == "wavehawk" && v.IsComingSoon && v.ComingSoonText == $"Coming soon to {Platform.Name}"));
             if (Platform.IsMac) Check("PortHawk is available on macOS", vms.Any(v => v.Key == "shoredrop" && !v.IsComingSoon));
             if (Platform.IsLinux) Check("PortHawk is Coming soon on Linux", vms.Any(v => v.Key == "shoredrop" && v.IsComingSoon));
             var servers = catalog.Where(e => e.Server != null).Select(e => new ServerVM(e)).ToList();

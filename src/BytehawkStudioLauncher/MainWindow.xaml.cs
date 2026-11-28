@@ -194,6 +194,7 @@ public partial class MainWindow : Window
             PaperHawk(),
             DataHawk(),
             CraftHawk(),
+            WaveHawk(),
             // Coming soon: the Bytehawk office & creative suite
             ComingSoon("writehawk", "WriteHawk", "Full-featured word processor for documents, reports and letters, with styles, tables, comments, track changes and .docx support. Part of the Bytehawk office suite."),
             ComingSoon("gridhawk", "GridHawk", "Spreadsheet app with formulas, charts, pivot tables and .xlsx support. Part of the Bytehawk office suite."),
@@ -205,7 +206,6 @@ public partial class MainWindow : Window
             ComingSoon("pagehawk", "PageHawk", "Page layout app for books, magazines and print documents. Part of the Bytehawk creative suite."),
             ComingSoon("cliphawk", "ClipHawk", "Video editor with a multi-track timeline, titles, transitions and color tools. Part of the Bytehawk creative suite."),
             ComingSoon("flowhawk", "FlowHawk", "Motion graphics and visual effects for video. Part of the Bytehawk creative suite."),
-            ComingSoon("wavehawk", "WaveHawk", "Audio editor for recording, cleaning up and mixing audio. Part of the Bytehawk creative suite."),
             ComingSoon("lenshawk", "LensHawk", "Photo library and RAW photo editor for organizing and developing your pictures. Part of the Bytehawk creative suite."),
             ComingSoon("framehawk", "FrameHawk", "2D animation app for animated graphics and cartoons. Part of the Bytehawk creative suite."),
         },
@@ -484,6 +484,18 @@ public partial class MainWindow : Window
         AssetPattern = "CraftHawk-*-win-x64.zip;CraftHawk-*-Setup.exe",
         Exe = "CraftHawk.exe",
         Icon = "https://raw.githubusercontent.com/adamglassner/CraftHawk/main/assets/crafthawk-256.png",
+    };
+
+    /// <summary>WaveHawk (1.8.7): Audition/Audacity-style audio studio in the Hawk creative suite, with FL Studio-, Guitar Pro- and GarageBand-style add-ons (early preview shell; was "Coming soon" before).</summary>
+    private static CatalogEntry WaveHawk() => new()
+    {
+        Id = "wavehawk",
+        Name = "WaveHawk",
+        Description = "Audio recording and editing studio like Adobe Audition and Audacity: multitrack sessions with a mixer, a waveform and spectral editor, and add-ons like FL Studio (Beat Studio), Guitar Pro (Tab Studio) and GarageBand (Loop Studio). Early preview: browse sample sessions and audio files; playback, recording and editing are coming soon.",
+        Repo = "adamglassner/WaveHawk",
+        AssetPattern = "WaveHawk-*-win-x64.zip;WaveHawk-*-Setup.exe",
+        Exe = "WaveHawk.exe",
+        Icon = "https://raw.githubusercontent.com/adamglassner/WaveHawk/main/assets/wavehawk-256.png",
     };
 
     /// <summary>AlbumGrab (1.8.0) — browser extension for Chrome and Edge, on the Browser Extensions page.</summary>
