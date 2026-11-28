@@ -7,7 +7,7 @@ namespace Bytehawk.Launcher.Services;
 
 /// <summary>
 /// Headless checks run by CI (<c>BytehawkStudioLauncher.exe --self-test result.txt</c>).
-/// Exercises the real code paths against the real Guardrail EHS release on GitHub: latest-tag lookup, API,
+/// Exercises the real code paths against the real GuardHawk release on GitHub: latest-tag lookup, API,
 /// asset matching, download with progress and checksum, silent Inno Setup install, zip install, finding the
 /// program, uninstall — plus URL validation and JSON storage. Never touches the user's data folder.
 /// Exit code = number of failed checks.
@@ -111,7 +111,7 @@ public static class SelfTest
             }
             catch (Exception ex) { Info("AlbumGrab release", false, ex.Message); }
 
-            // ---- GitHub: the first Bytehawk app, Guardrail EHS ----
+            // ---- GitHub: the first Bytehawk app, GuardHawk ----
             var (tag, answered) = await GitHubService.GetLatestTagAsync(AppRepo);
             Check("Latest tag from github.com (no API)", answered && !string.IsNullOrEmpty(tag), tag ?? "no answer");
 
@@ -127,7 +127,7 @@ public static class SelfTest
                 var again = await GitHubService.GetLatestReleaseAsync(AppRepo, release);
                 Check("Conditional request (ETag)", again.Status is GitHubStatus.NotModified or GitHubStatus.Ok, again.Status.ToString());
 
-                const string pattern = "GuardrailEHS-*-Setup.exe;*-win-x64.zip";
+                const string pattern = "GuardHawk-*-Setup.exe;GuardrailEHS-*-Setup.exe;*-win-x64.zip";
                 var setup = GitHubService.MatchAsset(release.Assets, pattern);
                 var zip = GitHubService.MatchAsset(release.Assets, "*-win-x64.zip");
                 Check("Catalog pattern picks the Setup .exe", setup?.Name.EndsWith("-Setup.exe", StringComparison.OrdinalIgnoreCase) == true, setup?.Name ?? "");
@@ -158,15 +158,15 @@ public static class SelfTest
                     if (kind != null)
                     {
                         var appBase = Path.Combine(temp, "apps", "guardrail-ehs");
-                        var installed = await AppInstaller.InstallSetupAsync(dest, kind, appBase, release.Tag, "Guardrail.exe");
+                        var installed = await AppInstaller.InstallSetupAsync(dest, kind, appBase, release.Tag, "GuardHawk.exe");
                         Check("Silent install", installed.LaunchPath != null && File.Exists(installed.LaunchPath),
                               installed.LaunchPath ?? "program not found");
-                        Check("Finds Guardrail.exe", Path.GetFileName(installed.LaunchPath ?? "") == "Guardrail.exe");
+                        Check("Finds GuardHawk.exe", Path.GetFileName(installed.LaunchPath ?? "") == "GuardHawk.exe");
                         Check("Not reported as running", !AppInstaller.IsRunning(installed));
                         Check("Icon read from installed program", installed.LaunchPath != null && ShellHelper.GetFileIcon(installed.LaunchPath) != null);
 
                         // Update = install the release again over the existing copy.
-                        var updated = await AppInstaller.InstallSetupAsync(dest, kind, appBase, release.Tag, "Guardrail.exe");
+                        var updated = await AppInstaller.InstallSetupAsync(dest, kind, appBase, release.Tag, "GuardHawk.exe");
                         Check("Reinstall over existing copy (update path)", updated.LaunchPath != null && File.Exists(updated.LaunchPath));
 
                         await AppInstaller.UninstallAsync(updated, appBase);
@@ -179,8 +179,8 @@ public static class SelfTest
                     await Downloader.DownloadAsync(zip.DownloadUrl, dest, new SyncProgress<DownloadProgress>(_ => { }), CancellationToken.None);
                     Check("Zip size + SHA-256 verified", await AppInstaller.VerifyDownloadAsync(dest, zip) == null);
                     var zipBase = Path.Combine(temp, "apps", "guardrail-zip");
-                    var z = AppInstaller.InstallZip(dest, zipBase, release.Tag, "Guardrail.exe");
-                    Check("Zip install finds Guardrail.exe", z.LaunchPath != null && File.Exists(z.LaunchPath), z.LaunchPath ?? "");
+                    var z = AppInstaller.InstallZip(dest, zipBase, release.Tag, "GuardHawk.exe");
+                    Check("Zip install finds GuardHawk.exe", z.LaunchPath != null && File.Exists(z.LaunchPath), z.LaunchPath ?? "");
                     await AppInstaller.UninstallAsync(z, zipBase);
                     Check("Zip uninstall", !Directory.Exists(zipBase));
 
@@ -301,7 +301,7 @@ public static class SelfTest
                 var cat = System.Text.Json.JsonSerializer.Deserialize<CatalogFile>(json, JsonStore.Options);
                 var n = cat?.Apps?.Count ?? 0;
                 Check("Online catalog.json parses", n > 0, $"{n} apps, {cat?.Apps?.Count(a => a.ComingSoon)} coming soon");
-                Info("Guardrail EHS is the first app", cat?.Apps?.FirstOrDefault()?.Repo == AppRepo, cat?.Apps?.FirstOrDefault()?.Name ?? "");
+                Info("GuardHawk is the first app", cat?.Apps?.FirstOrDefault()?.Repo == AppRepo, cat?.Apps?.FirstOrDefault()?.Name ?? "");
                 Info("No sample entries left", cat?.Apps?.Any(a => a.Sample || (a.Id ?? "").StartsWith("sample-")) == false);
                 Info("Online catalog lists AlbumGrab as a browser extension", cat?.Apps?.Any(a => a.Key == "albumgrab" && a.IsExtension) == true);
             }

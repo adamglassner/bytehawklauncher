@@ -139,7 +139,7 @@ jobs:
           if (-not (Test-Path (Join-Path $data 'catalog.json'))) { throw 'catalog.json was not created' }
           $summary >> $env:GITHUB_STEP_SUMMARY
 
-      - name: Bytehawk Servers — install the real WillowWallet and Guardrail servers, screenshots, uninstall through the launcher
+      - name: Bytehawk Servers — install the real WillowWallet and GuardHawk servers, screenshots, uninstall through the launcher
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -176,26 +176,26 @@ jobs:
           if (Test-Path 'C:\ProgramData\WillowWallet Server') { throw "Data folder still there after uninstall with 'delete data'" }
           "## Bytehawk Servers`n- Installed $($rel.tag_name), launcher found it, uninstalled it with its data: OK" >> $env:GITHUB_STEP_SUMMARY
 
-          # Guardrail Server: the same, through its own card
-          $env:BH_TEST_SERVER = 'Guardrail Server'
+          # GuardHawk Server: the same, through its own card
+          $env:BH_TEST_SERVER = 'GuardHawk Server'
           Remove-Item screenshots/uninstall-result.txt -ErrorAction SilentlyContinue
           $grel = (Invoke-RestMethod -Headers @{ Authorization = "Bearer $env:GH_TOKEN" } "https://api.github.com/repos/adamglassner/guardrailehs/releases?per_page=40") |
                   Where-Object { $_.tag_name -like 'server-v*' -and -not $_.prerelease } | Select-Object -First 1
-          $gasset = $grel.assets | Where-Object { $_.name -like 'GuardrailServer-*-Setup.exe' } | Select-Object -First 1
+          $gasset = $grel.assets | Where-Object { $_.name -like 'GuardHawkServer-*-Setup.exe' -or $_.name -like 'GuardrailServer-*-Setup.exe' } | Select-Object -First 1
           Invoke-WebRequest $gasset.browser_download_url -OutFile "$env:RUNNER_TEMP\guardrail-server-setup.exe"
           Start-Process "$env:RUNNER_TEMP\guardrail-server-setup.exe" -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART' -Wait
           for ($i = 0; $i -lt 60; $i++) { try { Invoke-RestMethod http://localhost:5080/api/v1/info | Out-Null; break } catch { Start-Sleep 1 } }
-          if (-not (Get-Service GuardrailServer -ErrorAction SilentlyContinue)) { throw "Guardrail Server didn't install ($($grel.tag_name))" }
+          if (-not (Get-Service GuardrailServer -ErrorAction SilentlyContinue)) { throw "GuardHawk Server didn't install ($($grel.tag_name))" }
           New-Item -ItemType Directory -Force screenshots/willowwallet | Out-Null
           Get-ChildItem screenshots -Filter *.png | Move-Item -Destination { Join-Path 'screenshots/willowwallet' $_.Name } -ErrorAction SilentlyContinue
           Shots 'Dark' '0'
           Shots 'Light' '1'
           $gresult = Get-Content screenshots/uninstall-result.txt -ErrorAction SilentlyContinue
-          Write-Host "Guardrail Server uninstall through the launcher: $gresult"
-          if ($gresult -ne 'uninstalled') { Get-Content (Join-Path $data 'launcher.log') -Tail 40; throw "The launcher didn't uninstall Guardrail Server ($gresult)" }
-          if (Get-Service GuardrailServer -ErrorAction SilentlyContinue) { throw "Guardrail Server service still there after uninstall" }
-          if (Test-Path 'C:\ProgramData\Guardrail Server') { throw "Guardrail Server data folder still there after uninstall with 'delete data'" }
-          "- Installed Guardrail Server $($grel.tag_name), launcher found it, uninstalled it with its data: OK" >> $env:GITHUB_STEP_SUMMARY
+          Write-Host "GuardHawk Server uninstall through the launcher: $gresult"
+          if ($gresult -ne 'uninstalled') { Get-Content (Join-Path $data 'launcher.log') -Tail 40; throw "The launcher didn't uninstall GuardHawk Server ($gresult)" }
+          if (Get-Service GuardrailServer -ErrorAction SilentlyContinue) { throw "GuardHawk Server service still there after uninstall" }
+          if (Test-Path 'C:\ProgramData\Guardrail Server') { throw "GuardHawk Server data folder still there after uninstall with 'delete data'" }
+          "- Installed GuardHawk Server $($grel.tag_name), launcher found it, uninstalled it with its data: OK" >> $env:GITHUB_STEP_SUMMARY
 
       - name: Publish screenshots to the "screenshots" branch
         if: github.event_name != 'pull_request'

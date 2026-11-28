@@ -5,7 +5,7 @@ A Windows 10/11 launcher and downloader for Bytehawk Studio software, with room 
 | Section | What it does |
 |---|---|
 | **Bytehawk Apps** | Software released by Bytehawk Studio. Downloads the latest release from GitHub Releases, installs it silently, keeps it up to date automatically, launches and uninstalls it. The first app is **Guardrail EHS** ([adamglassner/guardrailehs](https://github.com/adamglassner/guardrailehs)). |
-| **Bytehawk Servers** | Servers you run yourself for Bytehawk apps: **Guardrail Server** (team sync for Guardrail EHS, from one PC up to a cluster; since 1.7.0) and **WillowWallet Server** (sync for WillowWallet on your PC and phone). Install it on this PC as a Windows service, open its web panel, update and uninstall it (keeping or deleting its data), or copy the Docker command and get the Linux builds. |
+| **Bytehawk Servers** | Servers you run yourself for Bytehawk apps: **GuardHawk Server** (team sync for GuardHawk, from one PC up to a cluster; since 1.7.0) and **WillowWallet Server** (sync for WillowWallet on your PC and phone). Install it on this PC as a Windows service, open its web panel, update and uninstall it (keeping or deleting its data), or copy the Docker command and get the Linux builds. |
 | **Browser Extensions** | Bytehawk Studio extensions for Google Chrome and Microsoft Edge, starting with **AlbumGrab** ([adamglassner/AlbumGrab](https://github.com/adamglassner/AlbumGrab)), which saves photos and albums from Facebook, Instagram, Reddit and other sites. **Download** unpacks it into a folder that keeps the same path, and **Add to browser** opens Chrome's or Edge's Extensions page with the folder copied, plus the steps for *Load unpacked*. Updates are installed into the same folder automatically, so the browser picks them up. |
 | **My Software** | Any program on your PC (.exe, .msi or .lnk shortcut) or any **Microsoft Store app** (**Add Store app** lists what's installed), even if it has nothing to do with Bytehawk Studio. Each entry has an optional description, version (filled in automatically, editable) and category. Works fully offline. |
 | **Web Apps** | Bookmarks that open in your default browser, with an optional description and category. Each card shows the site's own icon (downloaded once and cached in `cache\icons\`; use the refresh button on the card to fetch it again). Nothing is downloaded or installed. |
@@ -48,16 +48,16 @@ The launcher installs and updates apps the same way for every app, with no quest
 1. **Download** the release file that matches the app's `assetPattern` from the latest GitHub release, with progress, speed and Cancel.
 2. **Check** it: the size must match GitHub's, and when the release publishes a SHA-256 digest (all recent releases do) the file's hash must match too. A damaged download is deleted and nothing is installed.
 3. **Install** it into `%APPDATA%\BytehawkStudio\Launcher\apps\<app id>\`:
-   * an **Inno Setup** or **NSIS** setup program (like `GuardrailEHS-x.y.z-Setup.exe`) is run **silently** into `apps\<app id>\app`, with no wizard, no admin prompt for per-user installers and no extra shortcuts;
+   * an **Inno Setup** or **NSIS** setup program (like `GuardHawk-x.y.z-Setup.exe`) is run **silently** into `apps\<app id>\app`, with no wizard, no admin prompt for per-user installers and no extra shortcuts;
    * a **.zip** is unpacked into `apps\<app id>\<version>` (a single top-level folder in the zip is skipped) and older version folders are removed.
-4. **Find the program** to launch: the catalog's `exe` (for Guardrail EHS, `Guardrail.exe`), otherwise the only `.exe` in the install.
+4. **Find the program** to launch: the catalog's `exe` (for GuardHawk, `GuardHawk.exe`), otherwise the only `.exe` in the install.
 5. **Record** the installed version in `installed.json`. The setup file of the previous version is deleted.
 
 **Updating** is installing the newer release over the old one, so settings and data that the app keeps in your profile are untouched. If the app is open, the launcher waits: the card says *Close <app> to update it*.
 
 **Automatic updates** (Settings → *Install app updates automatically*, on by default): the launcher looks for new releases when it starts and **every 30 minutes** while it's open, and installs updates for apps it installed, as soon as they aren't running.
 
-**Uninstall** (trash icon on the card) runs the app's own uninstaller and removes its folder. App data in your profile, such as Guardrail's records, is kept.
+**Uninstall** (trash icon on the card) runs the app's own uninstaller and removes its folder. App data in your profile, such as GuardHawk's records, is kept.
 
 A release file the launcher can't install by itself (an `.msi`, or an `.exe` that isn't an Inno Setup / NSIS setup program) is started for you instead; when setup finishes, use **Choose launch file** on the card. Those apps are updated and uninstalled by their own setup program.
 
@@ -99,11 +99,11 @@ In `catalog.json` an extension is a normal entry with `"kind": "extension"` and 
   "apps": [
     {
       "id": "guardrail-ehs",
-      "name": "Guardrail EHS",
+      "name": "GuardHawk",
       "description": "What the app does, shown on the card.",
       "repo": "adamglassner/guardrailehs",
-      "assetPattern": "GuardrailEHS-*-Setup.exe;*-win-x64.zip",
-      "exe": "Guardrail.exe",
+      "assetPattern": "GuardHawk-*-Setup.exe;*-win-x64.zip",
+      "exe": "GuardHawk.exe",
       "icon": "https://raw.githubusercontent.com/adamglassner/guardrailehs/main/src/Guardrail.Desktop/Assets/guardrail.png"
     }
   ]
@@ -117,7 +117,7 @@ In `catalog.json` an extension is a normal entry with `"kind": "extension"` and 
 | `description` | no | Shown under the name. |
 | `assetPattern` | no (default `*.exe`) | Which release file to download. Wildcards `*` and `?`, case-insensitive. Separate several patterns with `;`, and prefix with `!` to exclude. |
 | `id` | no | Stable key for install state. Defaults to the lowercase `repo`. Set it if you list the same repo twice (for example an installer and a portable zip). |
-| `exe` | no | The program to launch after installing, e.g. `Guardrail.exe`. Found automatically when there's only one. |
+| `exe` | no | The program to launch after installing, e.g. `GuardHawk.exe`. Found automatically when there's only one. |
 | `icon` | no | `https://` URL of a square PNG shown on the card until the app is installed (then the program's own icon is used). |
 | `comingSoon` | no | `true` shows the card with a *Coming soon* badge and no Download button. `repo` can be empty, but give it an `id`. When the app is released, click **Edit** on the card and paste the repo; the card becomes a normal app. |
 
